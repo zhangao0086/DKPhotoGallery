@@ -22,19 +22,19 @@ Pod::Spec.new do |s|
     s.subspec 'Preview' do |preview|
         preview.ios.source_files = "DKPhotoGallery/Preview/*.swift"
 
-        s.subspec 'AssetPreview' do |ss|
+        preview.subspec 'AssetPreview' do |ss|
           ss.ios.source_files = "DKPhotoGallery/Preview/AssetPreview/*.swift"
         end
 
-        s.subspec 'LocalImagePreview' do |ss|
+        preview.subspec 'LocalImagePreview' do |ss|
           ss.ios.source_files = "DKPhotoGallery/Preview/LocalImagePreview/*.swift"
         end
 
-        s.subspec 'RemoteImagePreview' do |ss|
+        preview.subspec 'RemoteImagePreview' do |ss|
           ss.ios.source_files = "DKPhotoGallery/Preview/RemoteImagePreview/*.swift"
         end
 
-        s.subspec 'QRCode' do |ss|
+        preview.subspec 'QRCode' do |ss|
           ss.ios.source_files = "DKPhotoGallery/Preview/QRCode/*.swift"
         end
 
