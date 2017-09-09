@@ -9,50 +9,111 @@
 import UIKit
 
 @objc
-public class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate {
+public enum DKPhotoGallerySingleTapMode : Int {
+    case dismiss, toggleNavigationBar
+}
+
+@objc
+open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate {
 	
-	public var fromImageView: UIImageView?
+	open var items: [DKPhotoGalleryItem]?
+    
+    open var dismissImageViewBlock: ((_ dismissIndex: Int) -> UIImageView?)?
+    
+	open var presentingFromImageView: UIImageView?
+    open var presentationIndex = 0
+    
+    open var singleTapMode = DKPhotoGallerySingleTapMode.toggleNavigationBar
+    
+    open var transitionController: DKPhotoGalleryTransitionController?
 	
 	internal weak var contentVC: DKPhotoGalleryContentVC!
 	
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.view.backgroundColor = UIColor.blackColor()
+		self.view.backgroundColor = UIColor.black
 		
-		if let _ = self.fromImageView {
-			self.transitioningDelegate = self
-		}
-		
-		self.navigationBarHidden = true
+        self.navigationBar.barStyle = .blackTranslucent
+		self.isNavigationBarHidden = true
 		
 		let contentVC = DKPhotoGalleryContentVC()
-		self.viewControllers = [contentVC]
+        self.contentVC = contentVC
+        
+        contentVC.singleTapBlock = { [weak self] in
+            self?.handleSingleTap()
+        }
+        
+        contentVC.pageChangeBlock = { [weak self] in
+            self?.updateNavigationTitle()
+        }
+        
+		contentVC.items = self.items
+        contentVC.currentIndex = self.presentationIndex
+        self.viewControllers = [contentVC]
 		
-		contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: #selector(DKPhotoGallery.dismiss))
-		
-		let gesture = UITapGestureRecognizer(target: self, action: #selector(DKPhotoGallery.toggleNavigationBar))
-		contentVC.view.addGestureRecognizer(gesture)
-		
-		self.contentVC = contentVC
+		contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
+        
+        if let transitionController = self.transitionController {
+            transitionController.prepareInteractiveGesture()
+        }
 	}
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.modalPresentationCapturesStatusBarAppearance = true
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.modalPresentationCapturesStatusBarAppearance = false
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
 	
-	func dismiss() {
-		self.dismissViewControllerAnimated(true, completion: nil)
+	open func dismissGallery() {
+		self.dismiss(animated: true, completion: nil)
 	}
+    
+    open func currentImageView() -> UIImageView {
+        return self.contentVC.currentImageView()
+    }
+    
+    open func currentIndex() -> Int {
+        return self.contentVC.currentIndex
+    }
+    
+    open func updateNavigationTitle() {
+        self.contentVC.navigationItem.title = "\(self.contentVC.currentIndex + 1)/\(self.items!.count)"
+    }
+    
+    open func handleSingleTap() {
+        switch self.singleTapMode {
+        case .toggleNavigationBar:
+            self.toggleNavigationBar()
+        case .dismiss:
+            self.dismissGallery()
+        }
+    }
+    
+    open func toggleNavigationBar() {
+        self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
+    }
 	
-	func toggleNavigationBar() {
-		self.setNavigationBarHidden(!self.navigationBarHidden, animated: true)
-	}
-	
-	// UIViewControllerTransitioningDelegate
-	
-	public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return DKPhotoGalleryTransitionPresent(imageBrowserVC: self)
-	}
-	
-	public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return DKPhotoGalleryTransitionDismiss(imageBrowserVC: self)
-	}
-	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public extension UIViewController {
+    
+    public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
+        gallery.modalPresentationStyle = .custom
+        
+        gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery, presentedViewController: gallery, presenting: self)
+        gallery.transitioningDelegate = gallery.transitionController
+        
+        self.present(gallery, animated: true, completion: completion)
+    }
 }

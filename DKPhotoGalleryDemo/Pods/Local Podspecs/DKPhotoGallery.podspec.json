@@ -1,0 +1,85 @@
+{
+  "name": "DKPhotoGallery",
+  "version": "0.0.1",
+  "summary": "A Photo Gallery / Browser / Viewer for iOS written in Swift 3",
+  "homepage": "https://github.com/zhangao0086/DKPhotoGallery",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Bannings": "zhangao0086@gmail.com"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source": {
+    "git": "https://github.com/zhangao0086/DKPhotoGallery.git",
+    "tag": "0.0.1"
+  },
+  "source_files": "DKPhotoGallery/*.swift",
+  "resources": "DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle",
+  "frameworks": [
+    "Foundation",
+    "UIKit",
+    "Photos",
+    "WebKit",
+    "AVFoundation"
+  ],
+  "requires_arc": true,
+  "dependencies": {
+    "SDWebImage": [
+      "4.1.0"
+    ],
+    "MBProgressHUD": [
+      "1.0.0"
+    ]
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "3.0"
+  },
+  "subspecs": [
+    {
+      "name": "AssetPreview",
+      "ios": {
+        "source_files": "DKPhotoGallery/Preview/AssetPreview/*.swift"
+      }
+    },
+    {
+      "name": "LocalImagePreview",
+      "ios": {
+        "source_files": "DKPhotoGallery/Preview/LocalImagePreview/*.swift"
+      }
+    },
+    {
+      "name": "RemoteImagePreview",
+      "ios": {
+        "source_files": "DKPhotoGallery/Preview/RemoteImagePreview/*.swift"
+      }
+    },
+    {
+      "name": "QRCode",
+      "ios": {
+        "source_files": "DKPhotoGallery/Preview/QRCode/*.swift"
+      }
+    },
+    {
+      "name": "Preview",
+      "ios": {
+        "source_files": "DKPhotoGallery/Preview/*.swift"
+      }
+    },
+    {
+      "name": "Transition",
+      "ios": {
+        "source_files": "DKPhotoGallery/Transition/*.swift"
+      }
+    },
+    {
+      "name": "Resource",
+      "ios": {
+        "source_files": "DKPhotoGallery/Resource/*.swift"
+      }
+    }
+  ]
+}

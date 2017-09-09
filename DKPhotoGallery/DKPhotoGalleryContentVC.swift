@@ -9,132 +9,167 @@
 import UIKit
 
 @objc
-public class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
+open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
 	
-	private let mainScrollView = UIScrollView()
-	private var previousIndex: Int = 0
-	var images: Array<String>!
+	internal var items: [DKPhotoGalleryItem]!
+    
+    open var customLongPressActions: [UIAlertAction]?
+    open var customPreviewActions: [Any]?
+    
+    open var pageChangeBlock: (() -> Void)?
+    open var singleTapBlock: (() -> Void)?
 	
-	override public func viewDidLoad() {
+    open var currentIndex = 0 {
+        didSet {
+            self.pageChangeBlock?()
+        }
+    }
+    
+	private let mainView = DKPhotoGalleryScrollView()
+    private var reuseableVCs: [DKPhotoBasePreviewVC] = []
+    private var visibleVCs: [Int : DKPhotoBasePreviewVC] = [:]
+	
+    open override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		self.automaticallyAdjustsScrollViewInsets = false
+        self.view.backgroundColor = UIColor.clear
 		
-		self.view.addSubview(self.mainScrollView)
-		self.mainScrollView.backgroundColor = UIColor.blackColor()
-		self.mainScrollView.showsHorizontalScrollIndicator = false
-		self.mainScrollView.canCancelContentTouches = true
-		self.mainScrollView.pagingEnabled = true
-		self.mainScrollView.delegate = self
-		
-		self.images = [
-			"http://g.hiphotos.baidu.com/image/pic/item/2e2eb9389b504fc2fbd4d192e6dde71191ef6d99.jpg",
-			"http://g.hiphotos.baidu.com/image/pic/item/0d338744ebf81a4cffc545a8d52a6059242da6d8.jpg",
-			"http://e.hiphotos.baidu.com/image/pic/item/48540923dd54564e8e86542db1de9c82d0584fc6.jpg",
-			"http://e.hiphotos.baidu.com/image/pic/item/aa64034f78f0f736335d21960955b319eac41381.jpg"
-		]
-		
-		for (index, url) in self.images.enumerate() {
-			self.createPageForURL(NSURL(string: url)!, forIndex: index)
-		}
-		
-		self.mainScrollView.translatesAutoresizingMaskIntoConstraints = false
-		self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[mainScrollView(==parentView)]-0-|",
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: [
-				"mainScrollView" : self.mainScrollView,
-				"parentView" : self.view
-			]))
-		self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[mainScrollView(==parentView)]-0-|",
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: [
-				"mainScrollView" : self.mainScrollView,
-				"parentView" : self.view
-			]))
-		
-		let lastSubview = self.mainScrollView.subviews.last
-		self.mainScrollView.addConstraint(NSLayoutConstraint(item: lastSubview!,
-			attribute: .Trailing,
-			relatedBy: .Equal,
-			toItem: self.mainScrollView,
-			attribute: .Trailing,
-			multiplier: 1,
-			constant: 0))
-		
+        self.mainView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width + 20, height: self.view.bounds.height)
+        self.mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.mainView.delegate = self
+        self.mainView.update(self.items.count)
+        self.view.addSubview(self.mainView)
+        
+        self.updateWithCurrentIndex(needToSetContentOffset: true)
 	}
+    
+    public func currentVC() -> DKPhotoBasePreviewVC {
+        return self.previewVC(at: self.currentIndex)
+    }
+    
+    public func currentImageView() -> UIImageView {
+        return self.currentVC().imageView
+    }
+    
+    // MARK: - Private
+    
+    private func updateWithCurrentIndex(needToSetContentOffset need : Bool) {
+        if need {
+            self.mainView.contentOffset = CGPoint(x: CGFloat(self.currentIndex) * self.mainView.bounds.width, y: 0)
+        }
+        
+        for i in ((self.currentIndex - 1) >= 0 ? self.currentIndex - 1 : 0) ... min(self.currentIndex + 1, self.items.count - 1) {
+            self.addView(at: i)
+        }
+    }
+    
+    private func addView(at index: Int) {
+        let vc = self.previewVC(at: index)
+        self.addChildViewController(vc)
+        self.mainView.set(vc.view, atIndex: index)
+    }
+    
+    private func previewVC(at index: Int) -> DKPhotoBasePreviewVC {
+        if let vc = self.visibleVCs[index] {
+            return vc
+        }
+        
+        let item = self.items[index]
+        
+        var (findIndex, vc) = self.findPreviewVC(for: DKPhotoBasePreviewVC.self)
+        if vc == nil {
+            vc = DKPhotoBasePreviewVC.photoPreviewVC(with: item)
+        } else {
+            vc!.prepareReuse(with: item)
+            self.reuseableVCs.remove(at: findIndex!)
+        }
+        
+        vc?.customPreviewActions = self.customPreviewActions
+        vc?.customLongPressActions = self.customLongPressActions
+        if let singleTapBlock = self.singleTapBlock {
+            vc?.singleTapBlock = singleTapBlock
+        }
+        
+        self.visibleVCs[index] = vc
+        
+        return vc!
+    }
+    
+    private func findPreviewVC(for vcClass: AnyClass) -> (Int?, DKPhotoBasePreviewVC?) {
+        for (index, reuseableVC) in self.reuseableVCs.enumerated() {
+            if reuseableVC.isKind(of: vcClass) {
+                return (index, reuseableVC)
+            }
+        }
+        
+        return (nil, nil)
+    }
+    
+    // MARK: - Orientations & Status Bar
+    
+    open override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    open override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    open override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
+    
+    // MARK: - Touch 3D
+    
+    @available(iOS 9.0, *)
+    open override var previewActionItems: [UIPreviewActionItem] {
+        return self.currentVC().previewActionItems
+    }
 	
-	internal func currentImageView() -> UIImageView {
-		let scrollView = self.mainScrollView.subviews[self.previousIndex] as! UIScrollView
-		let imageView = scrollView.subviews.first as! UIImageView
-		return imageView
-	}
-	
-	private func createPageForURL(url: NSURL, forIndex index: NSInteger) {
-		let pageScrollView = UIScrollView()
-		pageScrollView.backgroundColor = UIColor.blackColor()
-		pageScrollView.translatesAutoresizingMaskIntoConstraints = false
-		pageScrollView.maximumZoomScale = 2
-		pageScrollView.showsHorizontalScrollIndicator = false
-		pageScrollView.showsVerticalScrollIndicator = false
-		pageScrollView.delegate = self
-		self.mainScrollView.addSubview(pageScrollView)
+    // MARK: - UIScrollViewDelegate
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        for i in ((index - 1) >= 0 ? index - 1 : 0) ... min(index + 1, self.items.count - 1) {
+            if i != index {
+                let vc = self.visibleVCs[i]
+                vc?.resetScale()
+            }
+        }
+        
+        func addToReuseQueueIfNeeded(index: Int) {
+            if let vc = self.visibleVCs[index] {
+                self.reuseableVCs.append(vc)
+                self.mainView.remove(vc.view, atIndex: index)
+                vc.removeFromParentViewController()
+                self.visibleVCs.removeValue(forKey: index)
+            }
+        }
+        
+        if index >= 2 {
+            addToReuseQueueIfNeeded(index: index - 2)
+        }
+        
+        if index + 2 <= self.items.count {
+            addToReuseQueueIfNeeded(index: index + 2)
+        }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        if index != self.currentIndex {
+            self.currentIndex = index
+            self.updateWithCurrentIndex(needToSetContentOffset: false)
+        }
+    }
 		
-		let imageView = UIImageView()
-		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.contentMode = .ScaleAspectFit
-		pageScrollView.addSubview(imageView)
-		imageView.sd_setImageWithURL(url)
-		
-		var views: [String : UIView] = [
-			"pageScrollView" : pageScrollView,
-			"parentView" : self.mainScrollView,
-			"imageView" : imageView
-		]
-		
-		pageScrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[imageView(==pageScrollView)]-0-|",
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: views))
-		pageScrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[imageView(==pageScrollView)]-0-|",
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: views))
-		
-		self.mainScrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[pageScrollView(==parentView)]|",
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: views))
-		
-		var format: String
-		if index == 0 {
-			format = "H:|-0-[pageScrollView(==parentView)]"
-		} else {
-			format = "H:[previousView]-0-[pageScrollView(==parentView)]"
-			views["previousView"] = self.mainScrollView.subviews[index - 1]
-		}
-		self.mainScrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(format,
-			options: .DirectionLeadingToTrailing,
-			metrics: nil,
-			views: views))
-	}
-	
-	// UIScrollView delegates
-	
-	public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-		return scrollView.subviews.first
-	}
-	
-	public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-		if scrollView == self.mainScrollView {
-			let currentIndex = Int(scrollView.contentOffset.x) / Int(scrollView.bounds.width)
-			if currentIndex != self.previousIndex {
-				let pageScrollView = scrollView.subviews[self.previousIndex] as! UIScrollView
-				self.previousIndex = currentIndex
-				pageScrollView.zoomScale = 1
-			}
-		}
-	}
-	
 }

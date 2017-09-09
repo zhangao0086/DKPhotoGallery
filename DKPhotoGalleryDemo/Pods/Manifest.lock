@@ -1,0 +1,54 @@
+PODS:
+  - DKPhotoGallery (0.0.1):
+    - DKPhotoGallery/AssetPreview (= 0.0.1)
+    - DKPhotoGallery/LocalImagePreview (= 0.0.1)
+    - DKPhotoGallery/Preview (= 0.0.1)
+    - DKPhotoGallery/QRCode (= 0.0.1)
+    - DKPhotoGallery/RemoteImagePreview (= 0.0.1)
+    - DKPhotoGallery/Resource (= 0.0.1)
+    - DKPhotoGallery/Transition (= 0.0.1)
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/AssetPreview (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/LocalImagePreview (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/Preview (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/QRCode (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/RemoteImagePreview (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/Resource (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - DKPhotoGallery/Transition (0.0.1):
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage (= 4.1.0)
+  - MBProgressHUD (1.0.0)
+  - SDWebImage (4.1.0):
+    - SDWebImage/Core (= 4.1.0)
+  - SDWebImage/Core (4.1.0)
+
+DEPENDENCIES:
+  - DKPhotoGallery (from `../`)
+  - MBProgressHUD (~> 1.0.0)
+  - SDWebImage (~> 4.1)
+
+EXTERNAL SOURCES:
+  DKPhotoGallery:
+    :path: ../
+
+SPEC CHECKSUMS:
+  DKPhotoGallery: ba75d485718f027e9ffbcf0577d6f572175a36cc
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
+
+PODFILE CHECKSUM: 6647ae21d2c960e40d0386d405ba66faa8338fcb
+
+COCOAPODS: 1.2.0
