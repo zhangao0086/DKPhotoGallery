@@ -67,6 +67,14 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                     self.percent = -self.percent
                 }
                 
+                if !self.gallery.isStatusBarHidden {
+                    if UIApplication.shared.isStatusBarHidden && self.percent > 0.04 {
+                        UIApplication.shared.isStatusBarHidden = false
+                    } else if !UIApplication.shared.isStatusBarHidden && self.percent < 0.04 {
+                        UIApplication.shared.isStatusBarHidden = true
+                    }
+                }
+                
                 self.colorAnimation()
             }
         case .ended,
@@ -79,6 +87,11 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                         fromImageView.frame = self.fromRect
                         fromImageView.superview?.superview?.backgroundColor = UIColor.black
                         self.gallery.view.backgroundColor = UIColor.black
+                        
+                        if !self.gallery.isStatusBarHidden && !UIApplication.shared.isStatusBarHidden {
+                            UIApplication.shared.isStatusBarHidden = true
+                        }
+                        
                     }) { (finished) in
                         self.toImageView?.isHidden = false
                     }

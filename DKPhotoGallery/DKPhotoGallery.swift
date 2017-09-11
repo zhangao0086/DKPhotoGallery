@@ -30,6 +30,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     open var transitionController: DKPhotoGalleryTransitionController?
 	
+    internal var isStatusBarHidden = false
 	internal weak var contentVC: DKPhotoGalleryContentVC!
 	
 	open override func viewDidLoad() {
@@ -67,6 +68,10 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.isStatusBarHidden = UIApplication.shared.isStatusBarHidden
+        if !self.isStatusBarHidden {
+            UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.none)
+        }
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -74,6 +79,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        if !self.isStatusBarHidden {
+            UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
+        }
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
