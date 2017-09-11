@@ -24,12 +24,12 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
 		let containerView = transitionContext.containerView
-		let toViewController = transitionContext.viewController(forKey: .to) as! DKPhotoGallery
+		let toViewController = transitionContext.viewController(forKey: .to)!
         let toView = transitionContext.view(forKey: .to)!
         let toViewFinalFrame = transitionContext.finalFrame(for: toViewController)
 		
         if let fromImageView = self.gallery.presentingFromImageView {
-            let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, from: nil)
+            let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil)
             let snapshotImageView = UIImageView(image: fromImageView.image)
             snapshotImageView.frame = fromImageViewFrameInScreen!
             snapshotImageView.contentMode = fromImageView.contentMode

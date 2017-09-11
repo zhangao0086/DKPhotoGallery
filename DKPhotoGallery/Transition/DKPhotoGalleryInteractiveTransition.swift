@@ -79,7 +79,9 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                         fromImageView.frame = self.fromRect
                         fromImageView.superview?.superview?.backgroundColor = UIColor.black
                         self.gallery.view.backgroundColor = UIColor.black
-                    })
+                    }) { (finished) in
+                        self.toImageView?.isHidden = false
+                    }
                 }
             } else {
                 self.gallery.dismissGallery()
@@ -87,7 +89,6 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
             }
             self.fromImageView = nil
             self.percent = 0
-            self.toImageView?.isHidden = false
             self.toImageView = nil
         default:
             break
