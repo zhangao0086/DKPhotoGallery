@@ -13,6 +13,19 @@ public let DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL: String = "DKPhotoGal
 public let DKPhotoGalleryItemExtraInfoKeyRemoteOriginalSize: String = "DKPhotoGalleryItemExtraInfoKeyRemoteOriginalSize"
 
 @objc
+public class DKPhotoGalleryItemConstant: NSObject {
+    
+    public class func extraInfoKeyRemoteOriginalURL() -> String {
+        return DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL
+    }
+    
+    public class func extraInfoKeyRemoteOriginalSize() -> String {
+        return DKPhotoGalleryItemExtraInfoKeyRemoteOriginalSize
+    }
+    
+}
+
+@objc
 open class DKPhotoGalleryItem: NSObject {
     
     open var image: UIImage?
@@ -23,5 +36,30 @@ open class DKPhotoGalleryItem: NSObject {
     open var assetLocalIdentifier: String?
     
     open var extraInfo: [String: NSObject]?
+    
+    public class func items(withURLs URLs: [NSURL]) -> [DKPhotoGalleryItem] {
+        var items: [DKPhotoGalleryItem] = []
+        for URL in URLs {
+            let item = DKPhotoGalleryItem()
+            item.URL = URL
+            
+            items.append(item)
+        }
+        
+        return items
+    }
+    
+    public class func items(withRemoteURLStrings URLStrings: [String]) -> [DKPhotoGalleryItem] {
+        var items: [DKPhotoGalleryItem] = []
+        for URLString in URLStrings {
+            let item = DKPhotoGalleryItem()
+            item.URL = NSURL(string: URLString)
+            
+            items.append(item)
+        }
+        
+        return items
+    }
+
 }
 
