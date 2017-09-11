@@ -25,6 +25,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     open var singleTapMode = DKPhotoGallerySingleTapMode.toggleNavigationBar
     
+    open var customLongPressActions: [UIAlertAction]?
+    open var customPreviewActions: [Any]? // [UIPreviewAction]
+    
     open var transitionController: DKPhotoGalleryTransitionController?
 	
 	internal weak var contentVC: DKPhotoGalleryContentVC!
@@ -50,6 +53,8 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         
 		contentVC.items = self.items
         contentVC.currentIndex = self.presentationIndex
+        contentVC.customLongPressActions = self.customLongPressActions
+        contentVC.customPreviewActions = self.customPreviewActions
         self.viewControllers = [contentVC]
 		
 		contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
