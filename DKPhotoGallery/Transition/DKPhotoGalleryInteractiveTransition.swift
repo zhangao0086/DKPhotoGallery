@@ -89,7 +89,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                         self.gallery.view.backgroundColor = UIColor.black
                         
                         if !self.gallery.isStatusBarHidden && !UIApplication.shared.isStatusBarHidden {
-                            UIApplication.shared.isStatusBarHidden = true
+                            UIApplication.shared.setStatusBarHidden(true, with: .fade)
                         }
                         
                     }) { (finished) in
