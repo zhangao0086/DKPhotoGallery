@@ -336,11 +336,13 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                     UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 } else if let animatedImage = self.animatedImage {
                     ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                        if let _ = error {
-                            self.showTips("图片保存失败")
-                        } else {
-                            self.showTips("图片保存成功")
-                        }
+                        DispatchQueue.main.async(execute: {
+                            if let _ = error {
+                                self.showTips("图片保存失败")
+                            } else {
+                                self.showTips("图片保存成功")
+                            }
+                        })
                     })
                 }
             case .restricted:
