@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import MBProgressHUD
 import SDWebImage
+import AssetsLibrary
 
 public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
@@ -24,7 +25,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     open fileprivate(set) var item: DKPhotoGalleryItem!
     
-    open private(set) var imageView: UIImageView!
+    open private(set) var imageView: FLAnimatedImageView!
     
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]?
@@ -36,9 +37,23 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     private var scrollView: UIScrollView!
+    
     fileprivate var image: UIImage? {
         didSet {
+            guard self.image != nil else { return }
+            
             self.imageView.image = self.image
+            self.animatedImage = nil
+            self.centerImageView()
+        }
+    }
+    
+    fileprivate var animatedImage: FLAnimatedImage? {
+        didSet {
+            guard self.animatedImage != nil else { return }
+            
+            self.imageView.animatedImage = self.animatedImage
+            self.image = nil
             self.centerImageView()
         }
     }
@@ -67,7 +82,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         
         self.view.backgroundColor = UIColor.black
         
-        self.imageView = UIImageView(frame: self.view.bounds)
+        self.imageView = FLAnimatedImageView(frame: self.view.bounds)
         self.imageView.isUserInteractionEnabled = true
         self.imageView.contentMode = .scaleAspectFit
         self.imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -141,7 +156,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 if let data = data {
                     let imageFormat = NSData.sd_imageFormat(forImageData: data)
                     if imageFormat == .GIF {
-                        
+                        self.animatedImage = FLAnimatedImage(gifData: data)
                     } else {
                         self.image = UIImage(data: data)
                     }
@@ -272,7 +287,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - QR Code
     
     private func detectStringFromImage() -> String? {
-        guard let targetImage = self.image else {
+        guard let targetImage = self.image ?? self.animatedImage?.posterImage else {
             return nil
         }
         
@@ -319,6 +334,14 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
             case .authorized:
                 if let image = self.image {
                     UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                } else if let animatedImage = self.animatedImage {
+                    ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
+                        if let _ = error {
+                            self.showTips("图片保存失败")
+                        } else {
+                            self.showTips("图片保存成功")
+                        }
+                    })
                 }
             case .restricted:
                 self.showTips("图片保存权限无法开启")

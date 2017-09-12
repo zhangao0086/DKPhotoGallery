@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>122D4CAD339C3FFE37B1C76AA949D49B</key>
+		<key>3601B2D2EA52A1894590EFE967781A17</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2D114ECF10BABCC08BB87A33975C5BD2</key>
+		<key>549BE70544C9ACB27F3C3AE3F4DF748D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C379A88F03447B214DB5DC8E72DA0DA7</key>
+		<key>78C5F66C8A1F048B63EB186C0776D520</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E1A42D456E4D0F020EF3567232A85B41</key>
+		<key>B7388AC0E59CCF53F4B13ED6A7ED4D43</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE2AA2DFFF42B6C68FD6E6A69FE518FB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

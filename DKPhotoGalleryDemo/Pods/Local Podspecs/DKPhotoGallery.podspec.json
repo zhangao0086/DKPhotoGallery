@@ -24,11 +24,12 @@
     "UIKit",
     "Photos",
     "WebKit",
-    "AVFoundation"
+    "AVFoundation",
+    "AssetsLibrary"
   ],
   "requires_arc": true,
   "dependencies": {
-    "SDWebImage": [
+    "SDWebImage/GIF": [
       "4.1.0"
     ],
     "MBProgressHUD": [
@@ -40,34 +41,36 @@
   },
   "subspecs": [
     {
-      "name": "AssetPreview",
-      "ios": {
-        "source_files": "DKPhotoGallery/Preview/AssetPreview/*.swift"
-      }
-    },
-    {
-      "name": "LocalImagePreview",
-      "ios": {
-        "source_files": "DKPhotoGallery/Preview/LocalImagePreview/*.swift"
-      }
-    },
-    {
-      "name": "RemoteImagePreview",
-      "ios": {
-        "source_files": "DKPhotoGallery/Preview/RemoteImagePreview/*.swift"
-      }
-    },
-    {
-      "name": "QRCode",
-      "ios": {
-        "source_files": "DKPhotoGallery/Preview/QRCode/*.swift"
-      }
-    },
-    {
       "name": "Preview",
       "ios": {
         "source_files": "DKPhotoGallery/Preview/*.swift"
-      }
+      },
+      "subspecs": [
+        {
+          "name": "AssetPreview",
+          "ios": {
+            "source_files": "DKPhotoGallery/Preview/AssetPreview/*.swift"
+          }
+        },
+        {
+          "name": "LocalImagePreview",
+          "ios": {
+            "source_files": "DKPhotoGallery/Preview/LocalImagePreview/*.swift"
+          }
+        },
+        {
+          "name": "RemoteImagePreview",
+          "ios": {
+            "source_files": "DKPhotoGallery/Preview/RemoteImagePreview/*.swift"
+          }
+        },
+        {
+          "name": "QRCode",
+          "ios": {
+            "source_files": "DKPhotoGallery/Preview/QRCode/*.swift"
+          }
+        }
+      ]
     },
     {
       "name": "Transition",

@@ -11,10 +11,10 @@ Pod::Spec.new do |s|
     s.source_files  = "DKPhotoGallery/*.swift"
     s.resource      = "DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle"
 
-    s.frameworks    = "Foundation", "UIKit", "Photos", "WebKit", "AVFoundation"
+    s.frameworks    = "Foundation", "UIKit", "Photos", "WebKit", "AVFoundation", "AssetsLibrary"
     s.requires_arc  = true
 
-    s.dependency 'SDWebImage', '4.1.0'
+    s.dependency 'SDWebImage/GIF', '4.1.0'
     s.dependency 'MBProgressHUD', '1.0.0'
 
     s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
