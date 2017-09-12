@@ -115,6 +115,10 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
     }
 	
+    @available(iOS 9.0, *)
+    open override var previewActionItems: [UIPreviewActionItem] {
+        return self.contentVC.previewActionItems
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
