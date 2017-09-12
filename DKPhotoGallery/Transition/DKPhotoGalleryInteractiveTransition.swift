@@ -103,7 +103,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
         UIView.animate(withDuration: 0.01, animations: { 
             self.fromImageView?.superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
             self.gallery.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
-            self.gallery.statusBar?.alpha = 1-colorAlpha
+            self.gallery.statusBar?.alpha = 1 - colorAlpha
         })
     }
 }

@@ -38,9 +38,10 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
             
             containerView.addSubview(snapshotImageView)
             
-            fromView?.alpha = 0
+            fromImageView.isHidden = true
             toImageView.isHidden = true
             UIView.animate(withDuration: transitionDuration, animations: {
+                fromView?.alpha = 0
                 let toImageViewFrameInScreen = toImageView.superview!.convert(toImageView.frame, to: nil)
                 snapshotImageView.contentMode = toImageView.contentMode
                 snapshotImageView.frame = toImageViewFrameInScreen
