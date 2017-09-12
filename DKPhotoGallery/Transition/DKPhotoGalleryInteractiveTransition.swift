@@ -67,14 +67,6 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                     self.percent = -self.percent
                 }
                 
-                if !self.gallery.isStatusBarHidden {
-                    if UIApplication.shared.isStatusBarHidden && self.percent > 0.04 {
-                        UIApplication.shared.isStatusBarHidden = false
-                    } else if !UIApplication.shared.isStatusBarHidden && self.percent < 0.04 {
-                        UIApplication.shared.isStatusBarHidden = true
-                    }
-                }
-                
                 self.colorAnimation()
             }
         case .ended,
@@ -88,9 +80,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                         fromImageView.superview?.superview?.backgroundColor = UIColor.black
                         self.gallery.view.backgroundColor = UIColor.black
                         
-                        if !self.gallery.isStatusBarHidden && !UIApplication.shared.isStatusBarHidden {
-                            UIApplication.shared.setStatusBarHidden(true, with: .fade)
-                        }
+                        self.gallery.statusBar?.alpha = 0
                         
                     }) { (finished) in
                         self.toImageView?.isHidden = false
@@ -109,17 +99,11 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
     }
     
     private func colorAnimation() {
-        if self.percent > 0.7 {
-            UIView.animate(withDuration: 0.01, animations: { 
-                self.fromImageView?.superview?.superview?.backgroundColor = UIColor.clear
-                self.gallery.view.backgroundColor = UIColor.clear
-            })
-        } else {
-            let colorAlpha: CGFloat = CGFloat(fabsf(Float(0.7 - self.percent)))
-            UIView.animate(withDuration: 0.01, animations: { 
-                self.fromImageView?.superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
-                self.gallery.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
-            })
-        }
+        let colorAlpha: CGFloat = CGFloat(fabsf(Float(1 - self.percent)))
+        UIView.animate(withDuration: 0.01, animations: { 
+            self.fromImageView?.superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
+            self.gallery.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
+            self.gallery.statusBar?.alpha = 1-colorAlpha
+        })
     }
 }

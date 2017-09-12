@@ -369,10 +369,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return true
     }
     
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     open override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }

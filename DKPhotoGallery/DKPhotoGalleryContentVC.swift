@@ -115,19 +115,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
-    
-    open override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    open override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .slide
-    }
-    
+        
     // MARK: - Touch 3D
     
     @available(iOS 9.0, *)

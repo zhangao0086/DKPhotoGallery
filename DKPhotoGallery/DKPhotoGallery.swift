@@ -30,7 +30,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     open var transitionController: DKPhotoGalleryTransitionController?
 	
-    internal var isStatusBarHidden = false
+    internal var statusBar: UIView?
 	internal weak var contentVC: DKPhotoGalleryContentVC!
 	
 	open override func viewDidLoad() {
@@ -63,25 +63,26 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         if let transitionController = self.transitionController {
             transitionController.prepareInteractiveGesture()
         }
+        
+        let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
+        let key = String(data: keyData, encoding: String.Encoding.ascii)!
+        if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
+            self.statusBar = statusBar
+        }
 	}
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.isStatusBarHidden = UIApplication.shared.isStatusBarHidden
-        if !self.isStatusBarHidden {
-            UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.none)
-        }
+
+        self.statusBar?.alpha = 0
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
 
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        if !self.isStatusBarHidden {
-            UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
-        }
+
+        self.statusBar?.alpha = 1
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
