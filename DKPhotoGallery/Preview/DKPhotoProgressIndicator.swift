@@ -7,34 +7,36 @@
 //
 
 import UIKit
+import MBProgressHUD
 
-class DKPhotoProgressIndicator: UIActivityIndicatorView, DKPhotoProgressIndicatorProtocol {
+class DKPhotoProgressIndicator: MBProgressHUD, DKPhotoProgressIndicatorProtocol {
 
-    required init(with view: UIView) {
-        super.init(activityIndicatorStyle: .gray)
+     required init(with view: UIView) {
+        super.init(view: view)
+        
+        self.mode = .determinate
         
         view.addSubview(self)
-        self.center = CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)
-        self.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
-        self.hidesWhenStopped = true
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var progress: Float = 0
-
-    func reset() {
-        self.progress = 0
+    func startIndicator() {
+        self.show(animated: true)
     }
     
-    func start() {
-        self.startAnimating()
+    func stopIndicator() {
+        self.hide(animated: true)
     }
     
-    func stop() {
-        self.stopAnimating()
+    func setIndicatorProgress(_ progress: Float) {
+        self.progress = progress
     }
 
 }
