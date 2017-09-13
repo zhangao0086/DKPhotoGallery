@@ -20,7 +20,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
         super.viewDidLoad()
         
         self.downloadOriginalImageButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        self.downloadOriginalImageButton.titleLabel?.layer.borderWidth = 1
+        self.downloadOriginalImageButton.layer.borderWidth = 1
         self.downloadOriginalImageButton.layer.borderColor = UIColor(red: 0.47, green: 0.45, blue: 0.45, alpha: 1).cgColor
         self.downloadOriginalImageButton.layer.cornerRadius = 2
         self.downloadOriginalImageButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
@@ -62,28 +62,28 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
                                                             progress: { [weak self] (receivedSize, expectedSize, targetURL) in
                                                                 guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
                                                                 
-                                                                progressBlock(Float(receivedSize / expectedSize))
-                },
-                                                            completed: { [weak self] (image, data, error, finished) in
-                                                                var success = false
-                                                                if (image != nil || data != nil) && finished {
-                                                                    SDImageCache.shared().store(image, imageData: data, forKey: key, toDisk: true, completion: nil)
-                                                                    success = true
-                                                                } else {
-                                                                    success = false
+                                                                DispatchQueue.main.async {
+                                                                    progressBlock(Float(receivedSize) / Float(expectedSize))
                                                                 }
-                                                                
-                                                                guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
-                                                                
-                                                                if success {
-                                                                    completeBlock(image, data, nil)
-                                                                } else {
-                                                                    let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                        NSLocalizedDescriptionKey : "获取图片失败"
-                                                                        ])
-                                                                    completeBlock(nil, nil, error)
-                                                                }
-                                                                
+                    }, completed: { [weak self] (image, data, error, finished) in
+                        var success = false
+                        if (image != nil || data != nil) && finished {
+                            SDImageCache.shared().store(image, imageData: data, forKey: key, toDisk: true, completion: nil)
+                            success = true
+                        } else {
+                            success = false
+                        }
+                        
+                        guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
+                        
+                        if success {
+                            completeBlock(image, data, nil)
+                        } else {
+                            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
+                                NSLocalizedDescriptionKey : "获取图片失败"
+                                ])
+                            completeBlock(nil, nil, error)
+                        }
                 })
             }
         }
@@ -108,10 +108,13 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     private func updateDownloadOriginalButtonFrame() {
         self.downloadOriginalImageButton.sizeToFit()
         
-        self.downloadOriginalImageButton.frame = CGRect(x: (self.view.bounds.width - self.downloadOriginalImageButton.bounds.width) / 2,
-                                                        y: self.view.bounds.height - self.downloadOriginalImageButton.bounds.height - 20,
-                                                        width: min(100, self.downloadOriginalImageButton.bounds.width),
-                                                        height: 25)
+        let buttonWidth = max(100, self.downloadOriginalImageButton.bounds.width)
+        let buttonHeight = CGFloat(25)
+        
+        self.downloadOriginalImageButton.frame = CGRect(x: (self.view.bounds.width - buttonWidth) / 2,
+                                                        y: self.view.bounds.height - buttonHeight - 20,
+                                                        width: buttonWidth,
+                                                        height: buttonHeight)
     }
     
     private func formattedFileSize(_ fileSize: UInt) -> String {
