@@ -40,7 +40,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     fileprivate var image: UIImage? {
         didSet {
-            guard self.image != nil else { return }
+            guard self.image != self.imageView.image else { return }
             
             self.imageView.image = self.image
             self.animatedImage = nil
@@ -50,7 +50,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     fileprivate var animatedImage: FLAnimatedImage? {
         didSet {
-            guard self.animatedImage != nil else { return }
+            guard self.animatedImage != self.imageView.animatedImage else { return }
             
             self.imageView.animatedImage = self.animatedImage
             self.image = nil
@@ -427,6 +427,7 @@ extension DKPhotoBasePreviewVC {
     internal func prepareReuse(with item: DKPhotoGalleryItem) {
         self.resetScale()
         self.image = nil
+        self.animatedImage = nil
         
         self.item = item
         
