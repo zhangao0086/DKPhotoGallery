@@ -210,15 +210,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - Indicator
     
     private func hidesIndicator() {
-        self.indicatorView.stop()
+        self.indicatorView.stopIndicator()
     }
     
     private func showsIndicator() {
-        self.indicatorView.start()
+        self.indicatorView.startIndicator()
     }
     
     private func setIndicatorProgress(_ progress: Float) {
-        self.indicatorView.progress = progress
+        self.indicatorView.setIndicatorProgress(progress)
     }
     
     // MARK: - Gestures

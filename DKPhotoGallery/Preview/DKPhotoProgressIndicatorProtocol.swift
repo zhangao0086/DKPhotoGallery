@@ -13,12 +13,10 @@ public protocol DKPhotoProgressIndicatorProtocol : NSObjectProtocol {
     
     init(with view: UIView)
     
-    var progress: Float {get set}
+    func startIndicator()
     
-    func reset()
+    func stopIndicator()
     
-    func start()
-    
-    func stop()
+    func setIndicatorProgress(_ progress: Float)
 }
 
