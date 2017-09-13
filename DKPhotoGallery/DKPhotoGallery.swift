@@ -88,7 +88,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }
 	
 	open func dismissGallery() {
-		self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            self.transitionController = nil
+        }
 	}
     
     open func currentImageView() -> UIImageView {
