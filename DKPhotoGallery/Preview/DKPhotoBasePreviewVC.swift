@@ -443,6 +443,7 @@ extension DKPhotoBasePreviewVC {
             return asset
         } else {
             assert(false)
+            return NSObject()
         }
     }
     
@@ -466,6 +467,7 @@ extension DKPhotoBasePreviewVC {
             previewVC = DKPhotoAssetPreviewVC()
         } else {
             assert(false)
+            return DKPhotoBasePreviewVC()
         }
         
         previewVC.item = item
