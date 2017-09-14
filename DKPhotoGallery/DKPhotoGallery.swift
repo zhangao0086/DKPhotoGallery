@@ -93,8 +93,8 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
 	}
     
-    open func currentImageView() -> UIImageView {
-        return self.contentVC.currentImageView()
+    open func currentContentView() -> UIView {
+        return self.contentVC.currentContentView()
     }
     
     open func currentIndex() -> Int {

@@ -25,7 +25,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     open fileprivate(set) var item: DKPhotoGalleryItem!
     
-    open private(set) var imageView: FLAnimatedImageView!
+    open private(set) var contentView: FLAnimatedImageView!
     
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]?
@@ -40,21 +40,21 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     fileprivate var image: UIImage? {
         didSet {
-            guard self.image != self.imageView.image else { return }
+            guard self.image != self.contentView.image else { return }
             
-            self.imageView.image = self.image
+            self.contentView.image = self.image
             self.animatedImage = nil
-            self.centerImageView()
+            self.centerContentView()
         }
     }
     
     fileprivate var animatedImage: FLAnimatedImage? {
         didSet {
-            guard self.animatedImage != self.imageView.animatedImage else { return }
+            guard self.animatedImage != self.contentView.animatedImage else { return }
             
-            self.imageView.animatedImage = self.animatedImage
+            self.contentView.animatedImage = self.animatedImage
             self.image = nil
-            self.centerImageView()
+            self.centerContentView()
         }
     }
     
@@ -82,12 +82,12 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         
         self.view.backgroundColor = UIColor.black
         
-        self.imageView = FLAnimatedImageView(frame: self.view.bounds)
-        self.imageView.isUserInteractionEnabled = true
-        self.imageView.contentMode = .scaleAspectFit
-        self.imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.imageView.backgroundColor = UIColor.clear
-        self.scrollView.addSubview(self.imageView)
+        self.contentView = FLAnimatedImageView(frame: self.view.bounds)
+        self.contentView.isUserInteractionEnabled = true
+        self.contentView.contentMode = .scaleAspectFit
+        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.contentView.backgroundColor = UIColor.clear
+        self.scrollView.addSubview(self.contentView)
         
         self.setupGestures()
         
@@ -165,18 +165,18 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 } else {
                     assert(false)
                 }
-                self.imageView.contentMode = .scaleAspectFit
+                self.contentView.contentMode = .scaleAspectFit
             } else {
                 self.image = DKPhotoGalleryResource.downloadFailedImage()
-                self.imageView.contentMode = .center
+                self.contentView.contentMode = .center
             }
             
             self.hidesIndicator()
         }
     }
     
-    private func centerImageView() {
-        if let image = self.imageView.image {
+    private func centerContentView() {
+        if let image = self.contentView.image {
             var frame = CGRect.zero
             
             if self.scrollView.contentSize.equalTo(CGSize.zero) {
@@ -203,7 +203,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 frameToCenter.origin.y = 0
             }
             
-            self.imageView.frame = frameToCenter
+            self.contentView.frame = frameToCenter
         }
     }
     
@@ -242,7 +242,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
             self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
         } else {
             var zoomRect = self.zoomRect(for: self.scrollView.maximumZoomScale, point: gesture.location(in: gesture.view))
-            zoomRect = self.scrollView.convert(zoomRect, to: self.imageView)
+            zoomRect = self.scrollView.convert(zoomRect, to: self.contentView)
             self.scrollView.zoom(to: zoomRect, animated: true)
             self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
         }
@@ -401,11 +401,11 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - UIScrollViewDelegate
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imageView
+        return self.contentView
     }
     
     public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        self.centerImageView()
+        self.centerContentView()
     }
     
     // MARK: - DKPhotoBasePreviewDataSource

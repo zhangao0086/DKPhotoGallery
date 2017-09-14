@@ -48,8 +48,8 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         return self.previewVC(at: self.currentIndex)
     }
     
-    public func currentImageView() -> UIImageView {
-        return self.currentVC().imageView
+    public func currentContentView() -> UIView {
+        return self.currentVC().contentView
     }
     
     // MARK: - Private
