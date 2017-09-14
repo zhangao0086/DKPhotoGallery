@@ -82,7 +82,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        self.statusBar?.alpha = 1
+//        self.statusBar?.alpha = 1
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -117,11 +117,26 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open func toggleNavigationBar() {
         self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
     }
+    
+    internal func updateContextBackground(alpha: CGFloat, _ animated: Bool) {
+        let block = {
+            self.currentContentView().superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+            self.statusBar?.alpha = 1 - alpha
+        }
+        
+        if animated {
+            UIView.animate(withDuration: 0.01, animations: block)
+        } else {
+            block()
+        }
+    }
 	
     @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
         return self.contentVC.previewActionItems
     }
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

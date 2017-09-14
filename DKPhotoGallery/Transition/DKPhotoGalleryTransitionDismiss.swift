@@ -23,35 +23,39 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
 		let containerView = transitionContext.containerView
-        let fromView = transitionContext.view(forKey: .from)
+//        let fromView = transitionContext.view(forKey: .from)
         
         self.gallery.setNavigationBarHidden(true, animated: true)
         
         if let toImageView = self.gallery.dismissImageViewBlock?(self.gallery.contentVC.currentIndex) {
-            let fromImageView = self.gallery.currentImageView()
-            let fromRect = fromImageView.frame
+            let fromContentView = self.gallery.currentContentView()
+//            let fromRect = fromContentView.frame
             
-            let snapshotImageView = UIImageView(image: toImageView.image)
-            snapshotImageView.contentMode = fromImageView.contentMode
-            snapshotImageView.frame = fromRect
-            snapshotImageView.clipsToBounds = true
+//            let snapshotImageView = UIImageView(image: toImageView.image)
+//            snapshotImageView.contentMode = fromContentView.contentMode
+//            snapshotImageView.frame = fromRect
+//            snapshotImageView.clipsToBounds = true
+//            
+//            containerView.addSubview(snapshotImageView)
             
-            containerView.addSubview(snapshotImageView)
-            
-            fromImageView.isHidden = true
+//            fromContentView.isHidden = true
             toImageView.isHidden = true
             UIView.animate(withDuration: transitionDuration, animations: {
-                fromView?.alpha = 0
+//                fromView?.alpha = 0
                 let toImageViewFrameInScreen = toImageView.superview!.convert(toImageView.frame, to: nil)
-                snapshotImageView.contentMode = toImageView.contentMode
-                snapshotImageView.frame = toImageViewFrameInScreen
+//                snapshotImageView.contentMode = toImageView.contentMode
+//                snapshotImageView.frame = toImageViewFrameInScreen
+                fromContentView.contentMode = toImageView.contentMode
+                fromContentView.frame = toImageViewFrameInScreen
+                self.gallery.updateContextBackground(alpha: 0, false)
             }) { (finished) in
                 toImageView.isHidden = false
-                snapshotImageView.removeFromSuperview()
+//                snapshotImageView.removeFromSuperview()
                 
                 let wasCanceled = transitionContext.transitionWasCancelled
                 if wasCanceled {
-                    fromView?.alpha = 1
+//                    fromView?.alpha = 1
+                    self.gallery.updateContextBackground(alpha: 1, false)
                 }
                 
                 transitionContext.completeTransition(!wasCanceled)

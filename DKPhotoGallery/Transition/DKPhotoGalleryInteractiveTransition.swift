@@ -12,7 +12,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
 
     private var gallery: DKPhotoGallery!
     
-    private var fromImageView: UIImageView?
+    private var fromContentView: UIView?
     private var fromRect: CGRect!
     
     internal var isInteracting = false
@@ -38,8 +38,8 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
         switch recognizer.state {
         case .began:
             self.isInteracting = true
-            self.fromImageView = self.gallery.currentImageView()
-            self.fromRect = self.fromImageView?.frame
+            self.fromContentView = self.gallery.currentContentView()
+            self.fromRect = self.fromContentView?.frame
             
             self.gallery.setNavigationBarHidden(true, animated: true)
             
@@ -49,7 +49,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
             let fraction = CGFloat(fabsf(Float(offset.y / 200)))
             self.percent = fmin(fraction, 1.0)
             
-            if let fromImageView = self.fromImageView {
+            if let fromContentView = self.fromContentView {
                 let currentLocation = recognizer.location(in: nil)
                 let originalLocation = CGPoint(x: currentLocation.x - offset.x, y: currentLocation.y - offset.y)
                 var percent = CGFloat(1.0)
@@ -61,23 +61,23 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                                     y: currentLocation.y - (originalLocation.y - self.fromRect.origin.y) * percent,
                                     width: currentWidth,
                                     height: currentHeight)
-                fromImageView.frame = (fromImageView.superview?.convert(result, from: nil))!
+                fromContentView.frame = (fromContentView.superview?.convert(result, from: nil))!
                 
                 if offset.y < 0 {
                     self.percent = -self.percent
                 }
                 
-                self.colorAnimation()
+                self.gallery.updateContextBackground(alpha: CGFloat(fabsf(Float(1 - self.percent))), true)
             }
         case .ended,
              .cancelled:
             self.isInteracting = false
             let shouldComplete = self.percent > 0.5
             if !shouldComplete || recognizer.state == .cancelled {
-                if let fromImageView = self.fromImageView {
+                if let fromContentView = self.fromContentView {
                     UIView.animate(withDuration: 0.3, animations: { 
-                        fromImageView.frame = self.fromRect
-                        fromImageView.superview?.superview?.backgroundColor = UIColor.black
+                        fromContentView.frame = self.fromRect
+                        fromContentView.superview?.superview?.backgroundColor = UIColor.black
                         self.gallery.view.backgroundColor = UIColor.black
                         
                         self.gallery.statusBar?.alpha = 0
@@ -90,20 +90,12 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                 self.gallery.dismissGallery()
                 self.finish()
             }
-            self.fromImageView = nil
+            self.fromContentView = nil
             self.percent = 0
             self.toImageView = nil
         default:
             break
         }
     }
-    
-    private func colorAnimation() {
-        let colorAlpha: CGFloat = CGFloat(fabsf(Float(1 - self.percent)))
-        UIView.animate(withDuration: 0.01, animations: { 
-            self.fromImageView?.superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
-            self.gallery.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: colorAlpha)
-            self.gallery.statusBar?.alpha = 1 - colorAlpha
-        })
-    }
+
 }
