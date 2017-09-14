@@ -437,9 +437,9 @@ extension DKPhotoBasePreviewVC {
     private func dataSource(with item: DKPhotoGalleryItem) -> NSObject {
         if let image = item.image {
             return image
-        } else if let URL = item.URL {
+        } else if let URL = item.imageURL {
             return URL
-        } else if let asset = item.asset {
+        } else if let asset = item.imageAsset {
             return asset
         } else {
             assert(false)
@@ -454,13 +454,13 @@ extension DKPhotoBasePreviewVC {
         var previewVC: DKPhotoBasePreviewVC!
         if let _ = item.image {
             previewVC = DKPhotoLocalImagePreviewVC()
-        } else if let URL = item.URL {
+        } else if let URL = item.imageURL {
             if URL.isFileURL {
                 previewVC = DKPhotoLocalImagePreviewVC()
             } else {
                 previewVC = DKPhotoRemoteImagePreviewVC()
             }
-        } else if let _ = item.asset {
+        } else if let _ = item.imageAsset {
             previewVC = DKPhotoAssetPreviewVC()
         } else if let _ = item.assetLocalIdentifier {
             previewVC = DKPhotoAssetPreviewVC()

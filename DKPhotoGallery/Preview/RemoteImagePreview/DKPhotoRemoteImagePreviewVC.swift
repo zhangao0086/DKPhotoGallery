@@ -31,7 +31,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     
     @objc
     private func downloadOriginalImage() {
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL] as? NSURL {
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             self.downloadOriginalImageButton.isEnabled = false
             
             self.downloadImage(with: originalURL, progressBlock: { [weak self] (progress) in
@@ -90,7 +90,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     private func updateDownloadOriginalButtonTitle() {
-        if let extraInfo = self.item.extraInfo, let fileSize = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteOriginalSize] as? NSNumber {
+        if let extraInfo = self.item.extraInfo, let fileSize = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize] as? NSNumber {
             self.downloadOriginalImageButton.setTitle("下载原图(\(self.formattedFileSize(fileSize.uintValue)))", for: .normal)
         } else {
             self.downloadOriginalImageButton.setTitle("下载原图", for: .normal)
@@ -140,10 +140,10 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     override func photoPreivewWillAppear() {
         super.photoPreivewWillAppear()
         
-        self.downloadURL = self.item.URL
+        self.downloadURL = self.item.imageURL
         self.reuseIdentifier = self.downloadURL?.absoluteString
         
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL] as? NSURL {
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             if self.downloadURL == originalURL{
                 self.downloadOriginalImageButton.isHidden = true
             } else if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
@@ -161,7 +161,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     override func hasCache() -> Bool {
         if SDImageCache.shared().imageFromCache(forKey: self.downloadURL!.absoluteString) != nil {
             return true
-        } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL] as? NSURL {
+        } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             return SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil
         } else {
             return false
@@ -171,7 +171,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     override func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
         var downloadURL = self.downloadURL
         
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteOriginalURL] as? NSURL {
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
                 downloadURL = originalURL
             }

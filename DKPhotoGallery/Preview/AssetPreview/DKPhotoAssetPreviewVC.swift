@@ -16,7 +16,7 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
     override func photoPreivewWillAppear() {
         super.photoPreivewWillAppear()
         
-        if let asset = self.item.asset {
+        if let asset = self.item.imageAsset {
             self.asset = asset
         } else if let localIdentifier = self.item.assetLocalIdentifier {
             self.asset = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil).firstObject

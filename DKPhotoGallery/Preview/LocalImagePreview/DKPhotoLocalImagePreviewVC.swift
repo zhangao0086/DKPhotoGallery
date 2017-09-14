@@ -17,7 +17,7 @@ class DKPhotoLocalImagePreviewVC: DKPhotoBasePreviewVC {
         
         if let image = self.item.image {
             self.image = image
-        } else if let URL = self.item.URL {
+        } else if let URL = self.item.imageURL {
             try! self.image = UIImage(data: Data(contentsOf: URL as URL))
         } else {
             assert(false)
