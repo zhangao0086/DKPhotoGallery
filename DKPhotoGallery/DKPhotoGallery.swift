@@ -82,7 +82,6 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-//        self.statusBar?.alpha = 1
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
