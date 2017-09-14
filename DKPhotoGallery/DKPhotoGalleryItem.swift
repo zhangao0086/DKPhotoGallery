@@ -30,8 +30,8 @@ open class DKPhotoGalleryItem: NSObject {
     
     open var image: UIImage?
     open var imageURL: NSURL?
-    open var imageAsset: PHAsset?
     
+    open var asset: PHAsset?
     open var assetLocalIdentifier: String?
     
     open var extraInfo: [String: NSObject]?

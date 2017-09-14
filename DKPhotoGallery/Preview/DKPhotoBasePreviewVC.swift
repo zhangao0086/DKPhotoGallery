@@ -439,7 +439,7 @@ extension DKPhotoBasePreviewVC {
             return image
         } else if let URL = item.imageURL {
             return URL
-        } else if let asset = item.imageAsset {
+        } else if let asset = item.asset {
             return asset
         } else {
             assert(false)
@@ -461,10 +461,12 @@ extension DKPhotoBasePreviewVC {
             } else {
                 previewVC = DKPhotoRemoteImagePreviewVC()
             }
-        } else if let _ = item.imageAsset {
+        } else if let _ = item.asset {
             previewVC = DKPhotoAssetPreviewVC()
-        } else if let _ = item.assetLocalIdentifier {
-            previewVC = DKPhotoAssetPreviewVC()
+        } else if let assetLocalIdentifier = item.assetLocalIdentifier {
+            item.asset = PHAsset.fetchAssets(withLocalIdentifiers: [assetLocalIdentifier], options: nil).firstObject
+            item.assetLocalIdentifier = nil
+            previewVC = self.photoPreviewVC(with: item)
         } else {
             assert(false)
             return DKPhotoBasePreviewVC()
