@@ -17,7 +17,9 @@
     "git": "https://github.com/zhangao0086/DKPhotoGallery.git",
     "tag": "0.0.1"
   },
-  "source_files": "DKPhotoGallery/*.swift",
+  "ios": {
+    "source_files": "DKPhotoGallery/*.swift"
+  },
   "resources": "DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle",
   "frameworks": [
     "Foundation",
@@ -35,9 +37,6 @@
     "MBProgressHUD": [
       "1.0.0"
     ]
-  },
-  "pod_target_xcconfig": {
-    "SWIFT_VERSION": "3.0"
   },
   "subspecs": [
     {
