@@ -85,6 +85,12 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.statusBar?.alpha = 1
+    }
 	
 	open func dismissGallery() {
         self.dismiss(animated: true) {
