@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DKPhotoQRCodeResultVC: UIViewController {
+class DKPhotoQRCodeResultVC: DKPhotoPushVC {
 
     var result: String!
     
@@ -24,10 +24,13 @@ class DKPhotoQRCodeResultVC: UIViewController {
         self.title = "扫描结果"
         
         self.textView.frame = self.view.bounds
+        self.textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.textView.font = UIFont.systemFont(ofSize: 16)
         self.textView.textColor = UIColor.darkText
         self.textView.isEditable = false
         self.textView.isSelectable = true
+        self.view.addSubview(self.textView)
+        
         self.textView.text = self.result
     }
 
