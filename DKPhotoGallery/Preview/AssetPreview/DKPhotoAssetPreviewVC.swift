@@ -27,7 +27,7 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
         return false
     }
     
-    override func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
+    override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         let options = PHImageRequestOptions()
         options.progressHandler = { (progress, error, stop, info) in
             if progress > 0 {
@@ -44,12 +44,12 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
                                                 guard localIdentifier == self?.asset?.localIdentifier else { return }
                                                 
                                                 if let image = image {
-                                                    completeBlock(image, nil, nil)
+                                                    completeBlock(image, nil)
                                                 } else {
                                                     let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
                                                         NSLocalizedDescriptionKey : "获取图片失败"
                                                         ])
-                                                    completeBlock(nil, nil, error)
+                                                    completeBlock(nil, error)
                                                 }
         }
     }

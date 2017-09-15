@@ -8,9 +8,11 @@
 
 import UIKit
 
-class DKPhotoLocalImagePreviewVC: DKPhotoBasePreviewVC {
+class DKPhotoLocalImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
     private var image: UIImage?
+    
+    // MARK: - DKPhotoBasePreviewDataSource
     
     override func photoPreivewWillAppear() {
         super.photoPreivewWillAppear()
@@ -28,7 +30,7 @@ class DKPhotoLocalImagePreviewVC: DKPhotoBasePreviewVC {
         return true
     }
     
-    override func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
-        completeBlock(self.image, nil, nil)
+    override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+        completeBlock(self.image, nil)
     }
 }
