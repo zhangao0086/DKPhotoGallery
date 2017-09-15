@@ -48,7 +48,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     
     private func previewQRCode(with result: String) {
         if let _ = NSURL(string: result) {
-            let resultVC = DKWebVC()
+            let resultVC = DKPhotoWebVC()
             resultVC.urlString = result
             self.navigationController?.pushViewController(resultVC, animated: true)
         } else {

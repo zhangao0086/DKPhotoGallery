@@ -1,5 +1,5 @@
 //
-//  DKWebVC.swift
+//  DKPhotoWebVC.swift
 //  DKPhotoGallery
 //
 //  Created by ZhangAo on 08/09/2017.
@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class DKWebVC: UIViewController, WKNavigationDelegate {
+class DKPhotoWebVC: UIViewController, WKNavigationDelegate {
     
     var urlString: String!
     
@@ -23,6 +23,8 @@ class DKWebVC: UIViewController, WKNavigationDelegate {
         super.viewDidLoad()
         
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        self.view.backgroundColor = UIColor.white
         
         self.webView = self.createWebView()
         self.webView.navigationDelegate = self
@@ -47,6 +49,30 @@ class DKWebVC: UIViewController, WKNavigationDelegate {
         
         let request = URLRequest(url: URL(string: self.urlString)!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 0)
         self.webView.load(request)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        if let photoGallery = self.navigationController as? DKPhotoGallery {
+            UIView.animate(withDuration: 0.1, animations: { 
+                photoGallery.statusBar?.alpha = 1
+            })
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        if let photoGallery = self.navigationController as? DKPhotoGallery {
+            UIView.animate(withDuration: 0.1, animations: {
+                photoGallery.statusBar?.alpha = 0
+            })
+        }
     }
     
     func createWebView() -> WKWebView {

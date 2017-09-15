@@ -4,8 +4,10 @@ DKPhotoGallery
  [![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
 
 ### Features
-3D Touch
-PHAsset
+3D Touch  
+PHAsset  
+Original Image  
+QR Code
 
 ## Requirements
 * iOS 8.0+
