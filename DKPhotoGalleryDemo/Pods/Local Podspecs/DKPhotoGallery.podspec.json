@@ -17,9 +17,6 @@
     "git": "https://github.com/zhangao0086/DKPhotoGallery.git",
     "tag": "0.0.1"
   },
-  "ios": {
-    "source_files": "DKPhotoGallery/*.swift"
-  },
   "resources": "DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle",
   "frameworks": [
     "Foundation",
@@ -38,50 +35,47 @@
       "1.0.0"
     ]
   },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "3.0"
+  },
   "subspecs": [
     {
-      "name": "Preview",
-      "ios": {
-        "source_files": "DKPhotoGallery/Preview/*.swift"
+      "name": "Core",
+      "dependencies": {
+        "DKPhotoGallery/Model": [
+
+        ],
+        "DKPhotoGallery/Preview": [
+
+        ]
       },
-      "subspecs": [
-        {
-          "name": "AssetPreview",
-          "ios": {
-            "source_files": "DKPhotoGallery/Preview/AssetPreview/*.swift"
-          }
-        },
-        {
-          "name": "LocalImagePreview",
-          "ios": {
-            "source_files": "DKPhotoGallery/Preview/LocalImagePreview/*.swift"
-          }
-        },
-        {
-          "name": "RemoteImagePreview",
-          "ios": {
-            "source_files": "DKPhotoGallery/Preview/RemoteImagePreview/*.swift"
-          }
-        },
-        {
-          "name": "QRCode",
-          "ios": {
-            "source_files": "DKPhotoGallery/Preview/QRCode/*.swift"
-          }
-        }
+      "source_files": [
+        "DKPhotoGallery/DKPhotoGallery.swift",
+        "DKPhotoGallery/DKPhotoGalleryContentVC.swift",
+        "DKPhotoGallery/DKPhotoGalleryScrollView.swift",
+        "DKPhotoGallery/DKPhotoPreviewFactory.swift",
+        "DKPhotoGallery/Transition/*.swift"
       ]
     },
     {
-      "name": "Transition",
-      "ios": {
-        "source_files": "DKPhotoGallery/Transition/*.swift"
-      }
+      "name": "Model",
+      "source_files": "DKPhotoGallery/DKPhotoGalleryItem.swift"
+    },
+    {
+      "name": "Preview",
+      "dependencies": {
+        "DKPhotoGallery/Model": [
+
+        ],
+        "DKPhotoGallery/Resource": [
+
+        ]
+      },
+      "source_files": "DKPhotoGallery/Preview/**/*.swift"
     },
     {
       "name": "Resource",
-      "ios": {
-        "source_files": "DKPhotoGallery/Resource/*.swift"
-      }
+      "source_files": "DKPhotoGallery/Resource/*.swift"
     }
   ]
 }

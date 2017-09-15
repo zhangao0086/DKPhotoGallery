@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9CA180981F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */; };
+		9CA1809A1F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */; };
+		9CA1809C1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */; };
 		9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954271F63F51200B32CA9 /* AppDelegate.swift */; };
 		9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954291F63F51200B32CA9 /* ViewController.swift */; };
 		9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542B1F63F51200B32CA9 /* Main.storyboard */; };
@@ -35,6 +38,9 @@
 
 /* Begin PBXFileReference section */
 		2CD20709011A5B5CE41858F0 /* Pods-DKPhotoGalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
+		9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPlayerPreviewVC.swift; sourceTree = "<group>"; };
+		9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoBaseImagePreviewVC.swift; sourceTree = "<group>"; };
+		9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPreviewFactory.swift; sourceTree = "<group>"; };
 		9CC954241F63F51200B32CA9 /* DKPhotoGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DKPhotoGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC954271F63F51200B32CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CC954291F63F51200B32CA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +91,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9CA180961F6BAA9700B530E9 /* PlayerPreview */ = {
+			isa = PBXGroup;
+			children = (
+				9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */,
+			);
+			path = PlayerPreview;
+			sourceTree = "<group>";
+		};
 		9CC9541B1F63F51200B32CA9 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +138,7 @@
 				9CC9543B1F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift */,
 				9CC9543C1F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift */,
 				9CC9543D1F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift */,
+				9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */,
 				9CC9543E1F63F5ED00B32CA9 /* Preview */,
 				9CC9544B1F63F5ED00B32CA9 /* Resource */,
 				9CC9544E1F63F5ED00B32CA9 /* Transition */,
@@ -139,6 +154,8 @@
 				9CC954411F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift */,
 				9CC954421F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift */,
 				9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */,
+				9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */,
+				9CA180961F6BAA9700B530E9 /* PlayerPreview */,
 				9CC954441F63F5ED00B32CA9 /* LocalImagePreview */,
 				9CC954461F63F5ED00B32CA9 /* QRCode */,
 				9CC954491F63F5ED00B32CA9 /* RemoteImagePreview */,
@@ -346,6 +363,7 @@
 			files = (
 				9CC954561F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift in Sources */,
 				9CC954551F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift in Sources */,
+				9CA1809A1F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift in Sources */,
 				9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */,
 				9CC954571F63F5ED00B32CA9 /* DKPhotoAssetPreviewVC.swift in Sources */,
 				9CC954581F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift in Sources */,
@@ -360,9 +378,11 @@
 				9CC954601F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift in Sources */,
 				9CC954641F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift in Sources */,
 				9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */,
+				9CA180981F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift in Sources */,
 				9CC954531F63F5ED00B32CA9 /* DKPhotoGallery.swift in Sources */,
 				9CC954621F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift in Sources */,
 				9CC9545B1F63F5ED00B32CA9 /* DKPhotoLocalImagePreviewVC.swift in Sources */,
+				9CA1809C1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

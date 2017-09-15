@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
         core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
+                                'DKPhotoGallery/DKPhotoPreviewFactory.swift',
                                 'DKPhotoGallery/Transition/*.swift'
     end
 

@@ -1,33 +1,25 @@
 PODS:
   - DKPhotoGallery (0.0.1):
+    - DKPhotoGallery/Core (= 0.0.1)
+    - DKPhotoGallery/Model (= 0.0.1)
     - DKPhotoGallery/Preview (= 0.0.1)
     - DKPhotoGallery/Resource (= 0.0.1)
-    - DKPhotoGallery/Transition (= 0.0.1)
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage/GIF (= 4.1.0)
+  - DKPhotoGallery/Core (0.0.1):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - MBProgressHUD (= 1.0.0)
+    - SDWebImage/GIF (= 4.1.0)
+  - DKPhotoGallery/Model (0.0.1):
     - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (= 4.1.0)
   - DKPhotoGallery/Preview (0.0.1):
-    - DKPhotoGallery/Preview/AssetPreview (= 0.0.1)
-    - DKPhotoGallery/Preview/LocalImagePreview (= 0.0.1)
-    - DKPhotoGallery/Preview/QRCode (= 0.0.1)
-    - DKPhotoGallery/Preview/RemoteImagePreview (= 0.0.1)
-    - MBProgressHUD (= 1.0.0)
-    - SDWebImage/GIF (= 4.1.0)
-  - DKPhotoGallery/Preview/AssetPreview (0.0.1):
-    - MBProgressHUD (= 1.0.0)
-    - SDWebImage/GIF (= 4.1.0)
-  - DKPhotoGallery/Preview/LocalImagePreview (0.0.1):
-    - MBProgressHUD (= 1.0.0)
-    - SDWebImage/GIF (= 4.1.0)
-  - DKPhotoGallery/Preview/QRCode (0.0.1):
-    - MBProgressHUD (= 1.0.0)
-    - SDWebImage/GIF (= 4.1.0)
-  - DKPhotoGallery/Preview/RemoteImagePreview (0.0.1):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
     - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (= 4.1.0)
   - DKPhotoGallery/Resource (0.0.1):
-    - MBProgressHUD (= 1.0.0)
-    - SDWebImage/GIF (= 4.1.0)
-  - DKPhotoGallery/Transition (0.0.1):
     - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (= 4.1.0)
   - FLAnimatedImage (1.0.12)
@@ -49,7 +41,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 67b417783e8e4cc63b486bd7185588d6b9b18359
+  DKPhotoGallery: c1638428e1e6c9c89b4041c0964b94d644c775df
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
