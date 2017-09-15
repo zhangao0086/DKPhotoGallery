@@ -10,12 +10,14 @@ import UIKit
 
 class DKPhotoQRCodeResultVC: DKPhotoPushVC {
 
-    var result: String!
+    private var result: String!
     
     var textView = UITextView()
     
     convenience init(result: String) {
         self.init(nibName: nil, bundle: nil)
+        
+        self.result = result
     }
     
     override func viewDidLoad() {
