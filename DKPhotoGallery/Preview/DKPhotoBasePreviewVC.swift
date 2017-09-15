@@ -14,9 +14,22 @@ import AssetsLibrary
 
 public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
-    func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void))
+    func createContentView() -> UIView
+    
+    func updateContentView(with content: Any)
+    
+    func contentSize() -> CGSize
+    
+    func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void))
     
     func hasCache() -> Bool
+    
+    func createErrorView() -> UIView
+    
+    @available(iOS 9.0, *)
+    func defaultPreviewActions() -> [UIPreviewAction]
+    
+    func defaultLongPressActions() -> [UIAlertAction]
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
