@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
+class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
     private var downloadURL: NSURL?
     private var reuseIdentifier: String?
@@ -36,9 +36,9 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
             
             self.downloadImage(with: originalURL, progressBlock: { [weak self] (progress) in
                 self?.updateDownloadOriginalButton(with: progress)
-            }, completeBlock: { (image, data, error) in
+            }, completeBlock: { (data, error) in
                 if error == nil {
-                    self.setNeedsUpdateImage()
+                    self.setNeedsUpdateContent()
                     self.downloadOriginalImageButton.isHidden = true
                 } else {
                     self.downloadOriginalImageButton.isEnabled = true
@@ -49,13 +49,13 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     private func downloadImage(with URL: NSURL, progressBlock: @escaping ((_ progress: Float) -> Void),
-                               completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
+                               completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         let key = URL.absoluteString
         let reuseIdentifier = self.reuseIdentifier!
         
         SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
             if image != nil || data != nil {
-                completeBlock(image, data, nil)
+                completeBlock(image ?? data, nil)
             } else {
                 SDWebImageDownloader.shared().downloadImage(with: URL as URL,
                                                             options: SDWebImageDownloaderOptions(rawValue: 0),
@@ -77,12 +77,12 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
                         guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
                         
                         if success {
-                            completeBlock(image, data, nil)
+                            completeBlock(image ?? data, nil)
                         } else {
                             let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
                                 NSLocalizedDescriptionKey : "获取图片失败"
                                 ])
-                            completeBlock(nil, nil, error)
+                            completeBlock(nil, error)
                         }
                 })
             }
@@ -168,7 +168,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
-    override func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
+    override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         var downloadURL = self.downloadURL
         
         if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {

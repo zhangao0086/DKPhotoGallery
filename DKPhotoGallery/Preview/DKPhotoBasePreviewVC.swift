@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import Photos
+import AVFoundation
 import MBProgressHUD
-import SDWebImage
-import AssetsLibrary
 
 public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
@@ -36,9 +34,10 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
 
 open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhotoBasePreviewDataSource {
     
-    open fileprivate(set) var item: DKPhotoGalleryItem!
+    open internal(set) var item: DKPhotoGalleryItem!
     
-    open private(set) var contentView: FLAnimatedImageView!
+    open private(set) var contentView: UIView!
+    open private(set) var errorView: UIView!
     
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]?
@@ -50,26 +49,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     private var scrollView: UIScrollView!
-    
-    fileprivate var image: UIImage? {
-        didSet {
-            guard self.image != self.contentView.image else { return }
-            
-            self.contentView.image = self.image
-            self.animatedImage = nil
-            self.centerContentView()
-        }
-    }
-    
-    fileprivate var animatedImage: FLAnimatedImage? {
-        didSet {
-            guard self.animatedImage != self.contentView.animatedImage else { return }
-            
-            self.contentView.animatedImage = self.animatedImage
-            self.image = nil
-            self.centerContentView()
-        }
-    }
     
     private var indicatorView: DKPhotoProgressIndicatorProtocol!
     
@@ -95,12 +74,19 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         
         self.view.backgroundColor = UIColor.black
         
-        self.contentView = FLAnimatedImageView(frame: self.view.bounds)
+        self.contentView = self.createContentView()
+        self.contentView.frame = self.view.bounds
         self.contentView.isUserInteractionEnabled = true
         self.contentView.contentMode = .scaleAspectFit
         self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.contentView.backgroundColor = UIColor.clear
         self.scrollView.addSubview(self.contentView)
+        
+        self.errorView = self.createErrorView()
+        self.errorView.frame = self.view.bounds
+        self.errorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.errorView.isHidden = true
+        self.scrollView.addSubview(self.errorView)
         
         self.setupGestures()
         
@@ -112,20 +98,27 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.startFetchImage()
+        self.startFetchContent()
     }
     
     open func photoPreivewWillAppear() {
         
     }
     
-    internal func resetScale() {
+    open func resetScale() {
         self.scrollView.zoomScale = 1.0
         self.scrollView.contentSize = CGSize.zero
     }
     
-    internal func setNeedsUpdateImage() {
-        self.startFetchImage()
+    open func showTips(_ tips: String) {
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.mode = .text
+        hud.label.text = tips
+        hud.hide(animated: true, afterDelay: 2)
+    }
+    
+    internal func setNeedsUpdateContent() {
+        self.startFetchContent()
     }
     
     // MARK: - Private
@@ -146,42 +139,27 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         singleTapGesture.require(toFail: doubleTapGesture)
     }
     
-    private func showTips(_ tips: String) {
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.mode = .text
-        hud.label.text = tips
-        hud.hide(animated: true, afterDelay: 2)
-    }
-    
-    private func startFetchImage() {
+    private func startFetchContent() {
         if self.hasCache() {
             self.hidesIndicator()
         } else {
             self.showsIndicator()
         }
         
-        self.fetchImage(withProgressBlock: { [weak self] (progress) in
+        self.fetchContent(withProgressBlock: { [weak self] (progress) in
             if progress > 0 {
                 self?.setIndicatorProgress(progress)
             }
-        }) { (image, data, error) in
+        }) { (data, error) in
             if error == nil {
-                if let data = data {
-                    let imageFormat = NSData.sd_imageFormat(forImageData: data)
-                    if imageFormat == .GIF {
-                        self.animatedImage = FLAnimatedImage(gifData: data)
-                    } else {
-                        self.image = UIImage(data: data)
-                    }
-                } else if let image = image {
-                    self.image = image
-                } else {
-                    assert(false)
-                }
+                self.updateContentView(with: data!)
+                self.centerContentView()
                 self.contentView.contentMode = .scaleAspectFit
+                self.contentView.isHidden = false
+                self.errorView.isHidden = true
             } else {
-                self.image = DKPhotoGalleryResource.downloadFailedImage()
-                self.contentView.contentMode = .center
+                self.contentView.isHidden = true
+                self.errorView.isHidden = false
             }
             
             self.hidesIndicator()
@@ -189,15 +167,16 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     private func centerContentView() {
-        if let image = self.contentView.image {
+        let contentSize = self.contentSize()
+        if !contentSize.equalTo(CGSize.zero) {
             var frame = CGRect.zero
             
             if self.scrollView.contentSize.equalTo(CGSize.zero) {
-                frame = AVMakeRect(aspectRatio: image.size, insideRect: self.scrollView.bounds)
+                frame = AVMakeRect(aspectRatio: contentSize, insideRect: self.scrollView.bounds)
             } else {
-                frame = AVMakeRect(aspectRatio: image.size, insideRect: CGRect(x: 0, y: 0,
-                                                                               width: self.scrollView.contentSize.width,
-                                                                               height: self.scrollView.contentSize.height))
+                frame = AVMakeRect(aspectRatio: contentSize, insideRect: CGRect(x: 0, y: 0,
+                                                                                width: self.scrollView.contentSize.width,
+                                                                                height: self.scrollView.contentSize.height))
             }
             
             let boundsSize = self.scrollView.bounds.size
@@ -267,20 +246,24 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
             return
         }
         
+        let defaultLongPressActions = self.defaultLongPressActions()
+        
+        if defaultLongPressActions.count + (self.customLongPressActions?.count ?? 0) == 0 {
+            return
+        }
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        if let QRCodeResult = self.detectStringFromImage() {
-            let detectQRCodeAction = UIAlertAction(title: "识别图中二维码", style: .default, handler: { [weak self] (action) in
-                self?.previewQRCode(with: QRCodeResult)
-            })
-            alertController.addAction(detectQRCodeAction)
+        for defaultLongPressAction in defaultLongPressActions {
+            alertController.addAction(defaultLongPressAction)
         }
         
-        let saveImageAction = UIAlertAction(title: "保存图片", style: .default) { [weak self] (action) in
-            self?.saveImageToAlbum()
+        if let customLongPressActions = self.customLongPressActions {
+            for customLongPressAction in customLongPressActions {
+                alertController.addAction(customLongPressAction)
+            }
         }
-        alertController.addAction(saveImageAction)
-        
+
         alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
@@ -297,99 +280,16 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return zoomRect
     }
     
-    // MARK: - QR Code
-    
-    private func detectStringFromImage() -> String? {
-        guard let targetImage = self.image ?? self.animatedImage?.posterImage else {
-            return nil
-        }
-        
-        if let result = self.detectStringFromCIImage(image: CIImage(image: targetImage)!) {
-            return result
-        } else {
-            return nil
-        }
-    }
-    
-    private func detectStringFromCIImage(image: CIImage) -> String? {
-        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [
-            CIDetectorAccuracy : CIDetectorAccuracyHigh
-        ])
-        
-        if let detector = detector {
-            let features = detector.features(in: image)
-            if let feature = features.first as? CIQRCodeFeature {
-                return feature.messageString
-            } else {
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-    
-    private func previewQRCode(with result: String) {
-        if let _ = NSURL(string: result) {
-            let resultVC = DKWebVC()
-            resultVC.urlString = result
-            self.navigationController?.pushViewController(resultVC, animated: true)
-        } else {
-            let resultVC = DKPhotoQRCodeResultVC(result: result)
-            self.navigationController?.pushViewController(resultVC, animated: true)
-        }
-    }
-    
-    // MARK: - Save Image
-    
-    private func saveImageToAlbum() {
-        PHPhotoLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                if let image = self.image {
-                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                } else if let animatedImage = self.animatedImage {
-                    ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                        DispatchQueue.main.async(execute: {
-                            if let _ = error {
-                                self.showTips("图片保存失败")
-                            } else {
-                                self.showTips("图片保存成功")
-                            }
-                        })
-                    })
-                }
-            case .restricted:
-                self.showTips("图片保存权限无法开启")
-            case .denied:
-                self.showTips("获取图片保存权限失败")
-            default:
-                break
-            }
-        }
-    }
-    
-    @objc
-    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if error == nil {
-            self.showTips("图片保存成功")
-        } else {
-            self.showTips("图片保存失败")
-        }
-    }
-    
     // MARK: - Touch 3D
     
     @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
-        let saveActionItem = UIPreviewAction(title: "保存", style: .default) { [weak self] (action, previewViewController) in
-            self?.saveImageToAlbum()
-        }
+        let defaultPreviewActions = self.defaultPreviewActions()
         
-        if var customPreviewActions = self._customPreviewActions {
-            customPreviewActions.append(saveActionItem)
-            return customPreviewActions
+        if let customPreviewActions = self._customPreviewActions {
+            return customPreviewActions + defaultPreviewActions
         } else {
-            return [saveActionItem]
+            return defaultPreviewActions
         }
     }
     
@@ -423,12 +323,41 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     // MARK: - DKPhotoBasePreviewDataSource
     
-    public func fetchImage(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ image: UIImage?, _ data: Data?, _ error: Error?) -> Void)) {
+    public func createContentView() -> UIView {
+        assert(false)
+        return UIView()
+    }
+    
+    public func updateContentView(with content: Any) {
+        assert(false)
+    }
+    
+    public func contentSize() -> CGSize {
+        assert(false)
+        return CGSize.zero
+    }
+    
+    public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         assert(false)
     }
     
     public func hasCache() -> Bool {
         return false
+    }
+    
+    public func createErrorView() -> UIView {
+        let errorView = UIImageView(image: DKPhotoGalleryResource.downloadFailedImage())
+        errorView.contentMode = .center
+        return errorView
+    }
+    
+    @available(iOS 9.0, *)
+    public func defaultPreviewActions() -> [UIPreviewAction] {
+        return []
+    }
+    
+    public func defaultLongPressActions() -> [UIAlertAction] {
+        return []
     }
 
 }
@@ -439,8 +368,8 @@ extension DKPhotoBasePreviewVC {
     
     internal func prepareReuse(with item: DKPhotoGalleryItem) {
         self.resetScale()
-        self.image = nil
-        self.animatedImage = nil
+        self.contentView.isHidden = true
+        self.errorView.isHidden = true
         
         self.item = item
         
@@ -460,32 +389,4 @@ extension DKPhotoBasePreviewVC {
         }
     }
     
-}
-
-extension DKPhotoBasePreviewVC {
-    
-    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
-        var previewVC: DKPhotoBasePreviewVC!
-        if let _ = item.image {
-            previewVC = DKPhotoLocalImagePreviewVC()
-        } else if let URL = item.imageURL {
-            if URL.isFileURL {
-                previewVC = DKPhotoLocalImagePreviewVC()
-            } else {
-                previewVC = DKPhotoRemoteImagePreviewVC()
-            }
-        } else if let _ = item.asset {
-            previewVC = DKPhotoAssetPreviewVC()
-        } else if let assetLocalIdentifier = item.assetLocalIdentifier {
-            item.asset = PHAsset.fetchAssets(withLocalIdentifiers: [assetLocalIdentifier], options: nil).firstObject
-            item.assetLocalIdentifier = nil
-            previewVC = self.photoPreviewVC(with: item)
-        } else {
-            assert(false)
-            return DKPhotoBasePreviewVC()
-        }
-        
-        previewVC.item = item
-        return previewVC
-    }
 }
