@@ -137,8 +137,8 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
     
     // MARK: - DKPhotoBasePreviewDataSource
     
-    override func photoPreivewWillAppear() {
-        super.photoPreivewWillAppear()
+    override func photoPreviewWillAppear() {
+        super.photoPreviewWillAppear()
         
         self.downloadURL = self.item.imageURL
         self.reuseIdentifier = self.downloadURL?.absoluteString

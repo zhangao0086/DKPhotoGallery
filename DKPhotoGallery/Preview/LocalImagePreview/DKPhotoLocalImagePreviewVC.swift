@@ -14,8 +14,8 @@ class DKPhotoLocalImagePreviewVC: DKPhotoBaseImagePreviewVC {
     
     // MARK: - DKPhotoBasePreviewDataSource
     
-    override func photoPreivewWillAppear() {
-        super.photoPreivewWillAppear()
+    override func photoPreviewWillAppear() {
+        super.photoPreviewWillAppear()
         
         if let image = self.item.image {
             self.image = image

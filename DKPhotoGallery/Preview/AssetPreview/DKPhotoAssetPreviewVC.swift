@@ -13,8 +13,8 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
 
     private var asset: PHAsset?
     
-    override func photoPreivewWillAppear() {
-        super.photoPreivewWillAppear()
+    override func photoPreviewWillAppear() {
+        super.photoPreviewWillAppear()
         
         if let asset = self.item.asset {
             self.asset = asset

@@ -101,7 +101,11 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.startFetchContent()
     }
     
-    open func photoPreivewWillAppear() {
+    open func photoPreviewWillAppear() {
+        
+    }
+    
+    open func photoPreviewWillDisappear() {
         
     }
     
