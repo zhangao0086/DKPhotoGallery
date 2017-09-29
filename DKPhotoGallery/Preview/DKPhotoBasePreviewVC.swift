@@ -62,8 +62,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.scrollView.alwaysBounceHorizontal = true
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.showsHorizontalScrollIndicator = false
-        self.scrollView.minimumZoomScale = 1
-        self.scrollView.maximumZoomScale = 4
+        if #available(iOS 11.0, *) {
+            self.scrollView.contentInsetAdjustmentBehavior = .never
+        }
+        
+        if self.enableZoom() {
+            self.scrollView.minimumZoomScale = 1
+            self.scrollView.maximumZoomScale = 4
+        }
+        
         self.scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.scrollView.backgroundColor = UIColor.clear
         self.scrollView.delegate = self
