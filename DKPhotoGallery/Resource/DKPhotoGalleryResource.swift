@@ -53,7 +53,11 @@ public class DKPhotoGalleryResource {
     }
     
     class func videoPlayControlBackgroundImage() -> UIImage {
-        return imageForResource("VideoPlayControlBackground")
+        return stretchImgFromMiddle(imageForResource("VideoPlayControlBackground"))
+    }
+    
+    class func videoTimeSliderImage() -> UIImage {
+        return imageForResource("VideoTimeSlider")
     }
     
 }
