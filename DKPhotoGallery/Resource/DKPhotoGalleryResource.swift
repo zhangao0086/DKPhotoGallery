@@ -36,6 +36,26 @@ public class DKPhotoGalleryResource {
         return imageForResource("ImageFailed")
     }
     
+    class func closeVideoImage() -> UIImage {
+        return imageForResource("VideoClose")
+    }
+    
+    class func videoPlayImage() -> UIImage {
+        return imageForResource("VideoPlay")
+    }
+    
+    class func videoToolbarPlayImage() -> UIImage {
+        return imageForResource("ToolbarPlay")
+    }
+    
+    class func videoToolbarPauseImage() -> UIImage {
+        return imageForResource("ToolbarPause")
+    }
+    
+    class func videoPlayControlBackgroundImage() -> UIImage {
+        return imageForResource("VideoPlayControlBackground")
+    }
+    
 }
 
 public class DKPhotoGalleryLocalizedString {
