@@ -30,7 +30,7 @@ class DKPhotoLocalImagePreviewVC: DKPhotoBaseImagePreviewVC {
         return true
     }
     
-    override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+    override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         completeBlock(self.image, nil)
     }
 }
