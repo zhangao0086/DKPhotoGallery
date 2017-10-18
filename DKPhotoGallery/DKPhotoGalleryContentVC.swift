@@ -77,7 +77,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         let item = self.items[index]
         
-        var (findIndex, vc) = self.findPreviewVC(for: DKPhotoBasePreviewVC.self)
+        var vc = self.findPreviewVC(for: DKPhotoBasePreviewVC.photoPreviewClass(with: item))
         if vc == nil {
             vc = DKPhotoBasePreviewVC.photoPreviewVC(with: item)
         } else {

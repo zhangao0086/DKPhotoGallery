@@ -11,28 +11,44 @@ import Photos
 
 extension DKPhotoBasePreviewVC {
     
-    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
-        var previewVC: DKPhotoBasePreviewVC!
+    public class func photoPreviewClass(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC.Type {
         if let _ = item.image {
-            previewVC = DKPhotoLocalImagePreviewVC()
+            
+            return DKPhotoLocalImagePreviewVC.self
+            
         } else if let URL = item.imageURL {
+            
             if URL.isFileURL {
-                previewVC = DKPhotoLocalImagePreviewVC()
+                return DKPhotoLocalImagePreviewVC.self
             } else {
-                previewVC = DKPhotoRemoteImagePreviewVC()
+                return DKPhotoRemoteImagePreviewVC.self
             }
-        } else if let _ = item.asset {
-            previewVC = DKPhotoAssetPreviewVC()
+            
+        } else if let asset = item.asset {
+            
+            if asset.mediaType == .video {
+                return DKPhotoPlayerPreviewVC.self
+            } else {
+                return DKPhotoAssetPreviewVC.self
+            }
+            
         } else if let assetLocalIdentifier = item.assetLocalIdentifier {
             item.asset = PHAsset.fetchAssets(withLocalIdentifiers: [assetLocalIdentifier], options: nil).firstObject
             item.assetLocalIdentifier = nil
-            previewVC = self.photoPreviewVC(with: item)
+            
+            return self.photoPreviewClass(with: item)
+        } else if let _ = item.videoURL {
+            return DKPhotoPlayerPreviewVC.self
         } else {
             assert(false)
-            return DKPhotoBasePreviewVC()
+            return DKPhotoBasePreviewVC.self
         }
-        
+    }
+    
+    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
+        let previewVC = self.photoPreviewClass(with: item).init()
         previewVC.item = item
+        
         return previewVC
     }
 }

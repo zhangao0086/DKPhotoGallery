@@ -67,7 +67,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
                     self.percent = -self.percent
                 }
                 
-                self.gallery.updateContextBackground(alpha: CGFloat(fabsf(Float(1 - self.percent))), true)
+                self.gallery.updateContextBackground(alpha: CGFloat(fabsf(Float(1 - self.percent))), animated: true)
             }
         case .ended,
              .cancelled:

@@ -392,20 +392,4 @@ extension DKPhotoBasePreviewVC {
         
         self.item = item
         
-        self.photoPreivewWillAppear()
-    }
-    
-    private func dataSource(with item: DKPhotoGalleryItem) -> NSObject {
-        if let image = item.image {
-            return image
-        } else if let URL = item.imageURL {
-            return URL
-        } else if let asset = item.asset {
-            return asset
-        } else {
-            assert(false)
-            return NSObject()
-        }
-    }
-    
 }
