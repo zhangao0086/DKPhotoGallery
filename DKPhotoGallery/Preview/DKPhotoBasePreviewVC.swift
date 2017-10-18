@@ -18,7 +18,7 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func contentSize() -> CGSize
     
-    func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void))
+    func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void))
     
     func hasCache() -> Bool
     
@@ -69,6 +69,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         if self.enableZoom() {
             self.scrollView.minimumZoomScale = 1
             self.scrollView.maximumZoomScale = 4
+        } else {
+            self.scrollView.bounces = false
         }
         
         self.scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -95,16 +97,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.errorView.isHidden = true
         self.scrollView.addSubview(self.errorView)
         
-        self.setupGestures()
-        
         self.indicatorView = DKPhotoProgressIndicator(with: self.view)
         
-        self.photoPreivewWillAppear()
+        self.setupGestures()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.photoPreviewWillAppear()
         self.startFetchContent()
     }
     
@@ -128,7 +129,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         hud.hide(animated: true, afterDelay: 2)
     }
     
-    internal func setNeedsUpdateContent() {
+    open func setNeedsUpdateContent() {
         self.startFetchContent()
     }
     
@@ -244,7 +245,19 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         if self.scrollView.zoomScale > self.scrollView.minimumZoomScale {
             self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
         } else {
-            var zoomRect = self.zoomRect(for: self.scrollView.maximumZoomScale, point: gesture.location(in: gesture.view))
+            
+            func calcZoomRect(for scale: CGFloat, point: CGPoint) -> CGRect {
+                var zoomRect = CGRect(x: 0, y: 0,
+                                      width: self.scrollView.frame.width / scale, height: self.scrollView.frame.height / scale)
+                if scale != 1 {
+                    zoomRect.origin = CGPoint(x: point.x * (1 - 1 / scale),
+                                              y: point.y * (1 - 1 / scale))
+                }
+                
+                return zoomRect
+            }
+            
+            var zoomRect = calcZoomRect(for: self.scrollView.maximumZoomScale, point: gesture.location(in: gesture.view))
             zoomRect = self.scrollView.convert(zoomRect, to: self.contentView)
             self.scrollView.zoom(to: zoomRect, animated: true)
             self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
@@ -278,17 +291,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
-    }
-    
-    private func zoomRect(for scale: CGFloat, point: CGPoint) -> CGRect {
-        var zoomRect = CGRect(x: 0, y: 0,
-                              width: self.scrollView.frame.width / scale, height: self.scrollView.frame.height / scale)
-        if scale != 1 {
-            zoomRect.origin = CGPoint(x: point.x * (1 - 1 / scale),
-                                      y: point.y * (1 - 1 / scale))
-        }
-        
-        return zoomRect
     }
     
     // MARK: - Touch 3D
@@ -348,7 +350,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return CGSize.zero
     }
     
-    public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), _ completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+    public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         assert(false)
     }
     
@@ -377,9 +379,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
 
 extension DKPhotoBasePreviewVC {
     
-    internal func prepareReuse(with item: DKPhotoGalleryItem) {
-        self.resetScale()
-        self.contentView.isHidden = true
+    open func prepareReuse(with item: DKPhotoGalleryItem) {
+        if self.scrollView != nil {
+            self.resetScale()
+        }
+        
+        if self.contentView != nil {
+            self.contentView.isHidden = true
+        }
+        
         self.errorView.isHidden = true
         
         self.item = item

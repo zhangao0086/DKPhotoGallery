@@ -23,24 +23,24 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
 		let containerView = transitionContext.containerView
+        let fromContentView = self.gallery.currentContentView()
         
         self.gallery.setNavigationBarHidden(true, animated: true)
         
         if let toImageView = self.gallery.dismissImageViewBlock?(self.gallery.contentVC.currentIndex) {
-            let fromContentView = self.gallery.currentContentView()
             fromContentView.clipsToBounds = true
             toImageView.isHidden = true
             UIView.animate(withDuration: transitionDuration, animations: {
                 let toImageViewFrameInScreen = toImageView.superview!.convert(toImageView.frame, to: nil)
                 fromContentView.contentMode = toImageView.contentMode
                 fromContentView.frame = toImageViewFrameInScreen
-                self.gallery.updateContextBackground(alpha: 0, false)
+                self.gallery.updateContextBackground(alpha: 0, animated: false)
             }) { (finished) in
                 toImageView.isHidden = false
                 
                 let wasCanceled = transitionContext.transitionWasCancelled
                 if wasCanceled {
-                    self.gallery.updateContextBackground(alpha: 1, false)
+                    self.gallery.updateContextBackground(alpha: 1, animated: false)
                 }
                 
                 transitionContext.completeTransition(!wasCanceled)
@@ -48,6 +48,8 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
         } else {
             UIView.animate(withDuration: transitionDuration, animations: { 
                 containerView.alpha = 0
+                fromContentView.alpha = 0
+                self.gallery.updateContextBackground(alpha: 0, animated: false)
             }, completion: { (finished) in
                 let wasCanceled = transitionContext.transitionWasCancelled
                 transitionContext.completeTransition(!wasCanceled)

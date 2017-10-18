@@ -17,12 +17,11 @@ class DKPhotoGalleryScrollView: UIScrollView {
         
         self.backgroundColor = UIColor.clear
         self.showsVerticalScrollIndicator = false
-        self.showsHorizontalScrollIndicator = true
+        self.showsHorizontalScrollIndicator = false
         self.alwaysBounceHorizontal = true
         self.alwaysBounceVertical = false
         self.isPagingEnabled = true
         self.delaysContentTouches = false
-        self.canCancelContentTouches = true
     }
     
     required init?(coder aDecoder: NSCoder) {

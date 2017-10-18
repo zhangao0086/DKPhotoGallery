@@ -18,7 +18,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
     open var pageChangeBlock: (() -> Void)?
     open var singleTapBlock: (() -> Void)?
-	
+    
     open var currentIndex = 0 {
         didSet {
             self.pageChangeBlock?()
@@ -28,7 +28,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
 	private let mainView = DKPhotoGalleryScrollView()
     private var reuseableVCs: [DKPhotoBasePreviewVC] = []
     private var visibleVCs: [Int : DKPhotoBasePreviewVC] = [:]
-	
+    
     open override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -42,7 +42,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.view.addSubview(self.mainView)
         
         self.updateWithCurrentIndex(needToSetContentOffset: true)
-	}
+    }
     
     public func currentVC() -> DKPhotoBasePreviewVC {
         return self.previewVC(at: self.currentIndex)
@@ -120,7 +120,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
     @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
-        return self.currentVC().previewActionItems
+        return self.currentVC.previewActionItems
     }
 	
     // MARK: - UIScrollViewDelegate
@@ -159,5 +159,5 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             self.updateWithCurrentIndex(needToSetContentOffset: false)
         }
     }
-		
+        
 }

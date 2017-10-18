@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 public enum DKPhotoGallerySingleTapMode : Int {
-    case dismiss, toggleNavigationBar
+    case dismiss, toggleControlView
 }
 
 @objc
@@ -23,7 +23,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
 	open var presentingFromImageView: UIImageView?
     open var presentationIndex = 0
     
-    open var singleTapMode = DKPhotoGallerySingleTapMode.toggleNavigationBar
+    open var singleTapMode = DKPhotoGallerySingleTapMode.toggleControlView
     
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]? // [UIPreviewAction]
@@ -35,8 +35,8 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
 	
 	open override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		self.view.backgroundColor = UIColor.black
+        
+        self.view.backgroundColor = UIColor.black
 		
         self.navigationBar.barStyle = .blackTranslucent
 		self.isNavigationBarHidden = true
@@ -49,7 +49,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
         
         contentVC.pageChangeBlock = { [weak self] in
-            self?.updateNavigationTitle()
+            self?.updateNavigation()
         }
         
 		contentVC.items = self.items
@@ -99,7 +99,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
 	}
     
     open func currentContentView() -> UIView {
-        return self.contentVC.currentContentView()
+        return self.contentVC.currentContentView
     }
     
     open func currentIndex() -> Int {
@@ -112,8 +112,8 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     open func handleSingleTap() {
         switch self.singleTapMode {
-        case .toggleNavigationBar:
-            self.toggleNavigationBar()
+        case .toggleControlView:
+            self.toggleControlView()
         case .dismiss:
             self.dismissGallery()
         }
@@ -123,7 +123,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
     }
     
-    internal func updateContextBackground(alpha: CGFloat, _ animated: Bool) {
+    internal func updateContextBackground(alpha: CGFloat, animated: Bool) {
         let block = {
             self.currentContentView().superview?.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
             self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
