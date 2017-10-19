@@ -1,5 +1,5 @@
 //
-//  DKPhotoRemoteImagePreviewVC.swift
+//  DKPhotoImagePreviewVC.swift
 //  DKPhotoGallery
 //
 //  Created by ZhangAo on 08/09/2017.
@@ -9,10 +9,12 @@
 import UIKit
 import SDWebImage
 
-class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
+class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
+    private var image: UIImage?
     private var downloadURL: NSURL?
-    private var reuseIdentifier: String?
+    
+    private var reuseIdentifier: Int? // hash
     
     private let downloadOriginalImageButton = UIButton(type: .custom)
     
@@ -29,8 +31,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
         self.view.addSubview(self.downloadOriginalImageButton)
     }
     
-    @objc
-    private func downloadOriginalImage() {
+    @objc private func downloadOriginalImage() {
         if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             self.downloadOriginalImageButton.isEnabled = false
             
@@ -58,7 +59,7 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
                 completeBlock(image ?? data, nil)
             } else {
                 SDWebImageDownloader.shared().downloadImage(with: URL as URL,
-                                                            options: SDWebImageDownloaderOptions(rawValue: 0),
+                                                            options: SDWebImageDownloaderOptions.lowPriority,
                                                             progress: { [weak self] (receivedSize, expectedSize, targetURL) in
                                                                 guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
                                                                 
@@ -140,25 +141,48 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
     override func photoPreviewWillAppear() {
         super.photoPreviewWillAppear()
         
-        self.downloadURL = self.item.imageURL
-        self.reuseIdentifier = self.downloadURL?.absoluteString
-        
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-            if self.downloadURL == originalURL{
-                self.downloadOriginalImageButton.isHidden = true
-            } else if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
-                self.downloadOriginalImageButton.isHidden = true
+        if let image = self.item.image {
+            self.image = image
+        } else if let URL = self.item.imageURL {
+            if URL.isFileURL {
+                try! self.image = UIImage(data: Data(contentsOf: URL as URL))
             } else {
-                self.updateDownloadOriginalButtonTitle()
-                self.downloadOriginalImageButton.isEnabled = true
-                self.downloadOriginalImageButton.isHidden = false
+                self.downloadURL = self.item.imageURL
+                self.reuseIdentifier = self.downloadURL?.hash
+                
+                if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+                    if self.downloadURL == originalURL{
+                        self.downloadOriginalImageButton.isHidden = true
+                    } else if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
+                        self.downloadOriginalImageButton.isHidden = true
+                    } else {
+                        self.updateDownloadOriginalButtonTitle()
+                        self.downloadOriginalImageButton.isEnabled = true
+                        self.downloadOriginalImageButton.isHidden = false
+                    }
+                } else {
+                    self.downloadOriginalImageButton.isHidden = true
+                }
             }
         } else {
-            self.downloadOriginalImageButton.isHidden = true
+            assert(false)
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.reuseIdentifier = nil
+        self.downloadURL = nil
+        self.image = nil
+        self.downloadOriginalImageButton.isHidden = true
+    }
+    
     override func hasCache() -> Bool {
+        if self.image != nil {
+            return true
+        }
+        
         if SDImageCache.shared().imageFromCache(forKey: self.downloadURL!.absoluteString) != nil {
             return true
         } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
@@ -169,6 +193,11 @@ class DKPhotoRemoteImagePreviewVC: DKPhotoBaseImagePreviewVC {
     }
     
     override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+        if let image = self.image {
+            completeBlock(image, nil)
+            return
+        }
+        
         var downloadURL = self.downloadURL
         
         if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {

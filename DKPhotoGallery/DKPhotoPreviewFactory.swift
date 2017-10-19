@@ -12,17 +12,13 @@ import Photos
 extension DKPhotoBasePreviewVC {
     
     public class func photoPreviewClass(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC.Type {
-        if let _ = item.image {
+        if item.image != nil {
             
-            return DKPhotoLocalImagePreviewVC.self
+            return DKPhotoImagePreviewVC.self
             
-        } else if let URL = item.imageURL {
+        } else if item.imageURL != nil {
             
-            if URL.isFileURL {
-                return DKPhotoLocalImagePreviewVC.self
-            } else {
-                return DKPhotoRemoteImagePreviewVC.self
-            }
+            return DKPhotoImagePreviewVC.self
             
         } else if let asset = item.asset {
             
@@ -45,10 +41,4 @@ extension DKPhotoBasePreviewVC {
         }
     }
     
-    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
-        let previewVC = self.photoPreviewClass(with: item).init()
-        previewVC.item = item
-        
-        return previewVC
-    }
 }
