@@ -29,6 +29,8 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     func createErrorView() -> UIView
     
     func enableZoom() -> Bool
+    
+    func enableIndicatorView() -> Bool
         
     @available(iOS 9.0, *)
     func defaultPreviewActions() -> [UIPreviewAction]
@@ -58,7 +60,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     fileprivate var scrollView: UIScrollView!
     
-    private var indicatorView: DKPhotoProgressIndicatorProtocol!
+    private var indicatorView: DKPhotoProgressIndicatorProtocol?
     
     open override func loadView() {
         super.loadView()
@@ -105,7 +107,9 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.errorView.isHidden = true
         self.scrollView.addSubview(self.errorView)
         
-        self.indicatorView = DKPhotoProgressIndicator(with: self.view)
+        if self.enableIndicatorView() {
+            self.indicatorView = DKPhotoProgressIndicator(with: self.view)
+        }
         
         self.setupGestures()
     }
@@ -225,15 +229,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - Indicator
     
     private func hidesIndicator() {
-        self.indicatorView.stopIndicator()
+        self.indicatorView?.stopIndicator()
     }
     
     private func showsIndicator() {
-        self.indicatorView.startIndicator()
+        self.indicatorView?.startIndicator()
     }
     
     private func setIndicatorProgress(_ progress: Float) {
-        self.indicatorView.setIndicatorProgress(progress)
+        self.indicatorView?.setIndicatorProgress(progress)
     }
     
     // MARK: - Gestures
@@ -379,6 +383,10 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return true
     }
     
+    public func enableIndicatorView() -> Bool {
+        return true
+    }
+    
     @available(iOS 9.0, *)
     public func defaultPreviewActions() -> [UIPreviewAction] {
         return []
@@ -400,8 +408,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
 
 extension DKPhotoBasePreviewVC {
     
-    open func prepareReuse(with item: DKPhotoGalleryItem) {
-        if self.scrollView != nil {
+    open func prepareForReuse() {
+        if self.enableZoom() {
             self.resetScale()
         }
         
@@ -410,8 +418,6 @@ extension DKPhotoBasePreviewVC {
         }
         
         self.errorView.isHidden = true
-        
-        self.item = item
     }
         
 }

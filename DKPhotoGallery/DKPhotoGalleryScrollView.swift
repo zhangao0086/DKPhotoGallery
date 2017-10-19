@@ -38,19 +38,28 @@ class DKPhotoGalleryScrollView: UIScrollView {
         }
     }
     
-    public func set(_ subview: UIView, atIndex index: Int) {
-        if self.items[index] != subview {
-            self.items[index] = subview
-            self.addSubview(subview)
-            subview.frame = CGRect(x: CGFloat(index) * (screenWidth() + 20), y: 0,
+    public func set(_ vc: UIViewController, atIndex index: Int) {
+        if self.items[index] != vc.view {
+            self.items[index] = vc.view
+            
+            if vc.view.superview == nil {
+                self.addSubview(vc.view)
+            } else {
+                vc.viewWillAppear(true)
+                vc.view.isHidden = false
+                vc.viewDidAppear(true)
+            }
+            vc.view.frame = CGRect(x: CGFloat(index) * (screenWidth() + 20), y: 0,
                                    width: screenWidth(), height: screenHeight())
         }
     }
     
-    public func remove(_ subview: UIView, atIndex index: Int) {
-        if self.items[index] == subview {
+    public func remove(_ vc: UIViewController, atIndex index: Int) {
+        if self.items[index] == vc.view {
             self.items[index] = NSNull()
-            subview.removeFromSuperview()
+            vc.viewWillDisappear(true)
+            vc.view.isHidden = true
+            vc.viewDidDisappear(true)
         }
     }
     

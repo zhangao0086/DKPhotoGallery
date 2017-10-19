@@ -39,7 +39,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
 	private let mainView = DKPhotoGalleryScrollView()
-    private var reuseableVCs: [DKPhotoBasePreviewVC] = []
+    private var reuseableVCs: [ObjectIdentifier : [DKPhotoBasePreviewVC] ] = [:] // DKPhotoBasePreviewVC.Type : [DKPhotoBasePreviewVC]
     private var visibleVCs: [Int : DKPhotoBasePreviewVC] = [:]
     
     open override func viewDidLoad() {
@@ -54,33 +54,50 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.mainView.update(self.items.count)
         self.view.addSubview(self.mainView)
         
-        self.updateWithCurrentIndex(needToSetContentOffset: true)
+        self.updateWithCurrentIndex(needToSetContentOffset: true, onlyCurrentIndex: true)
     }
     
-    public func currentVC() -> DKPhotoBasePreviewVC {
-        return self.previewVC(at: self.currentIndex)
-    }
-    
-    public func currentContentView() -> UIView {
-        return self.currentVC().contentView
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.prefillingReuseQueue()
     }
     
     // MARK: - Private
     
-    private func updateWithCurrentIndex(needToSetContentOffset need : Bool) {
+    private func updateWithCurrentIndex(needToSetContentOffset need: Bool, onlyCurrentIndex: Bool = false) {
         if need {
             self.mainView.contentOffset = CGPoint(x: CGFloat(self.currentIndex) * self.mainView.bounds.width, y: 0)
         }
         
-        for i in ((self.currentIndex - 1) >= 0 ? self.currentIndex - 1 : 0) ... min(self.currentIndex + 1, self.items.count - 1) {
-            self.addView(at: i)
+        if onlyCurrentIndex {
+            self.addView(at: self.currentIndex)
+        } else {
+            let fromIndex = self.currentIndex > 0 ? self.currentIndex - 1 : 0
+            let toIndex = min(self.currentIndex + 1, self.items.count - 1)
+            
+            for i in fromIndex ... toIndex {
+                if !self.isVisible(for: i) {
+                    self.addView(at: i)
+                }
+            }
         }
     }
     
     private func addView(at index: Int) {
         let vc = self.previewVC(at: index)
-        self.addChildViewController(vc)
-        self.mainView.set(vc.view, atIndex: index)
+        if vc.parent != self {
+            self.addChildViewController(vc)
+        }
+        self.mainView.set(vc, atIndex: index)
+    }
+    
+    private func isVisible(for index: Int) -> Bool {
+        if let vc = self.visibleVCs[index], vc.parent != nil {
+            return true
+        } else {
+            return false
+        }
     }
     
     private func previewVC(at index: Int) -> DKPhotoBasePreviewVC {
@@ -90,35 +107,95 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         let item = self.items[index]
         
-        var vc = self.findPreviewVC(for: DKPhotoBasePreviewVC.photoPreviewClass(with: item))
+        let previewVCClass = DKPhotoBasePreviewVC.photoPreviewClass(with: item)
+        var vc = self.findPreviewVC(for: previewVCClass)
         if vc == nil {
-            vc = DKPhotoBasePreviewVC.photoPreviewVC(with: item)
+            vc = previewVCClass.init()
         } else {
-            vc!.prepareReuse(with: item)
-            self.reuseableVCs.remove(at: findIndex!)
+            vc!.prepareForReuse()
         }
         
-        vc?.customPreviewActions = self.customPreviewActions
-        vc?.customLongPressActions = self.customLongPressActions
+        let previewVC = vc!
+        
+        previewVC.item = item
+        previewVC.customPreviewActions = self.customPreviewActions
+        previewVC.customLongPressActions = self.customLongPressActions
+        
         if let singleTapBlock = self.singleTapBlock {
-            vc?.singleTapBlock = singleTapBlock
+            previewVC.singleTapBlock = singleTapBlock
         }
         
-        self.visibleVCs[index] = vc
-        
-        return vc!
-    }
-    
-    private func findPreviewVC(for vcClass: AnyClass) -> (Int?, DKPhotoBasePreviewVC?) {
-        for (index, reuseableVC) in self.reuseableVCs.enumerated() {
-            if reuseableVC.isKind(of: vcClass) {
-                return (index, reuseableVC)
+        if previewVC.previewType == .video, let dismissBlock = self.dismissBlock, let videoPreviewVC = previewVC as? DKPhotoPlayerPreviewVC {
+            videoPreviewVC.closeBlock = {
+                dismissBlock()
             }
         }
         
-        return (nil, nil)
+        self.visibleVCs[index] = previewVC
+        
+        return previewVC
+    }
+
+    private func findPreviewVC(for vcClass: DKPhotoBasePreviewVC.Type) -> DKPhotoBasePreviewVC? {
+        let classKey = ObjectIdentifier(vcClass)
+        return self.reuseableVCs[classKey]?.popLast()
     }
     
+    private func addToReuseQueueFromVisibleQueueIfNeeded(index: Int) {
+        guard index >= 0 && index < self.items.count else { return }
+        
+        if let vc = self.visibleVCs[index] {
+            self.addToReuseQueue(vc: vc)
+            
+            self.mainView.remove(vc, atIndex: index)
+            self.visibleVCs.removeValue(forKey: index)
+        }
+    }
+    
+    private func addToReuseQueue(vc: DKPhotoBasePreviewVC) {
+        let classKey = ObjectIdentifier(type(of: vc))
+        var queue: [DKPhotoBasePreviewVC]! = self.reuseableVCs[classKey]
+        if queue == nil {
+            queue = []
+        }
+        
+        queue.append(vc)
+        self.reuseableVCs[classKey] = queue
+    }
+    
+    private var isFilled = false
+    private func prefillingReuseQueue() {
+        guard !self.isFilled else { return }
+        self.isFilled = true
+        
+        let vc1 = DKPhotoImagePreviewVC()
+        vc1.view.isHidden = true
+        self.mainView.addSubview(vc1.view)
+        self.addToReuseQueue(vc: vc1)
+        
+        let vc2 = DKPhotoImagePreviewVC()
+        vc2.view.isHidden = true
+        self.mainView.addSubview(vc2.view)
+        self.addToReuseQueue(vc: vc2)
+
+        let vc3 = DKPhotoPlayerPreviewVC()
+        vc3.view.isHidden = true
+        self.mainView.addSubview(vc3.view)
+        self.addToReuseQueue(vc: vc3)
+
+        let vc4 = DKPhotoPlayerPreviewVC()
+        vc4.view.isHidden = true
+        self.mainView.addSubview(vc4.view)
+        self.addToReuseQueue(vc: vc4)
+
+        let vc5 = DKPhotoPlayerPreviewVC()
+        vc5.view.isHidden = true
+        self.mainView.addSubview(vc5.view)
+        self.addToReuseQueue(vc: vc5)
+        
+        self.updateWithCurrentIndex(needToSetContentOffset: false)
+    }
+
     // MARK: - Orientations & Status Bar
     
     open override var shouldAutorotate: Bool {
@@ -139,38 +216,34 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     // MARK: - UIScrollViewDelegate
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
-        for i in ((index - 1) >= 0 ? index - 1 : 0) ... min(index + 1, self.items.count - 1) {
-            if i != index {
-                let vc = self.visibleVCs[i]
-                vc?.resetScale()
-            }
+        if self.currentIndex > 0 {
+            self.visibleVCs[self.currentIndex - 1]?.resetScale()
         }
         
-        func addToReuseQueueIfNeeded(index: Int) {
-            if let vc = self.visibleVCs[index] {
-                self.reuseableVCs.append(vc)
-                self.mainView.remove(vc.view, atIndex: index)
-                vc.removeFromParentViewController()
-                self.visibleVCs.removeValue(forKey: index)
-            }
-        }
-        
-        if index >= 2 {
-            addToReuseQueueIfNeeded(index: index - 2)
-        }
-        
-        if index + 2 <= self.items.count {
-            addToReuseQueueIfNeeded(index: index + 2)
+        if self.currentIndex < self.items.count - 1 {
+            self.visibleVCs[self.currentIndex + 1]?.resetScale()
         }
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
-        if index != self.currentIndex {
-            self.currentIndex = index
-            self.updateWithCurrentIndex(needToSetContentOffset: false)
+        let position = scrollView.contentOffset.x / scrollView.bounds.width
+        let offset = abs(CGFloat(self.currentIndex) - position)
+        
+        if 1 - offset < 0.1 {
+            let index = Int(position.rounded())
+            if index != self.currentIndex {
+                self.currentVC.photoPreviewWillDisappear()
+                
+                if self.currentIndex < index {
+                    self.addToReuseQueueFromVisibleQueueIfNeeded(index: index - 2)
+                } else {
+                    self.addToReuseQueueFromVisibleQueueIfNeeded(index: index + 2)
+                }
+                
+                self.currentIndex = index
+                self.updateWithCurrentIndex(needToSetContentOffset: false)
+            }
         }
     }
-        
+    
 }
