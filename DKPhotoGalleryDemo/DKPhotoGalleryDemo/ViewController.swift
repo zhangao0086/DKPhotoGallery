@@ -11,41 +11,30 @@ import DKPhotoGallery
 
 class ViewController: UIViewController {
 
-	var images = [
-		#imageLiteral(resourceName: "Image1"),
-		#imageLiteral(resourceName: "Image2"),
-		#imageLiteral(resourceName: "Image3"),
-		#imageLiteral(resourceName: "Image4")
+	let items = [
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image1")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
+        DKPhotoGalleryItem(videoURL: NSURL(string:"http://cdn.video.shaozi.com/movie.mp4")!),
+        DKPhotoGalleryItem(videoURL: NSURL(fileURLWithPath: Bundle.main.path(forResource: "movie", ofType: "mp4")!)),
+        DKPhotoGalleryItem(videoURL: NSURL(string:"http://cdn.video.shaozi.com/movie1.mp4")!),
+        DKPhotoGalleryItem(videoURL: NSURL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
 	]
-	
-	var URLs: [URL] = []
-	
-	var items: [DKPhotoGalleryItem] = []
     
     @IBOutlet var imageView: UIImageView?
-	
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-		
-		for (_, image) in self.images.enumerated() {
-            let item = DKPhotoGalleryItem()
-            item.image = image
-            
-			self.items.append(item)
-		}
-
-    }
 
 	@IBAction func imageClicked(_ sender: UITapGestureRecognizer) {
 		let gallery = DKPhotoGallery()
         gallery.singleTapMode = .dismiss
 		gallery.items = self.items
 		gallery.presentingFromImageView = sender.view as? UIImageView
-        gallery.presentationIndex = self.images.index(of: self.imageView!.image!)!
+        gallery.presentationIndex = 0
         
         gallery.dismissImageViewBlock = { [weak self] dismissIndex in
-            if self?.imageView?.image == self?.images[dismissIndex] {
+            if dismissIndex == 0 {
                 return self?.imageView
             } else {
                 return nil
