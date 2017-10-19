@@ -13,15 +13,28 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
 	
 	internal var items: [DKPhotoGalleryItem]!
     
-    open var customLongPressActions: [UIAlertAction]?
-    open var customPreviewActions: [Any]?
+    public var customLongPressActions: [UIAlertAction]?
+    public var customPreviewActions: [Any]?
     
-    open var pageChangeBlock: (() -> Void)?
-    open var singleTapBlock: (() -> Void)?
+    public var pageChangeBlock: (() -> Void)?
+    public var singleTapBlock: (() -> Void)?
+    public var dismissBlock: (() -> Void)?
     
     open var currentIndex = 0 {
         didSet {
             self.pageChangeBlock?()
+        }
+    }
+    
+    public var currentVC: DKPhotoBasePreviewVC {
+        get {
+            return self.previewVC(at: self.currentIndex)
+        }
+    }
+    
+    public var currentContentView: UIView {
+        get {
+            return self.currentVC.contentView
         }
     }
     

@@ -26,6 +26,10 @@ open class DKPlayerView: UIView {
     public var url: URL? {
         
         willSet {
+            if self.url == newValue {
+                return
+            }
+            
             if let newValue = newValue {
                 DispatchQueue.global().async {
                     if newValue == self.url {
@@ -47,6 +51,10 @@ open class DKPlayerView: UIView {
     public var asset: AVURLAsset? {
         
         willSet {
+            if self.asset == newValue {
+                return
+            }
+            
             if let oldAsset = self.asset {
                 oldAsset.cancelLoading()
             }
@@ -84,6 +92,10 @@ open class DKPlayerView: UIView {
     public var playerItem: AVPlayerItem? {
 
         willSet {
+            if self.playerItem == newValue {
+                return
+            }
+            
             if let oldPlayerItem = self.playerItem {
                 self.removeObservers(for: oldPlayerItem)
                 self.player.pause()
@@ -120,9 +132,7 @@ open class DKPlayerView: UIView {
         }
     }
     
-    public var hasFinishedPlaying: Bool {
-        return self.currentTime == self.duration
-    }
+    public var isFinishedPlaying = false
     
     private let closeButton = UIButton(type: .custom)
     private let playButton = UIButton(type: .custom)
@@ -144,6 +154,7 @@ open class DKPlayerView: UIView {
         get {
             return CMTimeGetSeconds(self.player.currentTime())
         }
+        
         set {
             guard let _ = self.player.currentItem else { return }
             
@@ -152,12 +163,6 @@ open class DKPlayerView: UIView {
         }
     }
     
-    private var duration: Double {
-        guard let currentItem = self.player.currentItem else { return 0.0 }
-        
-        return CMTimeGetSeconds(currentItem.duration)
-    }
-
     private let controlView = DKPlayerControlView()
     
     private var autoPlayOrShowErrorOnce = false
@@ -247,7 +252,8 @@ open class DKPlayerView: UIView {
         
         if let currentItem = self.playerItem {
             if currentItem.status == .readyToPlay {
-                if self.hasFinishedPlaying {
+                if self.isFinishedPlaying {
+                    self.isFinishedPlaying = false
                     self.currentTime = 0.0
                 }
                 
@@ -261,16 +267,25 @@ open class DKPlayerView: UIView {
     }
     
     @objc public func pause() {
-        guard self.isPlaying, let _ = self.player.currentItem else { return }
+        guard let _ = self.player.currentItem, self.isPlaying else { return }
         
         self.player.pause()
     }
     
+    public func stop() {
+        self.asset?.cancelLoading()
+        self.pause()
+    }
+    
     public func reset() {
+        self.asset?.cancelLoading()
+        
         self.error = nil
         self.autoPlayOrShowErrorOnce = false
-        self.playButton.isHidden = false
+        self.isFinishedPlaying = false
         self.bufferingIndicator.stopAnimating()
+        
+        self.playButton.isHidden = false
         
         self.playPauseButton.isEnabled = false
         self.timeSlider.isEnabled = false
@@ -482,9 +497,10 @@ open class DKPlayerView: UIView {
                 if self.isPlaying {
                     self.pause()
                 }
+            case .moved:
+                self.currentTime = Double(self.timeSlider.value)
             case .ended,
                  .cancelled:
-                self.currentTime = Double(self.timeSlider.value)
                 self.play()
             default:
                 break
@@ -564,7 +580,7 @@ open class DKPlayerView: UIView {
         }
     }
     
-    // MARK: - KVO
+    // MARK: - Observer
     
     private func addObservers(for playerItem: AVPlayerItem) {
         playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), options: [.new, .initial], context: &DKPlayerViewKVOContext)
@@ -572,15 +588,17 @@ open class DKPlayerView: UIView {
         playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &DKPlayerViewKVOContext)
         self.player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new, .initial], context: &DKPlayerViewKVOContext)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+        
         let interval = CMTime(value: 1, timescale: 1)
         self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { [weak self] (time) in
             guard let strongSelf = self else { return }
             
             let timeElapsed = Float(CMTimeGetSeconds(time))
-            strongSelf.timeSlider.value = timeElapsed
             strongSelf.startTimeLabel.text = strongSelf.createTimeString(time: timeElapsed)
             
             if strongSelf.isPlaying {
+                strongSelf.timeSlider.value = timeElapsed
                 strongSelf.playButton.isHidden = true
             }
         })
@@ -592,9 +610,18 @@ open class DKPlayerView: UIView {
         playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp), context: &DKPlayerViewKVOContext)
         self.player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate), context: &DKPlayerViewKVOContext)
         
+        NotificationCenter.default.removeObserver(self)
+        
         if let timeObserverToken = self.timeObserverToken {
             self.player.removeTimeObserver(timeObserverToken)
             self.timeObserverToken = nil
+        }
+    }
+    
+    @objc func itemDidPlayToEndTime(notification: Notification) {
+        if (notification.object as? AVPlayerItem) == self.player.currentItem {
+            self.isFinishedPlaying = true
+            self.playButton.isHidden = false
         }
     }
     
@@ -673,10 +700,6 @@ open class DKPlayerView: UIView {
             } else {
                 self.stopHidesControlTimer()
                 self.playPauseButton.isSelected = false
-                
-                if self.hasFinishedPlaying {
-                    self.playButton.isHidden = false
-                }
             }
         } else if keyPath == #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp) {
             self.updateBufferingIndicatorStateIfNeeded()

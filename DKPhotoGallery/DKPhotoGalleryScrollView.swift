@@ -62,4 +62,18 @@ class DKPhotoGalleryScrollView: UIScrollView {
         return UIScreen.main.bounds.height
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if let hitTestingView = super.hitTest(point, with: event) {
+            if hitTestingView.isKind(of: UISlider.self) {
+                self.isScrollEnabled = false
+            } else {
+                self.isScrollEnabled = true
+            }
+            
+            return hitTestingView
+        } else {
+            return nil
+        }
+    }
+    
 }

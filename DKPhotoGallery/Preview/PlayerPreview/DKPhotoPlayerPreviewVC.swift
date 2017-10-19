@@ -16,26 +16,26 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
     
     private var playerView: DKPlayerView!
     
+    deinit {
+        self.playerView.stop()
+    }
+    
     open override func photoPreviewWillAppear() {
         super.photoPreviewWillAppear()
         
-        self.playerView.reset()
         self.playerView.isControlHidden = true
     }
     
     open override func photoPreviewWillDisappear() {
         super.photoPreviewWillDisappear()
         
-        self.pauseCurrentPlaying()
-    }
-    
-    func pauseCurrentPlaying() {
         self.playerView.pause()
     }
     
-    deinit {
-        self.pauseCurrentPlaying()
-        self.playerView.asset?.cancelLoading()
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.playerView.reset()
     }
     
     // MARK: - DKPhotoBasePreviewDataSource
@@ -72,12 +72,14 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
         
         self.playerView.closeBlock = self.closeBlock
         
-        self.pauseCurrentPlaying()
-        
         self.playerView.url = contentURL
     }
     
     open override func enableZoom() -> Bool {
+        return false
+    }
+    
+    public override func enableIndicatorView() -> Bool {
         return false
     }
     

@@ -37,7 +37,7 @@ extension DKPhotoBasePreviewVC {
             item.assetLocalIdentifier = nil
             
             return self.photoPreviewClass(with: item)
-        } else if let _ = item.videoURL {
+        } else if item.videoURL != nil {
             return DKPhotoPlayerPreviewVC.self
         } else {
             assert(false)
