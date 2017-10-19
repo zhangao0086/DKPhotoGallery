@@ -44,6 +44,12 @@ open class DKPhotoGalleryItem: NSObject {
         self.image = image
     }
     
+    convenience init(imageURL: NSURL) {
+        self.init()
+        
+        self.imageURL = imageURL
+    }
+    
     convenience init(videoURL: NSURL) {
         self.init()
         
