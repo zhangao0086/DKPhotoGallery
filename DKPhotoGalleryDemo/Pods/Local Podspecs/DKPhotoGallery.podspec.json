@@ -24,6 +24,7 @@
     "Photos",
     "WebKit",
     "AVFoundation",
+    "AVKit",
     "AssetsLibrary"
   ],
   "requires_arc": true,

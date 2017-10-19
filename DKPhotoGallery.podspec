@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
                        :tag => s.version.to_s }
     s.resource      = 'DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle'
 
-    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AssetsLibrary'
+    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary'
     s.requires_arc  = true
 
     s.dependency 'SDWebImage/GIF', '4.1.0'
