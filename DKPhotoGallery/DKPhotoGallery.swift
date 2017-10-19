@@ -56,6 +56,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         contentVC.currentIndex = self.presentationIndex
         contentVC.customLongPressActions = self.customLongPressActions
         contentVC.customPreviewActions = self.customPreviewActions
+        contentVC.dismissBlock = { [unowned self] in
+            self.dismissGallery()
+        }
         self.viewControllers = [contentVC]
 		
 		contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
@@ -106,8 +109,12 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         return self.contentVC.currentIndex
     }
     
-    open func updateNavigationTitle() {
-        self.contentVC.navigationItem.title = "\(self.contentVC.currentIndex + 1)/\(self.items!.count)"
+    open func updateNavigation() {
+        if self.contentVC.currentVC.previewType == .photo {
+            self.contentVC.navigationItem.title = "\(self.contentVC.currentIndex + 1)/\(self.items!.count)"
+        } else if !self.isNavigationBarHidden {
+            self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
+        }
     }
     
     open func handleSingleTap() {
@@ -119,8 +126,16 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
     }
     
-    open func toggleNavigationBar() {
-        self.setNavigationBarHidden(!self.isNavigationBarHidden, animated: true)
+    open func toggleControlView() {
+        if self.contentVC.currentVC.previewType == .photo {
+            if self.isNavigationBarHidden {
+                self.setNavigationBarHidden(false, animated: true)
+                self.statusBar?.alpha = 1
+            } else {
+                self.setNavigationBarHidden(true, animated: true)
+                self.statusBar?.alpha = 0
+            }
+        }
     }
     
     internal func updateContextBackground(alpha: CGFloat, animated: Bool) {

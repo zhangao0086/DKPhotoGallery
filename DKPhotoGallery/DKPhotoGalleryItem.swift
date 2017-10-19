@@ -31,10 +31,24 @@ open class DKPhotoGalleryItem: NSObject {
     open var image: UIImage?
     open var imageURL: NSURL?
     
+    open var videoURL: NSURL?
+    
     open var asset: PHAsset?
     open var assetLocalIdentifier: String?
     
     open var extraInfo: [String: NSObject]?
+    
+    convenience init(image: UIImage) {
+        self.init()
+        
+        self.image = image
+    }
+    
+    convenience init(videoURL: NSURL) {
+        self.init()
+        
+        self.videoURL = videoURL
+    }
     
     public class func items(withImageURLs URLs: [NSURL]) -> [DKPhotoGalleryItem] {
         var items: [DKPhotoGalleryItem] = []

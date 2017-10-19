@@ -10,6 +10,10 @@ import UIKit
 import AVFoundation
 import MBProgressHUD
 
+public enum DKPhotoPreviewType {
+    case photo, video
+}
+
 public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func createContentView() -> UIView
@@ -24,10 +28,14 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func createErrorView() -> UIView
     
+    func enableZoom() -> Bool
+        
     @available(iOS 9.0, *)
     func defaultPreviewActions() -> [UIPreviewAction]
     
     func defaultLongPressActions() -> [UIAlertAction]
+    
+    var previewType: DKPhotoPreviewType { get }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +56,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return self.customPreviewActions as! [UIPreviewActionItem]?
     }
     
-    private var scrollView: UIScrollView!
+    fileprivate var scrollView: UIScrollView!
     
     private var indicatorView: DKPhotoProgressIndicatorProtocol!
     
@@ -136,19 +144,22 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - Private
     
     private func setupGestures() {
-        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(singleTapAction(gesture:)))
-        singleTapGesture.numberOfTapsRequired = 1
-        self.view.addGestureRecognizer(singleTapGesture)
+        var singleTapGesture: UITapGestureRecognizer?
+        singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(singleTapAction(gesture:)))
+        singleTapGesture!.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(singleTapGesture!)
         
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction(gesture:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(doubleTapGesture)
+        if self.enableZoom() {
+            let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapAction(gesture:)))
+            doubleTapGesture.numberOfTapsRequired = 2
+            self.view.addGestureRecognizer(doubleTapGesture)
+            
+            singleTapGesture?.require(toFail: doubleTapGesture)
+        }
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
         longPressGesture.minimumPressDuration = 0.5
         self.view.addGestureRecognizer(longPressGesture)
-        
-        singleTapGesture.require(toFail: doubleTapGesture)
     }
     
     private func startFetchContent() {
@@ -229,7 +240,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     @objc
     private func singleTapAction(gesture: UIGestureRecognizer) {
-        guard let singleTapBlock = self.singleTapBlock, gesture.state == .recognized else {
+        guard self.previewType == .photo, let singleTapBlock = self.singleTapBlock, gesture.state == .recognized else {
             return
         }
         
@@ -364,6 +375,10 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         return errorView
     }
     
+    public func enableZoom() -> Bool {
+        return true
+    }
+    
     @available(iOS 9.0, *)
     public func defaultPreviewActions() -> [UIPreviewAction] {
         return []
@@ -371,6 +386,12 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     public func defaultLongPressActions() -> [UIAlertAction] {
         return []
+    }
+    
+    public var previewType: DKPhotoPreviewType {
+        get {
+            return .photo
+        }
     }
 
 }
@@ -391,5 +412,6 @@ extension DKPhotoBasePreviewVC {
         self.errorView.isHidden = true
         
         self.item = item
+    }
         
 }

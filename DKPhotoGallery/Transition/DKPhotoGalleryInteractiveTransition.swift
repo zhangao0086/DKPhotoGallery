@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition {
+class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition, UIGestureRecognizerDelegate {
 
     private var gallery: DKPhotoGallery!
     
@@ -28,11 +28,11 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
     
     private func setupGesture() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleGesture))
+        panGesture.delegate = self
         self.gallery.visibleViewController?.view.addGestureRecognizer(panGesture)
     }
     
-    @objc
-    private func handleGesture(_ recognizer: UIPanGestureRecognizer) {
+    @objc private func handleGesture(_ recognizer: UIPanGestureRecognizer) {
         let offset = recognizer.translation(in: recognizer.view?.superview)
         
         switch recognizer.state {
@@ -75,15 +75,14 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
             let shouldComplete = self.percent > 0.5
             if !shouldComplete || recognizer.state == .cancelled {
                 if let fromContentView = self.fromContentView {
-                    UIView.animate(withDuration: 0.3, animations: { 
+                    let toImageView = self.toImageView
+                    UIView.animate(withDuration: 0.3, animations: {
                         fromContentView.frame = self.fromRect
                         fromContentView.superview?.superview?.backgroundColor = UIColor.black
                         self.gallery.view.backgroundColor = UIColor.black
-                        
                         self.gallery.statusBar?.alpha = 0
-                        
                     }) { (finished) in
-                        self.toImageView?.isHidden = false
+                        toImageView?.isHidden = false
                     }
                 }
             } else {
@@ -95,6 +94,20 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition 
             self.toImageView = nil
         default:
             break
+        }
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let gestureView = gestureRecognizer.view else { return true }
+        
+        let location = gestureRecognizer.location(in: gestureView)
+        
+        if let hitTestingView = gestureView.hitTest(location, with: nil), hitTestingView.isKind(of: UISlider.self) {
+            return false
+        } else {
+            return true
         }
     }
 
