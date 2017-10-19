@@ -41,4 +41,11 @@ extension DKPhotoBasePreviewVC {
         }
     }
     
+    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
+        let previewVC = self.photoPreviewClass(with: item).init()
+        previewVC.item = item
+        
+        return previewVC
+    }
+    
 }
