@@ -30,7 +30,7 @@
   "requires_arc": true,
   "dependencies": {
     "SDWebImage/GIF": [
-      "4.1.0"
+      "~> 4.0"
     ],
     "MBProgressHUD": [
       "1.0.0"

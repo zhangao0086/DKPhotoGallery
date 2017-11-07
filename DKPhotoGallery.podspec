@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
     s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary'
     s.requires_arc  = true
 
-    s.dependency 'SDWebImage/GIF', '4.1.0'
+    s.dependency 'SDWebImage/GIF', '~> 4.0'
     s.dependency 'MBProgressHUD', '1.0.0'
 
     s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
