@@ -22,11 +22,9 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = false
-        
         self.webView = self.createWebView()
         self.webView.navigationDelegate = self
-        self.webView.frame = CGRect(x: 0, y: 64, width: self.view.bounds.width, height: self.view.bounds.height)
+        self.webView.frame = self.view.bounds
         self.webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(self.webView)
         
@@ -45,7 +43,7 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
         
         self.spinner.startAnimating()
         
-        let request = URLRequest(url: URL(string: self.urlString)!, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 0)
+        let request = URLRequest(url: URL(string: self.urlString)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 20)
         self.webView.load(request)
     }
     
