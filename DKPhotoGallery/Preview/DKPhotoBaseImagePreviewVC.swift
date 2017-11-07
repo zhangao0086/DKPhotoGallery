@@ -63,27 +63,29 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         guard let contentView = self.contentView as? FLAnimatedImageView else { return }
         
         PHPhotoLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                if let image = contentView.image {
-                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                } else if let animatedImage = contentView.animatedImage {
-                    ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                        DispatchQueue.main.async(execute: {
-                            if let _ = error {
-                                self.showTips("图片保存失败")
-                            } else {
-                                self.showTips("图片保存成功")
-                            }
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized:
+                    if let image = contentView.image {
+                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                    } else if let animatedImage = contentView.animatedImage {
+                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
+                            DispatchQueue.main.async(execute: {
+                                if let _ = error {
+                                    self.showTips("图片保存失败")
+                                } else {
+                                    self.showTips("图片保存成功")
+                                }
+                            })
                         })
-                    })
+                    }
+                case .restricted:
+                    self.showTips("图片保存权限无法开启")
+                case .denied:
+                    self.showTips("获取图片保存权限失败")
+                default:
+                    break
                 }
-            case .restricted:
-                self.showTips("图片保存权限无法开启")
-            case .denied:
-                self.showTips("获取图片保存权限失败")
-            default:
-                break
             }
         }
     }

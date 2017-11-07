@@ -28,7 +28,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
         let toView = transitionContext.view(forKey: .to)!
         let toViewFinalFrame = transitionContext.finalFrame(for: toViewController)
 		
-        if let fromImageView = self.gallery.presentingFromImageView {
+        if let fromImageView = self.gallery.presentingFromImageView, let fromImage = fromImageView.image {
             let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil)
             let snapshotImageView = UIImageView(image: fromImageView.image)
             snapshotImageView.frame = fromImageViewFrameInScreen!
@@ -39,7 +39,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
             containerView.addSubview(snapshotImageView)
             
             UIView.animate(withDuration: transitionDuration, animations: {
-                let frame = AVMakeRect(aspectRatio: fromImageView.image!.size, insideRect: toViewFinalFrame)
+                let frame = AVMakeRect(aspectRatio: fromImage.size, insideRect: toViewFinalFrame)
                 snapshotImageView.frame = frame
                 containerView.backgroundColor = UIColor.black
             }) { (finished) in

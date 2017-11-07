@@ -183,10 +183,14 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             return true
         }
         
-        if SDImageCache.shared().imageFromCache(forKey: self.downloadURL!.absoluteString) != nil {
-            return true
-        } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-            return SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil
+        if let downloadURL = self.downloadURL {
+            if SDImageCache.shared().imageFromCache(forKey: downloadURL.absoluteString) != nil {
+                return true
+            } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+                return SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil
+            } else {
+                return false
+            }
         } else {
             return false
         }
@@ -198,15 +202,17 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             return
         }
         
-        var downloadURL = self.downloadURL
-        
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-            if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
-                downloadURL = originalURL
+        if var downloadURL = self.downloadURL {
+            if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+                if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
+                    downloadURL = originalURL
+                }
             }
+            
+            self.downloadImage(with: downloadURL, progressBlock: progressBlock, completeBlock: completeBlock)
+        } else {
+            completeBlock(nil, nil)
         }
-        
-        self.downloadImage(with: downloadURL!, progressBlock: progressBlock, completeBlock: completeBlock)
     }
     
 }
