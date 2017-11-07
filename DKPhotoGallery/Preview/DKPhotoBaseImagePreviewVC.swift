@@ -16,7 +16,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     // MARK: - QR Code
     
     private func detectStringFromImage() -> String? {
-        guard let contentView = self.contentView as? FLAnimatedImageView else { return nil }
+        guard let contentView = self.contentView as? DKPhotoImageView else { return nil }
         
         guard let targetImage = contentView.image ?? contentView.animatedImage?.posterImage else {
             return nil
@@ -60,7 +60,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     // MARK: - Save Image
     
     private func saveImageToAlbum() {
-        guard let contentView = self.contentView as? FLAnimatedImageView else { return }
+        guard let contentView = self.contentView as? DKPhotoImageView else { return }
         
         PHPhotoLibrary.requestAuthorization { (status) in
             DispatchQueue.main.async {
@@ -90,8 +90,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
-    @objc
-    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
         if error == nil {
             self.showTips("图片保存成功")
         } else {
@@ -102,12 +101,12 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     // MARK: - DKPhotoBasePreviewDataSource
     
     override public func createContentView() -> UIView {
-        let contentView = FLAnimatedImageView()
+        let contentView = DKPhotoImageView()
         return contentView
     }
     
     override public func updateContentView(with content: Any) {
-        guard let contentView = self.contentView as? FLAnimatedImageView else { return }
+        guard let contentView = self.contentView as? DKPhotoImageView else { return }
         
         if let data = content as? Data {
             let imageFormat = NSData.sd_imageFormat(forImageData: data)
@@ -124,7 +123,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     override public func contentSize() -> CGSize {
-        guard let contentView = self.contentView as? FLAnimatedImageView else { return CGSize.zero }
+        guard let contentView = self.contentView as? DKPhotoImageView else { return CGSize.zero }
         
         if let image = contentView.image {
             return image.size

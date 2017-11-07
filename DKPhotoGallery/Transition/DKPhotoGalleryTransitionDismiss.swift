@@ -32,8 +32,9 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
             toImageView.isHidden = true
             UIView.animate(withDuration: transitionDuration, animations: {
                 let toImageViewFrameInScreen = toImageView.superview!.convert(toImageView.frame, to: nil)
-                fromContentView.contentMode = toImageView.contentMode
                 fromContentView.frame = toImageViewFrameInScreen
+                fromContentView.contentMode = toImageView.contentMode
+                fromContentView.backgroundColor = toImageView.backgroundColor
                 self.gallery.updateContextBackground(alpha: 0, animated: false)
             }) { (finished) in
                 toImageView.isHidden = false

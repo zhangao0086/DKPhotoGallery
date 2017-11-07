@@ -30,7 +30,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
 		
         if let fromImageView = self.gallery.presentingFromImageView, let fromImage = fromImageView.image {
             let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil)
-            let snapshotImageView = UIImageView(image: fromImageView.image)
+            let snapshotImageView = DKPhotoImageView(image: fromImage)
             snapshotImageView.frame = fromImageViewFrameInScreen!
             snapshotImageView.contentMode = fromImageView.contentMode
             snapshotImageView.backgroundColor = UIColor.white
@@ -41,6 +41,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
             UIView.animate(withDuration: transitionDuration, animations: {
                 let frame = AVMakeRect(aspectRatio: fromImage.size, insideRect: toViewFinalFrame)
                 snapshotImageView.frame = frame
+                snapshotImageView.contentMode = toView.contentMode
                 containerView.backgroundColor = UIColor.black
             }) { (finished) in
                 let wasCanceled = transitionContext.transitionWasCancelled
