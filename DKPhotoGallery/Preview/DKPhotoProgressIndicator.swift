@@ -14,7 +14,7 @@ class DKPhotoProgressIndicator: MBProgressHUD, DKPhotoProgressIndicatorProtocol 
      required init(with view: UIView) {
         super.init(view: view)
         
-        self.mode = .determinate
+        self.mode = .indeterminate
         
         view.addSubview(self)
     }
@@ -36,6 +36,7 @@ class DKPhotoProgressIndicator: MBProgressHUD, DKPhotoProgressIndicatorProtocol 
     }
     
     func setIndicatorProgress(_ progress: Float) {
+        self.mode = progress == 0 ? .indeterminate : .determinate
         self.progress = progress
     }
 
