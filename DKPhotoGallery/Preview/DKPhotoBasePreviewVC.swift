@@ -24,9 +24,9 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void))
     
-    func hasCache() -> Bool
+    func showError()
     
-    func createErrorView() -> UIView
+    func hidesError()
     
     func enableZoom() -> Bool
     
@@ -47,7 +47,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open internal(set) var item: DKPhotoGalleryItem!
     
     open private(set) var contentView: UIView!
-    open private(set) var errorView: UIView!
     
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]?
@@ -100,12 +99,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.contentView.backgroundColor = UIColor.clear
         self.scrollView.addSubview(self.contentView)
-        
-        self.errorView = self.createErrorView()
-        self.errorView.frame = self.view.bounds
-        self.errorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.errorView.isHidden = true
-        self.scrollView.addSubview(self.errorView)
         
         if self.enableIndicatorView() {
             self.indicatorView = DKPhotoProgressIndicator(with: self.view)
@@ -167,26 +160,19 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     private func startFetchContent() {
-        if self.hasCache() {
-            self.hidesIndicator()
-        } else {
-            self.showsIndicator()
-        }
+        self.showsIndicator()
         
         self.fetchContent(withProgressBlock: { [weak self] (progress) in
             if progress > 0 {
                 self?.setIndicatorProgress(progress)
             }
         }) { (data, error) in
-            if error == nil {
-                self.updateContentView(with: data!)
+            if let data = data {
+                self.updateContentView(with: data)
                 self.centerContentView()
-                self.contentView.contentMode = .scaleAspectFit
-                self.contentView.isHidden = false
-                self.errorView.isHidden = true
+                self.hidesError()
             } else {
-                self.contentView.isHidden = true
-                self.errorView.isHidden = false
+                self.showError()
             }
             
             self.hidesIndicator()
@@ -369,15 +355,9 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         assert(false)
     }
     
-    public func hasCache() -> Bool {
-        return false
-    }
+    public func showError() {}
     
-    public func createErrorView() -> UIView {
-        let errorView = UIImageView(image: DKPhotoGalleryResource.downloadFailedImage())
-        errorView.contentMode = .center
-        return errorView
-    }
+    public func hidesError() {}
     
     public func enableZoom() -> Bool {
         return true
@@ -412,12 +392,6 @@ extension DKPhotoBasePreviewVC {
         if self.enableZoom() {
             self.resetScale()
         }
-        
-        if self.contentView != nil {
-            self.contentView.isHidden = true
-        }
-        
-        self.errorView.isHidden = true
     }
         
 }

@@ -122,6 +122,17 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
+    public override func showError() {
+        guard let contentView = self.contentView as? DKPhotoImageView else { return }
+        
+        contentView.image = DKPhotoGalleryResource.downloadFailedImage()
+        contentView.contentMode = .center
+    }
+    
+    public override func hidesError() {
+        contentView.contentMode = .scaleAspectFit
+    }
+    
     override public func contentSize() -> CGSize {
         guard let contentView = self.contentView as? DKPhotoImageView else { return CGSize.zero }
         

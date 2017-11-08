@@ -23,10 +23,6 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
-    override func hasCache() -> Bool {
-        return false
-    }
-    
     override func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         let options = PHImageRequestOptions()
         options.progressHandler = { (progress, error, stop, info) in
