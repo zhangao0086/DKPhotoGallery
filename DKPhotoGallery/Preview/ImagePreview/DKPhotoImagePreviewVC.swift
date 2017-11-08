@@ -8,11 +8,106 @@
 
 import UIKit
 import SDWebImage
+import Photos
+
+protocol DKPhotoImageDownloader {
+    
+    static func downloader() -> DKPhotoImageDownloader
+    
+    func downloadImage(with identifier: Any, progressBlock: ((_ progress: Float) -> Void)?,
+                       completeBlock: @escaping ((_ image: UIImage?, _ data: Data?,  _ error: Error?) -> Void))
+    
+}
+
+class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
+    
+    private static let shared = DKPhotoImageWebDownloader()
+    
+    static func downloader() -> DKPhotoImageDownloader {
+        return shared
+    }
+    
+    var _downloader: SDWebImageDownloader = {
+        let downloader = SDWebImageDownloader()
+        downloader.executionOrder = .lifoExecutionOrder
+        
+        return downloader
+    }()
+    
+    func downloadImage(with identifier: Any, progressBlock: ((Float) -> Void)?,
+                       completeBlock: @escaping ((UIImage?, Data?, Error?) -> Void)) {
+        if let URL = identifier as? URL {
+            self._downloader.downloadImage(with: URL,
+                                           options: .highPriority,
+                                           progress: { (receivedSize, expectedSize, targetURL) in
+                                            if let progressBlock = progressBlock {
+                                                progressBlock(Float(receivedSize) / Float(expectedSize))
+                                            }
+            }, completed: { (image, data, error, finished) in
+                if (image != nil || data != nil) && finished {
+                    completeBlock(image, data, error)
+                } else {
+                    let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
+                        NSLocalizedDescriptionKey : "获取图片失败"
+                        ])
+                    completeBlock(nil, nil, error)
+                }
+            })
+        } else {
+            assert(false)
+        }
+    }
+    
+}
+
+class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
+    
+    private static let shared = DKPhotoImageAssetDownloader()
+    
+    static func downloader() -> DKPhotoImageDownloader {
+        return shared
+    }
+    
+    func downloadImage(with identifier: Any, progressBlock: ((Float) -> Void)?,
+                       completeBlock: @escaping ((UIImage?, Data?, Error?) -> Void)) {
+        if let asset = identifier as? PHAsset {
+            let options = PHImageRequestOptions()
+            if let progressBlock = progressBlock {
+                options.progressHandler = { (progress, error, stop, info) in
+                    if progress > 0 {
+                        progressBlock(Float(progress))
+                    }
+                }
+            }
+            
+            PHImageManager.default().requestImage(for: asset,
+                                                  targetSize: CGSize(width: UIScreen.main.bounds.width * UIScreen.main.scale, height:UIScreen.main.bounds.height * UIScreen.main.scale),
+                                                  contentMode: .default,
+                                                  options: options,
+                                                  resultHandler: { (image, info) in
+                                                    if let image = image {
+                                                        completeBlock(image, nil, nil)
+                                                    } else {
+                                                        let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
+                                                            NSLocalizedDescriptionKey : "获取图片失败"
+                                                            ])
+                                                        completeBlock(nil, nil, error)
+                                                    }
+            })
+        } else {
+            assert(false)
+        }
+    }
+    
+}
+
+////////////////////////////////////////////////////////////////////////
 
 class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
     private var image: UIImage?
     private var downloadURL: NSURL?
+    private var asset: PHAsset?
     
     private var reuseIdentifier: Int? // hash
     
@@ -34,59 +129,24 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     @objc private func downloadOriginalImage() {
         if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
             self.downloadOriginalImageButton.isEnabled = false
+
+            let reuseIdentifier = self.reuseIdentifier
             
             self.downloadImage(with: originalURL, progressBlock: { [weak self] (progress) in
+                guard reuseIdentifier == self?.reuseIdentifier else { return }
+                
                 self?.updateDownloadOriginalButton(with: progress)
-            }, completeBlock: { (data, error) in
+            }, completeBlock: { [weak self] (data, error) in
+                guard reuseIdentifier == self?.reuseIdentifier else { return }
+                
                 if error == nil {
-                    self.setNeedsUpdateContent()
-                    self.downloadOriginalImageButton.isHidden = true
+                    self?.setNeedsUpdateContent()
+                    self?.downloadOriginalImageButton.isHidden = true
                 } else {
-                    self.downloadOriginalImageButton.isEnabled = true
-                    self.updateDownloadOriginalButtonTitle()
+                    self?.downloadOriginalImageButton.isEnabled = true
+                    self?.updateDownloadOriginalButtonTitle()
                 }
             })
-        }
-    }
-    
-    private func downloadImage(with URL: NSURL, progressBlock: @escaping ((_ progress: Float) -> Void),
-                               completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
-        let key = URL.absoluteString
-        let reuseIdentifier = self.reuseIdentifier!
-        
-        SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
-            if image != nil || data != nil {
-                completeBlock(image ?? data, nil)
-            } else {
-                SDWebImageDownloader.shared().downloadImage(with: URL as URL,
-                                                            options: SDWebImageDownloaderOptions.lowPriority,
-                                                            progress: { [weak self] (receivedSize, expectedSize, targetURL) in
-                                                                guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
-                                                                
-                                                                DispatchQueue.main.async {
-                                                                    progressBlock(Float(receivedSize) / Float(expectedSize))
-                                                                }
-                    }, completed: { [weak self] (image, data, error, finished) in
-                        var success = false
-                        if (image != nil || data != nil) && finished {
-                            SDImageCache.shared().store(image, imageData: data, forKey: key, toDisk: true, completion: nil)
-                            success = true
-                        } else {
-                            success = false
-                        }
-                        
-                        guard let strongSelf = self, reuseIdentifier == strongSelf.reuseIdentifier else { return }
-                        
-                        if success {
-                            completeBlock(image ?? data, nil)
-                        } else {
-                            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                NSLocalizedDescriptionKey : "获取图片失败"
-                                ])
-                            completeBlock(nil, error)
-                        }
-                })
-            }
         }
     }
     
@@ -136,6 +196,75 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         }
     }
     
+    // MARK: - Fetch Image
+    
+    private func asyncFetchImage(with identifier: Any,
+                                 progressBlock: @escaping ((_ progress: Float) -> Void),
+                                 completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+        if let downloadURL = identifier as? URL, downloadURL.isFileURL {
+            self.asyncFetchLocalImage(with: downloadURL as URL, completeBlock: completeBlock)
+        } else {
+            self.downloadImage(with: identifier, progressBlock: progressBlock, completeBlock: completeBlock)
+        }
+    }
+    
+    static let ioQueue = DispatchQueue(label: "DKPhotoImagePreviewVC.ioQueue")
+    private func asyncFetchLocalImage(with URL: URL, completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+        DKPhotoImagePreviewVC.ioQueue.async {
+            let key = URL.absoluteString
+            
+            var error: Error?
+            var image = SDImageCache.shared().imageFromMemoryCache(forKey: key)
+            
+            if image == nil {
+                if let imageData = NSData(contentsOf: URL) {
+                    image = SDWebImageCodersManager.sharedInstance().decodedImage(with: imageData as Data)
+                    SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
+                } else {
+                    error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
+                        NSLocalizedDescriptionKey : "获取图片失败"
+                        ])
+                }
+            }
+            
+            completeBlock(image, error)
+        }
+    }
+    
+    private func downloadImage(with identifier: Any,
+                               progressBlock: @escaping ((_ progress: Float) -> Void),
+                               completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
+        var key = ""
+        var downloader: DKPhotoImageDownloader! = nil
+        if let URL = identifier as? URL {
+            key = URL.absoluteString
+            downloader = DKPhotoImageWebDownloader.downloader()
+        } else if let asset = identifier as? PHAsset {
+            key = asset.localIdentifier
+            downloader = DKPhotoImageAssetDownloader.downloader()
+        } else {
+            assert(false)
+        }
+        
+        SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
+            if image != nil || data != nil {
+                completeBlock(image ?? data, nil)
+            } else {
+                downloader.downloadImage(with: identifier, progressBlock: { (progress) in
+                    progressBlock(progress)
+                }, completeBlock: { (image, data, error) in
+                    if error == nil {
+                        SDImageCache.shared().store(image, imageData: data, forKey: key, toDisk: true, completion: nil)
+                        
+                        completeBlock(image ?? data, nil)
+                    } else {
+                        completeBlock(nil, error)
+                    }
+                })
+            }
+        }
+    }
+    
     // MARK: - DKPhotoBasePreviewDataSource
     
     override func photoPreviewWillAppear() {
@@ -143,56 +272,11 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let image = self.item.image {
             self.image = image
-        } else if let URL = self.item.imageURL {
-            if URL.isFileURL {
-                try! self.image = UIImage(data: Data(contentsOf: URL as URL))
-            } else {
-                self.downloadURL = self.item.imageURL
-                self.reuseIdentifier = self.downloadURL?.hash
-                
-                if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                    if self.downloadURL == originalURL{
-                        self.downloadOriginalImageButton.isHidden = true
-                    } else if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
-                        self.downloadOriginalImageButton.isHidden = true
-                    } else {
-                        self.updateDownloadOriginalButtonTitle()
-                        self.downloadOriginalImageButton.isEnabled = true
-                        self.downloadOriginalImageButton.isHidden = false
-                    }
-                } else {
-                    self.downloadOriginalImageButton.isHidden = true
-                }
-            }
+        } else if let _ = self.item.imageURL {
+            self.downloadURL = self.item.imageURL
+            self.reuseIdentifier = self.downloadURL?.hash
         } else {
             assert(false)
-        }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        self.reuseIdentifier = nil
-        self.downloadURL = nil
-        self.image = nil
-        self.downloadOriginalImageButton.isHidden = true
-    }
-    
-    override func hasCache() -> Bool {
-        if self.image != nil {
-            return true
-        }
-        
-        if let downloadURL = self.downloadURL {
-            if SDImageCache.shared().imageFromCache(forKey: downloadURL.absoluteString) != nil {
-                return true
-            } else if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                return SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil
-            } else {
-                return false
-            }
-        } else {
-            return false
         }
     }
     
@@ -202,17 +286,73 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             return
         }
         
-        if var downloadURL = self.downloadURL {
-            if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                if SDImageCache.shared().imageFromCache(forKey: originalURL.absoluteString) != nil {
-                    downloadURL = originalURL
-                }
+        let reuseIdentifier = self.reuseIdentifier
+        
+        let checkProgressBlock = { [weak self] (progress: Float) in
+            guard reuseIdentifier == self?.reuseIdentifier else { return }
+         
+            DispatchQueue.main.async {
+                progressBlock(progress)
             }
-            
-            self.downloadImage(with: downloadURL, progressBlock: progressBlock, completeBlock: completeBlock)
-        } else {
-            completeBlock(nil, nil)
         }
+        
+        let checkCompleteBlock = { [weak self] (data: Any?, error: Error?) in
+            guard reuseIdentifier == self?.reuseIdentifier else { return }
+            
+            DispatchQueue.main.async {
+                completeBlock(data, error)
+            }
+        }
+        
+        if let _ = self.downloadURL {
+            if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (_, _, cacheType) in
+                    if cacheType != .none {
+                        self.downloadURL = originalURL
+                    }
+                    
+                    self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                })
+            } else {
+                self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+            }
+        } else if let asset = self.asset {
+            self.asyncFetchImage(with: asset, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+        } else {
+            assert(false)
+        }
+    }
+    
+    override func updateContentView(with content: Any) {
+        super.updateContentView(with: content)
+        
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+            if self.downloadURL == originalURL {
+                self.downloadOriginalImageButton.isHidden = true
+            } else {
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (_, _, cacheType) in
+                    if cacheType != .none {
+                        self.downloadOriginalImageButton.isHidden = true
+                    } else {
+                        self.updateDownloadOriginalButtonTitle()
+                        self.downloadOriginalImageButton.isEnabled = true
+                        self.downloadOriginalImageButton.isHidden = false
+                    }
+                })
+            }
+        } else {
+            self.downloadOriginalImageButton.isHidden = true
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.reuseIdentifier = nil
+        self.downloadURL = nil
+        self.image = nil
+        self.asset = nil
+        self.downloadOriginalImageButton.isHidden = true
     }
     
 }
