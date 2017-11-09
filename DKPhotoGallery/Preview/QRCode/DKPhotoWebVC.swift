@@ -13,8 +13,21 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     
     var urlString: String!
     
-    private var webView: WKWebView!
+    private lazy var webView: WKWebView = {
+        let jsScript = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
+        let userScript = WKUserScript(source: jsScript, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        
+        let contentController = WKUserContentController()
+        contentController.addUserScript(userScript)
+        
+        let webConfig = WKWebViewConfiguration()
+        webConfig.userContentController = contentController
+        
+        return WKWebView(frame: CGRect.zero, configuration: webConfig)
+    }()
+    
     private var spinner: UIActivityIndicatorView!
+    
     private var errorLabel: UILabel!
     
     private var hasFinished: Bool = false
@@ -22,7 +35,6 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.webView = self.createWebView()
         self.webView.navigationDelegate = self
         self.webView.frame = self.view.bounds
         self.webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -47,19 +59,6 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
         self.webView.load(request)
     }
     
-    func createWebView() -> WKWebView {
-        let jsScript = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
-        let userScript = WKUserScript(source: jsScript, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        
-        let contentController = WKUserContentController()
-        contentController.addUserScript(userScript)
-        
-        let webConfig = WKWebViewConfiguration()
-        webConfig.userContentController = contentController
-        
-        return WKWebView(frame: CGRect.zero, configuration: webConfig)
-    }
-    
     func markAsFinished() {
         self.hasFinished = true
         self.errorLabel.text = nil
@@ -82,6 +81,7 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         self.spinner.stopAnimating()
+        
         let _error = error as NSError
         if _error.code == NSURLErrorCancelled {
             return
@@ -101,5 +101,9 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
         }
         
         decisionHandler(.allow)
+    }
+    
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        self.spinner.stopAnimating()
     }
 }

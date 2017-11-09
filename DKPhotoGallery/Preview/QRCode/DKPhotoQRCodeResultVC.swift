@@ -10,7 +10,7 @@ import UIKit
 
 class DKPhotoQRCodeResultVC: DKPhotoPushVC {
 
-    private var result: String!
+    private var result: String = ""
     
     var textView = UITextView()
     
