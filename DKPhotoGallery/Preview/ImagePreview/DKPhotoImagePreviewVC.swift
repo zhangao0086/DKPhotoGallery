@@ -211,7 +211,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     static let ioQueue = DispatchQueue(label: "DKPhotoImagePreviewVC.ioQueue")
     private func asyncFetchLocalImage(with URL: URL, completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         DKPhotoImagePreviewVC.ioQueue.async {
-            let key = URL.path
+            let key = URL.absoluteString
             
             var error: Error?
             var image = SDImageCache.shared().imageFromMemoryCache(forKey: key)
@@ -237,7 +237,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         var key = ""
         var downloader: DKPhotoImageDownloader! = nil
         if let URL = identifier as? URL {
-            key = URL.path
+            key = URL.absoluteString
             downloader = DKPhotoImageWebDownloader.downloader()
         } else if let asset = identifier as? PHAsset {
             key = asset.localIdentifier
@@ -331,7 +331,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let _ = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (image, data, _) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
@@ -355,7 +355,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             if self.downloadURL == originalURL {
                 self.downloadOriginalImageButton.isHidden = true
             } else {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (image, data, _) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadOriginalImageButton.isHidden = true
                     } else {
