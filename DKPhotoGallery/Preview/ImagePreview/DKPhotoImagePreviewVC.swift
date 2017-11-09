@@ -331,8 +331,8 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let _ = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (_, _, cacheType) in
-                    if cacheType != .none {
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (image, data, _) in
+                    if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
                     
@@ -355,8 +355,8 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             if self.downloadURL == originalURL {
                 self.downloadOriginalImageButton.isHidden = true
             } else {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (_, _, cacheType) in
-                    if cacheType != .none {
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (image, data, _) in
+                    if image != nil || data != nil {
                         self.downloadOriginalImageButton.isHidden = true
                     } else {
                         self.updateDownloadOriginalButtonTitle()
