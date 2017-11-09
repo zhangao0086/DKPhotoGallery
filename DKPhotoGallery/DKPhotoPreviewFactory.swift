@@ -36,7 +36,7 @@ extension DKPhotoBasePreviewVC {
         } else if item.videoURL != nil {
             return DKPhotoPlayerPreviewVC.self
         } else {
-            assert(false)
+            assertionFailure()
             return DKPhotoBasePreviewVC.self
         }
     }

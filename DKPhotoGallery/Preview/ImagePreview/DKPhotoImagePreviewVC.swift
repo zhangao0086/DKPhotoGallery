@@ -54,7 +54,7 @@ class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
                 }
             })
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     
@@ -95,7 +95,7 @@ class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
                                                     }
             })
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     
@@ -243,7 +243,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             key = asset.localIdentifier
             downloader = DKPhotoImageAssetDownloader.downloader()
         } else {
-            assert(false)
+            assertionFailure()
         }
         
         SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
@@ -276,7 +276,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             self.downloadURL = self.item.imageURL
             self.reuseIdentifier = self.downloadURL?.hash
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     
@@ -319,7 +319,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         } else if let asset = self.asset {
             self.asyncFetchImage(with: asset, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     

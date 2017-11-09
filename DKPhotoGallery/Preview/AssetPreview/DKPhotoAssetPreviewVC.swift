@@ -19,7 +19,7 @@ class DKPhotoAssetPreviewVC: DKPhotoBasePreviewVC {
         if let asset = self.item.asset {
             self.asset = asset
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     

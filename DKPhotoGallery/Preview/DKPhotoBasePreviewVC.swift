@@ -339,21 +339,21 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - DKPhotoBasePreviewDataSource
     
     public func createContentView() -> UIView {
-        assert(false)
+        assertionFailure()
         return UIView()
     }
     
     public func updateContentView(with content: Any) {
-        assert(false)
+        assertionFailure()
     }
     
     public func contentSize() -> CGSize {
-        assert(false)
+        assertionFailure()
         return CGSize.zero
     }
     
     public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
-        assert(false)
+        assertionFailure()
     }
     
     public func showError() {}

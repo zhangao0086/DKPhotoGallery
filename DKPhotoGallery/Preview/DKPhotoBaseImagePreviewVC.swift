@@ -125,7 +125,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         } else if let image = content as? UIImage {
             contentView.image = image
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     

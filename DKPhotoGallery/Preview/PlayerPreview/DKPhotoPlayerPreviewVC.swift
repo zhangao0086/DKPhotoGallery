@@ -63,7 +63,7 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
                                                         }
             })
         } else {
-            assert(false)
+            assertionFailure()
         }
     }
     
