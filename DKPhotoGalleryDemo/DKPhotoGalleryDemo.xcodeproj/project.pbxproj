@@ -10,6 +10,7 @@
 		9C1F97541F98870F007D0575 /* DKPhotoImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F97531F988613007D0575 /* DKPhotoImagePreviewVC.swift */; };
 		9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 9C38FABD1F933D59008FE96E /* movie.mp4 */; };
 		9C4BC1D91F7CDFC600022AE0 /* DKPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4BC1D81F7CDFC600022AE0 /* DKPlayerView.swift */; };
+		9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */; };
 		9CA180981F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */; };
 		9CA1809A1F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */; };
 		9CA1809C1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */; };
@@ -44,6 +45,7 @@
 		9C1F97531F988613007D0575 /* DKPhotoImagePreviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoImagePreviewVC.swift; sourceTree = "<group>"; };
 		9C38FABD1F933D59008FE96E /* movie.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = movie.mp4; sourceTree = "<group>"; };
 		9C4BC1D81F7CDFC600022AE0 /* DKPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPlayerView.swift; sourceTree = "<group>"; };
+		9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "empire-state-building-picture-ext-day.jpg"; sourceTree = "<group>"; };
 		9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPlayerPreviewVC.swift; sourceTree = "<group>"; };
 		9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoBaseImagePreviewVC.swift; sourceTree = "<group>"; };
 		9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPreviewFactory.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				9CC954271F63F51200B32CA9 /* AppDelegate.swift */,
 				9CC954291F63F51200B32CA9 /* ViewController.swift */,
 				9CC9542B1F63F51200B32CA9 /* Main.storyboard */,
+				9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */,
 				9C38FABD1F933D59008FE96E /* movie.mp4 */,
 				9CC9542E1F63F51200B32CA9 /* Assets.xcassets */,
 				9CC954301F63F51200B32CA9 /* LaunchScreen.storyboard */,
@@ -291,6 +294,7 @@
 				9CC954321F63F51200B32CA9 /* LaunchScreen.storyboard in Resources */,
 				9CC9542F1F63F51200B32CA9 /* Assets.xcassets in Resources */,
 				9CC9545F1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle in Resources */,
+				9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */,
 				9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */,
 				9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */,
 			);

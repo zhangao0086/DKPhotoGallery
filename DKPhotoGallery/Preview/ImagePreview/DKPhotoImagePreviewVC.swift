@@ -211,14 +211,14 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     static let ioQueue = DispatchQueue(label: "DKPhotoImagePreviewVC.ioQueue")
     private func asyncFetchLocalImage(with URL: URL, completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
         DKPhotoImagePreviewVC.ioQueue.async {
-            let key = URL.absoluteString
+            let key = URL.path
             
             var error: Error?
             var image = SDImageCache.shared().imageFromMemoryCache(forKey: key)
             
             if image == nil {
-                if let imageData = NSData(contentsOf: URL) {
-                    image = SDWebImageCodersManager.sharedInstance().decodedImage(with: imageData as Data)
+                if let compressedImage = UIImage(contentsOfFile: URL.path) {
+                    image = self.decompressImage(with: compressedImage)
                     SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
                 } else {
                     error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
@@ -237,7 +237,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         var key = ""
         var downloader: DKPhotoImageDownloader! = nil
         if let URL = identifier as? URL {
-            key = URL.absoluteString
+            key = URL.path
             downloader = DKPhotoImageWebDownloader.downloader()
         } else if let asset = identifier as? PHAsset {
             key = asset.localIdentifier
@@ -263,6 +263,31 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                 })
             }
         }
+    }
+    
+    private func decompressImage(with image: UIImage) -> UIImage {
+        guard let imageRef = image.cgImage else { return image }
+
+        let width = imageRef.width
+        let height = imageRef.height
+        
+        if width == 0 || height == 0 { return image }
+        
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return image }
+        
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        
+        context.scaleBy(x: 1, y: -1)
+        context.translateBy(x: 0, y: CGFloat(-height))
+        context.draw(imageRef, in: CGRect(x: 0, y: 0, width: width, height: height))
+        
+        guard let decompressedImageRef = context.makeImage() else { return image }
+        
+        return UIImage(cgImage: decompressedImageRef, scale: image.scale, orientation: image.imageOrientation)
     }
     
     // MARK: - DKPhotoBasePreviewDataSource
@@ -306,7 +331,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let _ = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (_, _, cacheType) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (_, _, cacheType) in
                     if cacheType != .none {
                         self.downloadURL = originalURL
                     }
@@ -330,7 +355,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             if self.downloadURL == originalURL {
                 self.downloadOriginalImageButton.isHidden = true
             } else {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (_, _, cacheType) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.path, done: { (_, _, cacheType) in
                     if cacheType != .none {
                         self.downloadOriginalImageButton.isHidden = true
                     } else {
