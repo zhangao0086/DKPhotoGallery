@@ -18,24 +18,32 @@ class ViewController: UIViewController {
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/f09a6f2a93ce0a7ec0f65d74ecd672c6")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/3e72f1044a5fe30fda44823a587ca6e3")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/48a2e5b67b57e7dc6e9df81b9069c8f0")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/d95f6c69c7d0dde2cd1872fd0d541f60")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/0133eac2899d801b417807b6a281341d")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/3c25c16c562d8aabee665122c72875ea")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/96b59884abbc9e529c58cff35335b4c2")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/4efb791d9a3579d4983ed36076531d76")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/684446b02eed178fbeaa362524a1ccea")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"https://mandourjr.files.wordpress.com/2014/01/091511-empire-state-building-picture-ext-day.jpg")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"http://images.fineartamerica.com/images-medium-large-5/galaxy-road-kevin-palmer.jpg")!),
-        DKPhotoGalleryItem(imageURL: NSURL(string:"http://www.79n.cn/uploads/allimg/150905/error.jpg")!),
-        DKPhotoGalleryItem(imageURL: NSURL(fileURLWithPath: Bundle.main.path(forResource: "empire-state-building-picture-ext-day", ofType: "jpg")!)),
-        DKPhotoGalleryItem(videoURL: NSURL(string:"http://cdn.video.shaozi.com/movie.mp4")!),
-        DKPhotoGalleryItem(videoURL: NSURL(fileURLWithPath: Bundle.main.path(forResource: "movie", ofType: "mp4")!)),
-        DKPhotoGalleryItem(videoURL: NSURL(string:"http://cdn.video.shaozi.com/movie1.mp4")!),
-        DKPhotoGalleryItem(videoURL: NSURL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
+        {
+            let item = DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/b29259d837d4aaeef4b33c9dbc964a5b?x-oss-process=image/resize,m_lfit,h_512,w_512/quality,Q_80")!)
+            item.extraInfo = [
+                DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/b29259d837d4aaeef4b33c9dbc964a5b")!
+            ]
+            return item
+        }(),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/f09a6f2a93ce0a7ec0f65d74ecd672c6")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/3e72f1044a5fe30fda44823a587ca6e3")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/48a2e5b67b57e7dc6e9df81b9069c8f0")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/d95f6c69c7d0dde2cd1872fd0d541f60")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/0133eac2899d801b417807b6a281341d")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/3c25c16c562d8aabee665122c72875ea")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/96b59884abbc9e529c58cff35335b4c2")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/4efb791d9a3579d4983ed36076531d76")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/684446b02eed178fbeaa362524a1ccea")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"https://mandourjr.files.wordpress.com/2014/01/091511-empire-state-building-picture-ext-day.jpg")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"http://images.fineartamerica.com/images-medium-large-5/galaxy-road-kevin-palmer.jpg")!),
+        DKPhotoGalleryItem(imageURL: URL(string:"http://www.79n.cn/uploads/allimg/150905/error.jpg")!),
+        DKPhotoGalleryItem(imageURL: URL(fileURLWithPath: Bundle.main.path(forResource: "empire-state-building-picture-ext-day", ofType: "jpg")!)),
+        DKPhotoGalleryItem(videoURL: URL(string:"http://cdn.video.shaozi.com/movie.mp4")!),
+        DKPhotoGalleryItem(videoURL: URL(fileURLWithPath: Bundle.main.path(forResource: "movie", ofType: "mp4")!)),
+        DKPhotoGalleryItem(videoURL: URL(string:"http://cdn.video.shaozi.com/movie1.mp4")!),
+        DKPhotoGalleryItem(videoURL: URL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
 	]
+
     
     @IBOutlet var imageView: UIImageView?
 

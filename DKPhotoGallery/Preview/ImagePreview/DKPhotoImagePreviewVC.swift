@@ -106,7 +106,7 @@ class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
 class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
     private var image: UIImage?
-    private var downloadURL: NSURL?
+    private var downloadURL: URL?
     private var asset: PHAsset?
     
     private var reuseIdentifier: Int? // hash
@@ -127,7 +127,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     }
     
     @objc private func downloadOriginalImage() {
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
             self.downloadOriginalImageButton.isEnabled = false
 
             let reuseIdentifier = self.reuseIdentifier
@@ -135,7 +135,9 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             self.downloadImage(with: originalURL, progressBlock: { [weak self] (progress) in
                 guard reuseIdentifier == self?.reuseIdentifier else { return }
                 
-                self?.updateDownloadOriginalButton(with: progress)
+                DispatchQueue.main.async {
+                    self?.updateDownloadOriginalButton(with: progress)
+                }
             }, completeBlock: { [weak self] (data, error) in
                 guard reuseIdentifier == self?.reuseIdentifier else { return }
                 
@@ -151,8 +153,8 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     }
     
     private func updateDownloadOriginalButtonTitle() {
-        if let extraInfo = self.item.extraInfo, let fileSize = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize] as? NSNumber {
-            self.downloadOriginalImageButton.setTitle("下载原图(\(self.formattedFileSize(fileSize.uintValue)))", for: .normal)
+        if let extraInfo = self.item.extraInfo, let fileSize = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize] as? UInt {
+            self.downloadOriginalImageButton.setTitle("下载原图(\(self.formattedFileSize(fileSize)))", for: .normal)
         } else {
             self.downloadOriginalImageButton.setTitle("下载原图", for: .normal)
         }
@@ -299,7 +301,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             self.image = image
         } else if let _ = self.item.imageURL {
             self.downloadURL = self.item.imageURL
-            self.reuseIdentifier = self.downloadURL?.hash
+            self.reuseIdentifier = self.downloadURL?.hashValue
         } else {
             assertionFailure()
         }
@@ -330,7 +332,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         }
         
         if let _ = self.downloadURL {
-            if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
+            if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
                 SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
@@ -351,17 +353,20 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     override func updateContentView(with content: Any) {
         super.updateContentView(with: content)
         
-        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? NSURL {
-            if self.downloadURL == originalURL {
+        if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
+            if self.downloadURL == originalURL  {
                 self.downloadOriginalImageButton.isHidden = true
             } else {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
+                let reuseIdentifier = self.reuseIdentifier
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { [weak self] (image, data, _) in
+                    guard reuseIdentifier == self?.reuseIdentifier else { return }
+                    
                     if image != nil || data != nil {
-                        self.downloadOriginalImageButton.isHidden = true
+                        self?.downloadOriginalImageButton.isHidden = true
                     } else {
-                        self.updateDownloadOriginalButtonTitle()
-                        self.downloadOriginalImageButton.isEnabled = true
-                        self.downloadOriginalImageButton.isHidden = false
+                        self?.updateDownloadOriginalButtonTitle()
+                        self?.downloadOriginalImageButton.isEnabled = true
+                        self?.downloadOriginalImageButton.isHidden = false
                     }
                 })
             }

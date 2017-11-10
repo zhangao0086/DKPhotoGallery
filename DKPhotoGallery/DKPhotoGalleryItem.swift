@@ -9,8 +9,8 @@
 import UIKit
 import Photos
 
-public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL"
-public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize"
+public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL"    // URL.
+public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize"  // UInt. The number of bytes of the image.
 
 @objc
 public class DKPhotoGalleryItemConstant: NSObject {
@@ -29,14 +29,14 @@ public class DKPhotoGalleryItemConstant: NSObject {
 open class DKPhotoGalleryItem: NSObject {
     
     open var image: UIImage?
-    open var imageURL: NSURL?
+    open var imageURL: URL?
     
-    open var videoURL: NSURL?
+    open var videoURL: URL?
     
     open var asset: PHAsset?
     open var assetLocalIdentifier: String?
     
-    open var extraInfo: [String: NSObject]?
+    open var extraInfo: [String: Any]?
     
     convenience init(image: UIImage) {
         self.init()
@@ -44,19 +44,19 @@ open class DKPhotoGalleryItem: NSObject {
         self.image = image
     }
     
-    convenience init(imageURL: NSURL) {
+    convenience init(imageURL: URL) {
         self.init()
         
         self.imageURL = imageURL
     }
     
-    convenience init(videoURL: NSURL) {
+    convenience init(videoURL: URL) {
         self.init()
         
         self.videoURL = videoURL
     }
     
-    public class func items(withImageURLs URLs: [NSURL]) -> [DKPhotoGalleryItem] {
+    public class func items(withImageURLs URLs: [URL]) -> [DKPhotoGalleryItem] {
         var items: [DKPhotoGalleryItem] = []
         for URL in URLs {
             let item = DKPhotoGalleryItem()
@@ -68,11 +68,11 @@ open class DKPhotoGalleryItem: NSObject {
         return items
     }
     
-    public class func items(withRemoteImageURLStrings URLStrings: [String]) -> [DKPhotoGalleryItem] {
+    public class func items(withImageURLStrings URLStrings: [String]) -> [DKPhotoGalleryItem] {
         var items: [DKPhotoGalleryItem] = []
         for URLString in URLStrings {
             let item = DKPhotoGalleryItem()
-            item.imageURL = NSURL(string: URLString)
+            item.imageURL = URL(string: URLString)
             
             items.append(item)
         }
