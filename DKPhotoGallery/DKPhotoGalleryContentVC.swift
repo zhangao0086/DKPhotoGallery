@@ -10,8 +10,8 @@ import UIKit
 
 @objc
 open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
-	
-	internal var items: [DKPhotoGalleryItem]!
+    
+    internal var items: [DKPhotoGalleryItem]!
     
     public var customLongPressActions: [UIAlertAction]?
     public var customPreviewActions: [Any]?
@@ -38,16 +38,16 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         }
     }
     
-	private let mainView = DKPhotoGalleryScrollView()
+    private let mainView = DKPhotoGalleryScrollView()
     private var reuseableVCs: [ObjectIdentifier : [DKPhotoBasePreviewVC] ] = [:] // DKPhotoBasePreviewVC.Type : [DKPhotoBasePreviewVC]
     private var visibleVCs: [Int : DKPhotoBasePreviewVC] = [:]
     
     open override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		self.automaticallyAdjustsScrollViewInsets = false
+        super.viewDidLoad()
+        
+        self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = UIColor.clear
-		
+        
         self.mainView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width + 20, height: self.view.bounds.height)
         self.mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.mainView.delegate = self
@@ -135,7 +135,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         return previewVC
     }
-
+    
     private func findPreviewVC(for vcClass: DKPhotoBasePreviewVC.Type) -> DKPhotoBasePreviewVC? {
         let classKey = ObjectIdentifier(vcClass)
         return self.reuseableVCs[classKey]?.popLast()
@@ -177,17 +177,17 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         vc2.view.isHidden = true
         self.mainView.addSubview(vc2.view)
         self.addToReuseQueue(vc: vc2)
-
+        
         let vc3 = DKPhotoPlayerPreviewVC()
         vc3.view.isHidden = true
         self.mainView.addSubview(vc3.view)
         self.addToReuseQueue(vc: vc3)
-
+        
         let vc4 = DKPhotoPlayerPreviewVC()
         vc4.view.isHidden = true
         self.mainView.addSubview(vc4.view)
         self.addToReuseQueue(vc: vc4)
-
+        
         let vc5 = DKPhotoPlayerPreviewVC()
         vc5.view.isHidden = true
         self.mainView.addSubview(vc5.view)
@@ -195,7 +195,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         self.updateWithCurrentIndex(needToSetContentOffset: false)
     }
-
+    
     // MARK: - Orientations & Status Bar
     
     open override var shouldAutorotate: Bool {
@@ -205,14 +205,14 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
-        
+    
     // MARK: - Touch 3D
     
     @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
         return self.currentVC.previewActionItems
     }
-	
+    
     // MARK: - UIScrollViewDelegate
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
