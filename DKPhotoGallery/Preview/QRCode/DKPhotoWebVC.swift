@@ -82,10 +82,7 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         self.spinner.stopAnimating()
         
-        let _error = error as NSError
-        if _error.code == NSURLErrorCancelled {
-            return
-        }
+        guard (error as NSError).code != URLError.cancelled.rawValue else { return }
         
         if !self.hasFinished {
             self.errorLabel.isHidden = false
