@@ -16,11 +16,11 @@ public enum DKPhotoGallerySingleTapMode : Int {
 @objc
 open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate {
 	
-	open var items: [DKPhotoGalleryItem]?
+    open var items: [DKPhotoGalleryItem]?
     
     open var dismissImageViewBlock: ((_ dismissIndex: Int) -> UIImageView?)?
     
-	open var presentingFromImageView: UIImageView?
+    open var presentingFromImageView: UIImageView?
     open var presentationIndex = 0
     
     open var singleTapMode = DKPhotoGallerySingleTapMode.toggleControlView
@@ -29,19 +29,19 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open var customPreviewActions: [Any]? // [UIPreviewAction]
     
     open var transitionController: DKPhotoGalleryTransitionController?
-	
+    
     internal var statusBar: UIView?
-	internal weak var contentVC: DKPhotoGalleryContentVC!
-	
-	open override func viewDidLoad() {
-		super.viewDidLoad()
+    internal weak var contentVC: DKPhotoGalleryContentVC!
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.black
-		
+        
         self.navigationBar.barStyle = .blackTranslucent
-		self.isNavigationBarHidden = true
-		
-		let contentVC = DKPhotoGalleryContentVC()
+        self.isNavigationBarHidden = true
+        
+        let contentVC = DKPhotoGalleryContentVC()
         self.contentVC = contentVC
         
         contentVC.singleTapBlock = { [weak self] in
@@ -52,7 +52,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
             self?.updateNavigation()
         }
         
-		contentVC.items = self.items
+        contentVC.items = self.items
         contentVC.currentIndex = self.presentationIndex
         contentVC.customLongPressActions = self.customLongPressActions
         contentVC.customPreviewActions = self.customPreviewActions
@@ -60,8 +60,8 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
             self.dismissGallery()
         }
         self.viewControllers = [contentVC]
-		
-		contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
+        
+        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
         
         if let transitionController = self.transitionController {
             transitionController.prepareInteractiveGesture()
@@ -72,19 +72,19 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
             self.statusBar = statusBar
         }
-	}
+    }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.statusBar?.alpha = 0
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
-
+    
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -94,12 +94,12 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         
         self.statusBar?.alpha = 1
     }
-	
-	open func dismissGallery() {
+    
+    open func dismissGallery() {
         self.dismiss(animated: true) {
             self.transitionController = nil
         }
-	}
+    }
     
     open func currentContentView() -> UIView {
         return self.contentVC.currentContentView
