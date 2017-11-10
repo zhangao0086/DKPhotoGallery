@@ -10,19 +10,19 @@ import UIKit
 
 @objc
 open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTransitioning {
-	
+    
     var gallery: DKPhotoGallery!
     
-	// UIViewControllerAnimatedTransitioning
-	
-	open func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-		return 0.25
-	}
-	
-	open func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    // UIViewControllerAnimatedTransitioning
+    
+    open func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 0.25
+    }
+    
+    open func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
-		let containerView = transitionContext.containerView
+        let containerView = transitionContext.containerView
         let fromContentView = self.gallery.currentContentView()
         
         self.gallery.setNavigationBarHidden(true, animated: true)
@@ -56,6 +56,6 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
                 transitionContext.completeTransition(!wasCanceled)
             })
         }
-	}
-    	
+    }
+    
 }
