@@ -302,6 +302,9 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         } else if let _ = self.item.imageURL {
             self.downloadURL = self.item.imageURL
             self.reuseIdentifier = self.downloadURL?.hashValue
+        } else if let asset = self.item.asset {
+            self.asset = asset
+            self.reuseIdentifier = asset.localIdentifier.hashValue
         } else {
             assertionFailure()
         }

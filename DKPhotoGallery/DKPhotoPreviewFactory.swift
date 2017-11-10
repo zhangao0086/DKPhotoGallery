@@ -25,7 +25,7 @@ extension DKPhotoBasePreviewVC {
             if asset.mediaType == .video {
                 return DKPhotoPlayerPreviewVC.self
             } else {
-                return DKPhotoAssetPreviewVC.self
+                return DKPhotoImagePreviewVC.self
             }
             
         } else if let assetLocalIdentifier = item.assetLocalIdentifier {
