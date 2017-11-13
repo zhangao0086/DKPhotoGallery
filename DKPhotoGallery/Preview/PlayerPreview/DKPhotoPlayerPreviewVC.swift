@@ -58,8 +58,10 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
                                                     options: nil,
                                                     resultHandler: { [weak self] (avAsset, _, _) in
                                                         if let asset = self?.item.asset, asset.localIdentifier == identifier {
-                                                            let URLAsset = avAsset as! AVURLAsset
-                                                            completeBlock(URLAsset.url, nil)
+                                                            DispatchQueue.main.async {
+                                                                let URLAsset = avAsset as! AVURLAsset
+                                                                completeBlock(URLAsset.url, nil)
+                                                            }
                                                         }
             })
         } else {
