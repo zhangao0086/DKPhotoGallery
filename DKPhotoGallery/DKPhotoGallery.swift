@@ -63,10 +63,6 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         
         contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
         
-        if let transitionController = self.transitionController {
-            transitionController.prepareInteractiveGesture()
-        }
-        
         let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
         let key = String(data: keyData, encoding: String.Encoding.ascii)!
         if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
@@ -168,6 +164,8 @@ public extension UIViewController {
         
         gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery, presentedViewController: gallery, presenting: self)
         gallery.transitioningDelegate = gallery.transitionController
+        
+        gallery.transitionController!.prepareInteractiveGesture()
         
         self.present(gallery, animated: true, completion: completion)
     }

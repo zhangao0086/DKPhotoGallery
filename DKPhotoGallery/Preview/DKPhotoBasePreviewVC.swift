@@ -110,8 +110,10 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.photoPreviewWillAppear()
-        self.startFetchContent()
+        if self.item != nil {
+            self.photoPreviewWillAppear()
+            self.startFetchContent()
+        }
     }
     
     open func photoPreviewWillAppear() {

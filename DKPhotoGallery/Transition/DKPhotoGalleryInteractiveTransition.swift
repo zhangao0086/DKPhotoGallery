@@ -29,7 +29,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
     private func setupGesture() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleGesture))
         panGesture.delegate = self
-        self.gallery.visibleViewController?.view.addGestureRecognizer(panGesture)
+        self.gallery.view.addGestureRecognizer(panGesture)
     }
     
     @objc private func handleGesture(_ recognizer: UIPanGestureRecognizer) {
