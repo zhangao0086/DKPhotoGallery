@@ -76,11 +76,11 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
             if !shouldComplete || recognizer.state == .cancelled {
                 if let fromContentView = self.fromContentView {
                     let toImageView = self.toImageView
+                    let contentMode = fromContentView.contentMode
                     UIView.animate(withDuration: 0.3, animations: {
                         fromContentView.frame = self.fromRect
-                        fromContentView.superview?.superview?.backgroundColor = UIColor.black
-                        self.gallery.view.backgroundColor = UIColor.black
-                        self.gallery.statusBar?.alpha = 0
+                        fromContentView.contentMode = contentMode
+                        self.gallery.updateContextBackground(alpha: 1, animated: false)
                     }) { (finished) in
                         toImageView?.isHidden = false
                     }
