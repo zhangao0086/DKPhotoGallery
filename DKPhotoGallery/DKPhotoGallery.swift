@@ -53,9 +53,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
         
         contentVC.items = self.items
-        contentVC.currentIndex = self.presentationIndex
         contentVC.customLongPressActions = self.customLongPressActions
         contentVC.customPreviewActions = self.customPreviewActions
+        contentVC.currentIndex = self.presentationIndex
         contentVC.dismissBlock = { [unowned self] in
             self.dismissGallery()
         }
