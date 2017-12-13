@@ -27,15 +27,11 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
     public var currentVC: DKPhotoBasePreviewVC {
-        get {
-            return self.previewVC(at: self.currentIndex)
-        }
+        get { return self.previewVC(at: self.currentIndex) }
     }
     
     public var currentContentView: UIView {
-        get {
-            return self.currentVC.contentView
-        }
+        get { return self.currentVC.contentView }
     }
     
     private let mainView = DKPhotoGalleryScrollView()
@@ -166,6 +162,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     private var isFilled = false
     private func prefillingReuseQueue() {
         guard !self.isFilled else { return }
+        
         self.isFilled = true
         
         let vc1 = DKPhotoImagePreviewVC()

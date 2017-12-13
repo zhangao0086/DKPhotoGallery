@@ -18,7 +18,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
 	
     open var items: [DKPhotoGalleryItem]?
     
-    open var dismissImageViewBlock: ((_ dismissIndex: Int) -> UIImageView?)?
+    open var finishedBlock: ((_ index: Int) -> UIImageView?)?
     
     open var presentingFromImageView: UIImageView?
     open var presentationIndex = 0

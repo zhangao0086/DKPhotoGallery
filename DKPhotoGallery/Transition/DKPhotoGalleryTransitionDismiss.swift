@@ -27,8 +27,8 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
         
         self.gallery.setNavigationBarHidden(true, animated: true)
         
-        if let toImageView = self.gallery.dismissImageViewBlock?(self.gallery.contentVC.currentIndex), let _ = toImageView.image {
-            fromContentView.clipsToBounds = true
+        if let toImageView = self.gallery.finishedBlock?(self.gallery.contentVC.currentIndex), let _ = toImageView.image {
+            fromContentView.clipsToBounds = toImageView.clipsToBounds
             toImageView.isHidden = true
             UIView.animate(withDuration: transitionDuration, animations: {
                 let toImageViewFrameInScreen = toImageView.superview!.convert(toImageView.frame, to: nil)

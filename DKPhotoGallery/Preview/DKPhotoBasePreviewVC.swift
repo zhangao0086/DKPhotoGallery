@@ -249,17 +249,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     // MARK: - Gestures
     
-    @objc
-    private func singleTapAction(gesture: UIGestureRecognizer) {
-        guard self.previewType == .photo, let singleTapBlock = self.singleTapBlock, gesture.state == .recognized else {
+    @objc private func singleTapAction(gesture: UIGestureRecognizer) {
+        guard let singleTapBlock = self.singleTapBlock, gesture.state == .recognized else {
             return
         }
         
         singleTapBlock()
     }
     
-    @objc
-    private func doubleTapAction(gesture: UIGestureRecognizer) {
+    @objc private func doubleTapAction(gesture: UIGestureRecognizer) {
         guard gesture.state == .recognized, self.scrollView.maximumZoomScale > self.scrollView.minimumZoomScale else {
             return
         }
@@ -286,8 +284,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         }
     }
     
-    @objc
-    private func longPressAction(gesture: UIGestureRecognizer) {
+    @objc private func longPressAction(gesture: UIGestureRecognizer) {
         guard gesture.state == .began, self.scrollView.maximumZoomScale > self.scrollView.minimumZoomScale else {
             return
         }
@@ -359,17 +356,15 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     // MARK: - DKPhotoBasePreviewDataSource
     
     public func createContentView() -> UIView {
-        assertionFailure()
-        return UIView()
+        preconditionFailure("This method must be overridden.")
     }
     
     public func updateContentView(with content: Any) {
-        assertionFailure()
+        preconditionFailure("This method must be overridden.")
     }
     
     public func contentSize() -> CGSize {
-        assertionFailure()
-        return CGSize.zero
+        preconditionFailure("This method must be overridden.")
     }
     
     public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {

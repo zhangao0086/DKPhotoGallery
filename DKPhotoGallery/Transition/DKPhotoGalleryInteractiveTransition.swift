@@ -41,9 +41,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
             self.fromContentView = self.gallery.currentContentView()
             self.fromRect = self.fromContentView?.frame
             
-            self.gallery.setNavigationBarHidden(true, animated: true)
-            
-            self.toImageView = self.gallery.dismissImageViewBlock?(self.gallery.currentIndex())
+            self.toImageView = self.gallery.finishedBlock?(self.gallery.currentIndex())
             self.toImageView?.isHidden = true
         case .changed:
             let fraction = CGFloat(fabsf(Float(offset.y / 200)))

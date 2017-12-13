@@ -378,7 +378,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         }
     }
     
-    override func prepareForReuse() {
+    open override func prepareForReuse() {
         super.prepareForReuse()
         
         self.reuseIdentifier = nil
