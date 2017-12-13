@@ -148,6 +148,19 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.startFetchContent()
     }
     
+    open func updateContextBackground(alpha: CGFloat) {
+        self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+    }
+    
+    open func prepareForReuse() {
+        if self.enableZoom() {
+            self.resetScale()
+        }
+        
+        self.hidesIndicator()
+        self.thumbnailView.isHidden = true
+    }
+    
     // MARK: - Private
     
     private func setupGestures() {
@@ -397,21 +410,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     public var previewType: DKPhotoPreviewType {
-        get {
-            return .photo
-        }
+        get { return .photo }
     }
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-extension DKPhotoBasePreviewVC {
-    
-    open func prepareForReuse() {
-        if self.enableZoom() {
-            self.resetScale()
-        }
-    }
-        
-}
