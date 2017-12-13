@@ -16,23 +16,16 @@ Pod::Spec.new do |s|
     s.dependency 'SDWebImage/GIF', '~> 4.0'
     s.dependency 'MBProgressHUD', '1.0.0'
 
-    # s.subspec 'Core' do |core|
-    #     core.dependency 'DKPhotoGallery/Model'
-    #     core.dependency 'DKPhotoGallery/Preview'
+    s.subspec 'Core' do |core|
+        core.dependency 'DKPhotoGallery/Model'
+        core.dependency 'DKPhotoGallery/Preview'
 
-    #     core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
-    #                             'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
-    #                             'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
-    #                             'DKPhotoGallery/DKPhotoPreviewFactory.swift',
-    #                             'DKPhotoGallery/Transition/*.swift'
-    # end
-
-    s.source_files  =   'DKPhotoGallery/DKPhotoGallery.swift', 
-                        'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
-                        'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
-                        'DKPhotoGallery/DKPhotoPreviewFactory.swift',
-                        'DKPhotoGallery/Transition/*.swift'
-
+        core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
+                                'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
+                                'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
+                                'DKPhotoGallery/DKPhotoPreviewFactory.swift',
+                                'DKPhotoGallery/Transition/*.swift'
+    end
 
     s.subspec 'Model' do |model|
         model.source_files = 'DKPhotoGallery/DKPhotoGalleryItem.swift'
