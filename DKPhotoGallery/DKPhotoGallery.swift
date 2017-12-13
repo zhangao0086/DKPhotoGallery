@@ -226,6 +226,36 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         return self.contentVC.currentVC.previewActionItems
     }
     
+    // MARK: - UINavigationController
+    
+    private var _isNavigationBarHidden: Bool = false
+    open override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+        
+        if self.isNavigationBarHidden {
+            self._isNavigationBarHidden = true
+            
+            self.setNavigationBarHidden(false, animated: true)
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                self.statusBar?.alpha = 1
+            })
+        }
+    }
+    
+    open override func popViewController(animated: Bool) -> UIViewController? {
+        if self._isNavigationBarHidden {
+            self._isNavigationBarHidden = false
+            
+            self.setNavigationBarHidden(true, animated: true)
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                self.statusBar?.alpha = 0
+            })
+        }
+            
+        return super.popViewController(animated: animated)
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
