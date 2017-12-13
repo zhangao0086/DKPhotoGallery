@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
+class DKPhotoWebVC: UIViewController, WKNavigationDelegate {
     
     var urlString: String!
     
@@ -34,6 +34,8 @@ class DKPhotoWebVC: DKPhotoPushVC, WKNavigationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.white
         
         self.webView.navigationDelegate = self
         self.webView.frame = self.view.bounds

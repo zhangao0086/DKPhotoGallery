@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DKPhotoQRCodeResultVC: DKPhotoPushVC {
+class DKPhotoQRCodeResultVC: UIViewController {
 
     private var result: String = ""
     
@@ -23,6 +23,7 @@ class DKPhotoQRCodeResultVC: DKPhotoPushVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = UIColor.white
         self.title = DKPhotoGalleryLocalizedStringWithKey("preview.image.extractQRCode.result.text.title")
         
         self.textView.frame = self.view.bounds
