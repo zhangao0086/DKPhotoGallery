@@ -4,15 +4,21 @@ DKPhotoGallery
  [![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
 
 ### Features
-3D Touch  
-PHAsset  
-Original Image  
-QR Code
+
+- Image caching with SDWebImage
+- PNG|JPEG|GIF|PHAsset
+- 原图下载
+- AVPlayer
+- Extract QR Code(Text、URL)
+- Play movie with no file extension
+- Localization
+- 3D Touch
+
 
 ## Requirements
 * iOS 8.0+
 * ARC
-* Swift 3 and Xcode 8
+* Swift 3.2 & 4
 
 ## Installation
 #### iOS 8 and newer
