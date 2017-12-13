@@ -5,15 +5,14 @@ DKPhotoGallery
 
 ### Features
 
-- Image caching with SDWebImage
 - PNG|JPEG|GIF|PHAsset
-- 原图下载
 - AVPlayer
+- Image caching with SDWebImage
+- Original image download
 - Extract QR Code(Text、URL)
 - Play movie with no file extension
 - Localization
 - 3D Touch
-
 
 ## Requirements
 * iOS 8.0+
