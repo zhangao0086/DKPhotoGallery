@@ -14,35 +14,55 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
 
     public var closeBlock: (() -> Void)?
     
-    private var playerView: DKPlayerView!
+    public var autoHidesControlView = true
+    
+    public var tapToToggleControlView = true
+    
+    public var beginPlayBlock: (() -> Void)?
+    
+    public var isControlHidden: Bool = true {
+        willSet {
+            guard let playerView  = self.playerView else { return }
+            
+            playerView.isControlHidden = newValue
+        }
+    }
+
+    private var playerView: DKPlayerView?
     
     deinit {
-        self.playerView.stop()
+        self.playerView?.stop()
     }
     
     open override func photoPreviewWillAppear() {
         super.photoPreviewWillAppear()
         
-        self.playerView.isControlHidden = true
+        self.playerView?.isControlHidden = true
     }
     
     open override func photoPreviewWillDisappear() {
         super.photoPreviewWillDisappear()
         
-        self.playerView.pause()
+        self.playerView?.pause()
+    }
+    
+    open override func updateContextBackground(alpha: CGFloat) {
+        super.updateContextBackground(alpha: alpha)
+        
+        self.playerView?.updateContextBackground(alpha: alpha)
     }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.playerView.reset()
+        self.playerView?.reset()
     }
     
     // MARK: - DKPhotoBasePreviewDataSource
     
     open override func createContentView() -> UIView {
         self.playerView = DKPlayerView(controlParentView: self.view)
-        return self.playerView
+        return self.playerView!
     }
     
     open override func contentSize() -> CGSize {
@@ -54,13 +74,22 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
             completeBlock(videoURL, nil)
         } else if let asset = self.item.asset {
             let identifier = asset.localIdentifier
+            
+            let options = PHVideoRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { (progress, error, stop, info) in
+                if progress > 0 {
+                    progressBlock(Float(progress))
+                }
+            }
+
             PHImageManager.default().requestAVAsset(forVideo: asset,
-                                                    options: nil,
+                                                    options: options,
                                                     resultHandler: { [weak self] (avAsset, _, _) in
-                                                        if let asset = self?.item.asset, asset.localIdentifier == identifier {
-                                                            DispatchQueue.main.async {
+                                                        DispatchQueue.main.async {
+                                                            if let asset = self?.item.asset, asset.localIdentifier == identifier {
                                                                 let URLAsset = avAsset as! AVURLAsset
-                                                                completeBlock(URLAsset.url, nil)
+                                                                completeBlock(URLAsset, nil)
                                                             }
                                                         }
             })
@@ -70,11 +99,18 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
     }
     
     open override func updateContentView(with content: Any) {
-        guard let contentURL = content as? URL else { return }
+        self.playerView?.closeBlock = self.closeBlock
+        self.playerView?.autoHidesControlView = self.autoHidesControlView
+        self.playerView?.tapToToggleControlView = self.tapToToggleControlView
+        self.playerView?.beginPlayBlock = self.beginPlayBlock
+        self.playerView?.isControlHidden = self.isControlHidden
         
-        self.playerView.closeBlock = self.closeBlock
+        if let asset = content as? AVURLAsset {
+            self.playerView?.asset = asset
+        } else if let contentURL = content as? URL {
+            self.playerView?.url = contentURL
+        }
         
-        self.playerView.url = contentURL
     }
     
     open override func enableZoom() -> Bool {
@@ -86,9 +122,7 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
     }
     
     open override var previewType: DKPhotoPreviewType {
-        get {
-            return .video
-        }
+        get { return .video }
     }
 
 }

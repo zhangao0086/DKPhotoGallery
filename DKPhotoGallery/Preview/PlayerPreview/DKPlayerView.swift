@@ -26,7 +26,7 @@ open class DKPlayerView: UIView {
     public var url: URL? {
         
         willSet {
-            if self.url == newValue {
+            if self.url == newValue && self.error == nil {
                 return
             }
             
@@ -80,6 +80,8 @@ open class DKPlayerView: UIView {
                                 
                                 if let item = item {
                                     self.playerItem = item
+                                } else if let error = self.error, self.autoPlayOrShowErrorOnce {
+                                    self.showPlayError(error.localizedDescription)
                                 }
                             }
                         }
@@ -104,8 +106,8 @@ open class DKPlayerView: UIView {
             }
 
             if let newPlayerItem = newValue {
-                self.addObservers(for: newPlayerItem)
                 self.player.replaceCurrentItem(with: newPlayerItem)
+                self.addObservers(for: newPlayerItem)
             }
         }
     }
@@ -116,19 +118,23 @@ open class DKPlayerView: UIView {
         }
     }
     
+    public var beginPlayBlock: (() -> Void)?
+    
     public var isControlHidden: Bool {
-        get {
-            return self.controlView.isHidden
-        }
+        get { return self.controlView.isHidden }
         
-        set {
-            self.controlView.isHidden = newValue
-        }
+        set { self.controlView.isHidden = newValue }
     }
     
     public var isPlaying: Bool {
-        get {
-            return self.player.rate == 1.0
+        get { return self.player.rate == 1.0 }
+    }
+    
+    public var autoHidesControlView = true
+    
+    public var tapToToggleControlView = true {
+        willSet {
+            self.tapGesture.isEnabled = newValue
         }
     }
     
@@ -140,6 +146,7 @@ open class DKPlayerView: UIView {
     private let timeSlider = UISlider()
     private let startTimeLabel = UILabel()
     private let durationLabel = UILabel()
+    private var tapGesture: UITapGestureRecognizer!
     private lazy var bufferingIndicator: UIActivityIndicatorView = {
         return UIActivityIndicatorView(activityIndicatorStyle: .gray)
     }()
@@ -148,11 +155,11 @@ open class DKPlayerView: UIView {
         return self.layer as! AVPlayerLayer
     }
     
-    @objc private var player = AVPlayer()
+    private let player = AVPlayer()
     
     private var currentTime: Double {
         get {
-            return CMTimeGetSeconds(self.player.currentTime())
+            return CMTimeGetSeconds(player.currentTime())
         }
         
         set {
@@ -231,7 +238,11 @@ open class DKPlayerView: UIView {
     @objc public func playAndHidesControlView() {
         self.play()
         
-        self.isControlHidden = true
+        self.beginPlayBlock?()
+        
+        if self.autoHidesControlView {
+            self.isControlHidden = true
+        }
     }
     
     public func play() {
@@ -241,6 +252,7 @@ open class DKPlayerView: UIView {
             if let URLAsset = (self.asset ?? self.playerItem?.asset) as? AVURLAsset, self.isTriableError(error) {
                 self.autoPlayOrShowErrorOnce = true
                 
+                self.asset = nil
                 self.url = URLAsset.url
                 self.error = nil
             } else {
@@ -277,10 +289,19 @@ open class DKPlayerView: UIView {
         self.pause()
     }
     
+    public func updateContextBackground(alpha: CGFloat) {
+        self.playButton.alpha = alpha
+        self.controlView.alpha = alpha
+    }
+    
     public func reset() {
         self.asset?.cancelLoading()
         
+        self.url = nil
+        self.asset = nil
+        self.playerItem = nil
         self.error = nil
+        
         self.autoPlayOrShowErrorOnce = false
         self.isFinishedPlaying = false
         self.bufferingIndicator.stopAnimating()
@@ -349,10 +370,14 @@ open class DKPlayerView: UIView {
                                                           multiplier: 1,
                                                           constant: 15))
         
+        let bottomView = UIView()
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        self.controlView.addSubview(bottomView)
+        
         self.playPauseButton.setImage(DKPhotoGalleryResource.videoToolbarPlayImage(), for: .normal)
         self.playPauseButton.setImage(DKPhotoGalleryResource.videoToolbarPauseImage(), for: .selected)
         self.playPauseButton.addTarget(self, action: #selector(playPauseButtonWasPressed), for: .touchUpInside)
-        self.controlView.addSubview(self.playPauseButton)
+        bottomView.addSubview(self.playPauseButton)
         self.playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         self.playPauseButton.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
                                                               attribute: .width,
@@ -368,62 +393,75 @@ open class DKPlayerView: UIView {
                                                               attribute: .notAnAttribute,
                                                               multiplier: 1,
                                                               constant: 40))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
-                                                          attribute: .left,
-                                                          relatedBy: .equal,
-                                                          toItem: self.controlView,
-                                                          attribute: .left,
-                                                          multiplier: 1,
-                                                          constant: 20))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
-                                                          attribute: .bottom,
-                                                          relatedBy: .equal,
-                                                          toItem: self.controlView,
-                                                          attribute: .bottom,
-                                                          multiplier: 1,
-                                                          constant: -10))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
+                                                    attribute: .left,
+                                                    relatedBy: .equal,
+                                                    toItem: bottomView,
+                                                    attribute: .left,
+                                                    multiplier: 1,
+                                                    constant: 20))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
+                                                    attribute: .top,
+                                                    relatedBy: .equal,
+                                                    toItem: bottomView,
+                                                    attribute: .top,
+                                                    multiplier: 1,
+                                                    constant: 0))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.playPauseButton,
+                                                    attribute: .bottom,
+                                                    relatedBy: .equal,
+                                                    toItem: bottomView,
+                                                    attribute: .bottom,
+                                                    multiplier: 1,
+                                                    constant: 0))
         
-        self.controlView.addSubview(self.startTimeLabel)
+        bottomView.addSubview(self.startTimeLabel)
         self.startTimeLabel.textColor = UIColor.white
         self.startTimeLabel.textAlignment = .right
         self.startTimeLabel.font = UIFont(name: "Helvetica Neue", size: 13)
         self.startTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.startTimeLabel,
-                                                          attribute: .left,
-                                                          relatedBy: .equal,
-                                                          toItem: self.playPauseButton,
-                                                          attribute: .right,
-                                                          multiplier: 1,
-                                                          constant: 0))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.startTimeLabel,
-                                                          attribute: .centerY,
-                                                          relatedBy: .equal,
-                                                          toItem: self.playPauseButton,
-                                                          attribute: .centerY,
-                                                          multiplier: 1,
-                                                          constant: 0))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.startTimeLabel,
+                                                    attribute: .left,
+                                                    relatedBy: .equal,
+                                                    toItem: self.playPauseButton,
+                                                    attribute: .right,
+                                                    multiplier: 1,
+                                                    constant: 0))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.startTimeLabel,
+                                                    attribute: .centerY,
+                                                    relatedBy: .equal,
+                                                    toItem: self.playPauseButton,
+                                                    attribute: .centerY,
+                                                    multiplier: 1,
+                                                    constant: 0))
         
-        self.controlView.addSubview(self.timeSlider)
-        
+        bottomView.addSubview(self.timeSlider)
         self.timeSlider.addTarget(self, action: #selector(timeSliderDidChange(sender:event:)), for: .valueChanged)
         self.timeSlider.setThumbImage(DKPhotoGalleryResource.videoTimeSliderImage(), for: .normal)
         self.timeSlider.translatesAutoresizingMaskIntoConstraints = false
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.timeSlider,
-                                                          attribute: .left,
-                                                          relatedBy: .equal,
-                                                          toItem: self.startTimeLabel,
-                                                          attribute: .right,
-                                                          multiplier: 1,
-                                                          constant: 15))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.timeSlider,
-                                                          attribute: .centerY,
-                                                          relatedBy: .equal,
-                                                          toItem: self.playPauseButton,
-                                                          attribute: .centerY,
-                                                          multiplier: 1,
-                                                          constant: 0))
+        self.timeSlider.addConstraint(NSLayoutConstraint(item: self.timeSlider,
+                                                         attribute: .height,
+                                                         relatedBy: .equal,
+                                                         toItem: nil,
+                                                         attribute: .notAnAttribute,
+                                                         multiplier: 1,
+                                                         constant: 40))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.timeSlider,
+                                                    attribute: .left,
+                                                    relatedBy: .equal,
+                                                    toItem: self.startTimeLabel,
+                                                    attribute: .right,
+                                                    multiplier: 1,
+                                                    constant: 15))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.timeSlider,
+                                                    attribute: .centerY,
+                                                    relatedBy: .equal,
+                                                    toItem: self.playPauseButton,
+                                                    attribute: .centerY,
+                                                    multiplier: 1,
+                                                    constant: 0))
         
-        self.controlView.addSubview(self.durationLabel)
+        bottomView.addSubview(self.durationLabel)
         self.durationLabel.textColor = UIColor.white
         self.durationLabel.font = self.startTimeLabel.font
         self.durationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -434,41 +472,63 @@ open class DKPlayerView: UIView {
                                                             attribute: .notAnAttribute,
                                                             multiplier: 1,
                                                             constant: 50))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
-                                                          attribute: .width,
-                                                          relatedBy: .equal,
-                                                          toItem: self.startTimeLabel,
-                                                          attribute: .width,
-                                                          multiplier: 1,
-                                                          constant: 0))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
-                                                          attribute: .left,
-                                                          relatedBy: .equal,
-                                                          toItem: self.timeSlider,
-                                                          attribute: .right,
-                                                          multiplier: 1,
-                                                          constant: 15))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
+        bottomView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
+                                                    attribute: .width,
+                                                    relatedBy: .equal,
+                                                    toItem: self.startTimeLabel,
+                                                    attribute: .width,
+                                                    multiplier: 1,
+                                                    constant: 0))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
+                                                    attribute: .left,
+                                                    relatedBy: .equal,
+                                                    toItem: self.timeSlider,
+                                                    attribute: .right,
+                                                    multiplier: 1,
+                                                    constant: 15))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
+                                                    attribute: .right,
+                                                    relatedBy: .equal,
+                                                    toItem: bottomView,
+                                                    attribute: .right,
+                                                    multiplier: 1,
+                                                    constant: -10))
+        bottomView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
+                                                    attribute: .centerY,
+                                                    relatedBy: .equal,
+                                                    toItem: self.startTimeLabel,
+                                                    attribute: .centerY,
+                                                    multiplier: 1,
+                                                    constant: 0))
+        
+        self.controlView.addConstraint(NSLayoutConstraint(item: bottomView,
+                                                    attribute: .left,
+                                                    relatedBy: .equal,
+                                                    toItem: self.controlView,
+                                                    attribute: .left,
+                                                    multiplier: 1,
+                                                    constant: 0))
+        self.controlView.addConstraint(NSLayoutConstraint(item: bottomView,
                                                           attribute: .right,
                                                           relatedBy: .equal,
                                                           toItem: self.controlView,
                                                           attribute: .right,
                                                           multiplier: 1,
-                                                          constant: -10))
-        self.controlView.addConstraint(NSLayoutConstraint(item: self.durationLabel,
-                                                          attribute: .centerY,
-                                                          relatedBy: .equal,
-                                                          toItem: self.startTimeLabel,
-                                                          attribute: .centerY,
-                                                          multiplier: 1,
                                                           constant: 0))
-        
+        self.controlView.addConstraint(NSLayoutConstraint(item: bottomView,
+                                                          attribute: .bottom,
+                                                          relatedBy: .equal,
+                                                          toItem: self.controlView,
+                                                          attribute: .bottom,
+                                                          multiplier: 1,
+                                                          constant: self.isIphoneX() ? -34 : 0))
         
         if let controlParentView = self.controlParentView {
             controlParentView.addSubview(self.controlView)
         } else {
             self.addSubview(self.controlView)
         }
+        
         self.controlView.frame = self.controlView.superview!.bounds
         self.controlView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -477,7 +537,10 @@ open class DKPlayerView: UIView {
         backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.controlView.insertSubview(backgroundImageView, at: 0)
         
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleControlView(tapGesture:))))
+        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleControlView(tapGesture:)))
+        self.addGestureRecognizer(self.tapGesture)
+        
+        self.timeSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sliderTappedAction(tapGesture:))))
         
         self.controlView.isHidden = self.isControlHidden
     }
@@ -505,6 +568,22 @@ open class DKPlayerView: UIView {
             default:
                 break
             }
+        } else {
+            self.currentTime = Double(self.timeSlider.value)
+            self.play()
+        }
+    }
+    
+    @objc private func sliderTappedAction(tapGesture: UITapGestureRecognizer) {
+        if let slider = tapGesture.view as? UISlider {
+            if slider.isHighlighted { return }
+            
+            let point = tapGesture.location(in: slider)
+            let percentage = Float(point.x / slider.bounds.width)
+            let delta = percentage * Float(slider.maximumValue - slider.minimumValue)
+            let value = slider.minimumValue + delta
+            slider.setValue(value, animated: true)
+            slider.sendActions(for: .valueChanged)
         }
     }
     
@@ -516,6 +595,8 @@ open class DKPlayerView: UIView {
 
     private var hidesControlViewTimer: Timer?
     private func startHidesControlTimerIfNeeded() {
+        guard self.autoHidesControlView else { return }
+        
         self.stopHidesControlTimer()
         if !self.isControlHidden && self.isPlaying {
             self.hidesControlViewTimer = Timer.scheduledTimer(timeInterval: 3.5,
@@ -527,6 +608,8 @@ open class DKPlayerView: UIView {
     }
     
     private func stopHidesControlTimer() {
+        guard self.autoHidesControlView else { return }
+        
         self.hidesControlViewTimer?.invalidate()
         self.hidesControlViewTimer = nil
     }
@@ -580,18 +663,23 @@ open class DKPlayerView: UIView {
         }
     }
     
+    private func isIphoneX() -> Bool {
+        return max(UIScreen.main.bounds.height, UIScreen.main.bounds.width) >= 812
+    }
+    
     // MARK: - Observer
     
     private func addObservers(for playerItem: AVPlayerItem) {
         playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), options: [.new, .initial], context: &DKPlayerViewKVOContext)
         playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.new, .initial], context: &DKPlayerViewKVOContext)
         playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp), options: [.new, .initial], context: &DKPlayerViewKVOContext)
-        self.player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new, .initial], context: &DKPlayerViewKVOContext)
+        playerItem.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackBufferEmpty), options: [.new, .initial], context: &DKPlayerViewKVOContext)
+        player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.new, .initial], context: &DKPlayerViewKVOContext)
         
         NotificationCenter.default.addObserver(self, selector: #selector(itemDidPlayToEndTime), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
         
         let interval = CMTime(value: 1, timescale: 1)
-        self.timeObserverToken = self.player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { [weak self] (time) in
+        self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { [weak self] (time) in
             guard let strongSelf = self else { return }
             
             let timeElapsed = Float(CMTimeGetSeconds(time))
@@ -608,6 +696,7 @@ open class DKPlayerView: UIView {
         playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.duration), context: &DKPlayerViewKVOContext)
         playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &DKPlayerViewKVOContext)
         playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp), context: &DKPlayerViewKVOContext)
+        playerItem.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackBufferEmpty), context: &DKPlayerViewKVOContext)
         self.player.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate), context: &DKPlayerViewKVOContext)
         
         NotificationCenter.default.removeObserver(self)
@@ -639,6 +728,7 @@ open class DKPlayerView: UIView {
              Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
              `player.currentItem` is nil.
              */
+            
             let newDuration: CMTime
             if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
                 newDuration = newDurationAsValue.timeValue
@@ -648,7 +738,7 @@ open class DKPlayerView: UIView {
             
             let hasValidDuration = newDuration.isNumeric && newDuration.value != 0
             let newDurationSeconds = hasValidDuration ? CMTimeGetSeconds(newDuration) : 0.0
-            let currentTime = hasValidDuration ? Float(CMTimeGetSeconds(self.player.currentTime())) : 0.0
+            let currentTime = hasValidDuration ? Float(CMTimeGetSeconds(player.currentTime())) : 0.0
             
             self.timeSlider.maximumValue = Float(newDurationSeconds)
             self.timeSlider.value = currentTime
@@ -662,7 +752,8 @@ open class DKPlayerView: UIView {
             self.durationLabel.isEnabled = hasValidDuration
             self.durationLabel.text = self.createTimeString(time: Float(newDurationSeconds))
         } else if keyPath == #keyPath(AVPlayerItem.status) {
-            guard self.autoPlayOrShowErrorOnce, let currentItem = object as? AVPlayerItem else { return }
+            guard let currentItem = object as? AVPlayerItem else { return }
+            guard self.autoPlayOrShowErrorOnce else { return }
             
             // Display an error if status becomes `.Failed`.
             
@@ -694,6 +785,7 @@ open class DKPlayerView: UIView {
         } else if keyPath == #keyPath(AVPlayer.rate) {
             // Update UI status.
             let newRate = (change?[NSKeyValueChangeKey.newKey] as! NSNumber).doubleValue
+            
             if newRate == 1.0 {
                 self.startHidesControlTimerIfNeeded()
                 self.playPauseButton.isSelected = true
@@ -702,6 +794,8 @@ open class DKPlayerView: UIView {
                 self.playPauseButton.isSelected = false
             }
         } else if keyPath == #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp) {
+            self.updateBufferingIndicatorStateIfNeeded()
+        } else if keyPath == #keyPath(AVPlayerItem.isPlaybackBufferEmpty) {
             self.updateBufferingIndicatorStateIfNeeded()
         }
     }
