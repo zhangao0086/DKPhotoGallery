@@ -129,6 +129,20 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
+    public override func snapshotImage() -> UIImage? {
+        if let contentView = self.contentView as? DKPhotoImageView {
+            if let image = contentView.image {
+                return image
+            } else if contentView.animatedImage != nil {
+                return contentView.currentFrame
+            } else {
+                return self.item.thumbnail
+            }
+        } else {
+            return self.item.thumbnail
+        }
+    }
+    
     public override func showError() {
         guard let contentView = self.contentView as? DKPhotoImageView else { return }
         

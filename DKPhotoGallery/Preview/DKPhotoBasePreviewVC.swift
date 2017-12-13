@@ -24,6 +24,8 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     
     func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void))
     
+    func snapshotImage() -> UIImage?
+    
     func showError()
     
     func hidesError()
@@ -355,7 +357,11 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     public func fetchContent(withProgressBlock progressBlock: @escaping ((_ progress: Float) -> Void), completeBlock: @escaping ((_ data: Any?, _ error: Error?) -> Void)) {
-        assertionFailure()
+        preconditionFailure("This method must be overridden.")
+    }
+    
+    public func snapshotImage() -> UIImage? {
+        return nil
     }
     
     public func showError() {}
