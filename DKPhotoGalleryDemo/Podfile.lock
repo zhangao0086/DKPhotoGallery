@@ -41,7 +41,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 691b396406782fbb06fe0722d6127ca6adbadacb
+  DKPhotoGallery: 64d6fe74642b2b5991285168a4bda693336a8d00
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541

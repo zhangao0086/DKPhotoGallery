@@ -1,7 +1,7 @@
 {
   "name": "DKPhotoGallery",
   "version": "0.0.1",
-  "summary": "A Photo Gallery / Browser / Viewer for iOS written in Swift 3",
+  "summary": "A Photo Gallery / Browser / Viewer for iOS written in Swift",
   "homepage": "https://github.com/zhangao0086/DKPhotoGallery",
   "license": {
     "type": "MIT",
@@ -35,9 +35,6 @@
     "MBProgressHUD": [
       "1.0.0"
     ]
-  },
-  "pod_target_xcconfig": {
-    "SWIFT_VERSION": "3.0"
   },
   "subspecs": [
     {
