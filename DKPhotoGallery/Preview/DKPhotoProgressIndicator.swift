@@ -14,7 +14,11 @@ class DKPhotoProgressIndicator: MBProgressHUD, DKPhotoProgressIndicatorProtocol 
      required init(with view: UIView) {
         super.init(view: view)
         
-        self.mode = .indeterminate
+        self.areDefaultMotionEffectsEnabled = false
+        self.mode = .determinate
+        self.contentColor = UIColor.white
+        self.bezelView.color = UIColor.clear
+        self.bezelView.style = .solidColor
         
         view.addSubview(self)
     }
@@ -36,7 +40,6 @@ class DKPhotoProgressIndicator: MBProgressHUD, DKPhotoProgressIndicatorProtocol 
     }
     
     func setIndicatorProgress(_ progress: Float) {
-        self.mode = progress == 0 ? .indeterminate : .determinate
         self.progress = progress
     }
 
