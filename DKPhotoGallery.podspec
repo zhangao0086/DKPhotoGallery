@@ -10,22 +10,29 @@ Pod::Spec.new do |s|
                        :tag => s.version.to_s }
     s.resource      = 'DKPhotoGallery/Resource/DKPhotoGallery.bundle'
 
-    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary'
+    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary', 'MobileCoreServices'
     s.requires_arc  = true
 
     s.dependency 'SDWebImage/GIF', '~> 4.0'
     s.dependency 'MBProgressHUD', '1.0.0'
 
-    s.subspec 'Core' do |core|
-        core.dependency 'DKPhotoGallery/Model'
-        core.dependency 'DKPhotoGallery/Preview'
+    # s.subspec 'Core' do |core|
+    #     core.dependency 'DKPhotoGallery/Model'
+    #     core.dependency 'DKPhotoGallery/Preview'
 
-        core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
-                                'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
-                                'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
-                                'DKPhotoGallery/DKPhotoPreviewFactory.swift',
-                                'DKPhotoGallery/Transition/*.swift'
-    end
+    #     core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
+    #                             'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
+    #                             'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
+    #                             'DKPhotoGallery/DKPhotoPreviewFactory.swift',
+    #                             'DKPhotoGallery/Transition/*.swift'
+    # end
+
+    s.source_files  =   'DKPhotoGallery/DKPhotoGallery.swift', 
+                        'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
+                        'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
+                        'DKPhotoGallery/DKPhotoPreviewFactory.swift',
+                        'DKPhotoGallery/Transition/*.swift'
+
 
     s.subspec 'Model' do |model|
         model.source_files = 'DKPhotoGallery/DKPhotoGalleryItem.swift'
