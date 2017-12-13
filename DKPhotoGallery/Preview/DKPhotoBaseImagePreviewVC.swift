@@ -1,6 +1,6 @@
 //
 //  DKPhotoBaseImagePreviewVC.swift
-//  DKPhotoGalleryDemo
+//  DKPhotoGallery
 //
 //  Created by ZhangAo on 15/09/2017.
 //  Copyright © 2017 ZhangAo. All rights reserved.
@@ -63,38 +63,36 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         guard let contentView = self.contentView as? DKPhotoImageView else { return }
         
         PHPhotoLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                if let animatedImage = contentView.animatedImage {
-                    ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                        DispatchQueue.main.async(execute: {
-                            if let _ = error {
-                                self.showTips("图片保存失败")
+            DispatchQueue.main.async(execute: {
+                switch status {
+                case .authorized:
+                    if let animatedImage = contentView.animatedImage {
+                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
+                            if let error = error {
+                                self.showTips(error.localizedDescription)
                             } else {
-                                self.showTips("图片保存成功")
+                                self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.result.success"))
                             }
                         })
-                    })
-                } else if let image = contentView.image {
-                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                    } else if let image = contentView.image {
+                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                    }
+                case .restricted:
+                    fallthrough
+                case .denied:
+                    self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.permission.error"))
+                default:
+                    break
                 }
-            case .restricted:
-                fallthrough
-            case .denied:
-                DispatchQueue.main.async(execute: {
-                    self.showTips("获取图片保存权限失败")
-                })
-            default:
-                break
-            }
+            })
         }
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if error == nil {
-            self.showTips("图片保存成功")
+        if let error = error {
+            self.showTips(error.localizedDescription)
         } else {
-            self.showTips("图片保存失败")
+            self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.result.success"))
         }
     }
     
@@ -170,8 +168,9 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     
     @available(iOS 9.0, *)
     public override func defaultPreviewActions() -> [UIPreviewAction] {
-        let saveActionItem = UIPreviewAction(title: "保存", style: .default) { (action, previewViewController) in
-            self.saveImageToAlbum()
+        let saveActionItem = UIPreviewAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.3DTouch.saveImage.title"),
+                                             style: .default) { (action, previewViewController) in
+                                                self.saveImageToAlbum()
         }
         
         return [saveActionItem]
@@ -181,14 +180,17 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         var actions = [UIAlertAction]()
         
         if let QRCodeResult = self.detectStringFromImage() {
-            let detectQRCodeAction = UIAlertAction(title: "识别图中二维码", style: .default, handler: { [weak self] (action) in
-                self?.previewQRCode(with: QRCodeResult)
+            let detectQRCodeAction = UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.extractQRCode.title"),
+                                                   style: .default,
+                                                   handler: { [weak self] (action) in
+                                                    self?.previewQRCode(with: QRCodeResult)
             })
             actions.append(detectQRCodeAction)
         }
         
-        let saveImageAction = UIAlertAction(title: "保存图片", style: .default) { [weak self] (action) in
-            self?.saveImageToAlbum()
+        let saveImageAction = UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.longPress.saveImage.title"),
+                                            style: .default) { [weak self] (action) in
+                                                self?.saveImageToAlbum()
         }
         actions.append(saveImageAction)
         

@@ -44,7 +44,6 @@ class ViewController: UIViewController {
         DKPhotoGalleryItem(videoURL: URL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
 	]
 
-    
     @IBOutlet var imageView: UIImageView?
 
 	@IBAction func imageClicked(_ sender: UITapGestureRecognizer) {

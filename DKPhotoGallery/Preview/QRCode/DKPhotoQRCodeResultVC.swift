@@ -23,7 +23,7 @@ class DKPhotoQRCodeResultVC: DKPhotoPushVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "扫描结果"
+        self.title = DKPhotoGalleryLocalizedStringWithKey("preview.image.extractQRCode.result.text.title")
         
         self.textView.frame = self.view.bounds
         self.textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

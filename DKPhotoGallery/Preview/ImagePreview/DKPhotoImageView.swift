@@ -1,6 +1,6 @@
 //
 //  DKPhotoImageView.swift
-//  DKPhotoGalleryDemo
+//  DKPhotoGallery
 //
 //  Created by ZhangAo on 13/12/2017.
 //  Copyright © 2017 ZhangAo. All rights reserved.

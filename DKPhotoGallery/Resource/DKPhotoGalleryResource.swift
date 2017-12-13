@@ -12,7 +12,7 @@ public extension Bundle {
     
     class func photoGalleryResourceBundle() -> Bundle {
         let assetPath = Bundle(for: DKPhotoGalleryResource.self).resourcePath!
-        return Bundle(path: (assetPath as NSString).appendingPathComponent("DKPhotoGalleryResource.bundle"))!
+        return Bundle(path: (assetPath as NSString).appendingPathComponent("DKPhotoGallery.bundle"))!
     }
     
 }
@@ -62,23 +62,17 @@ public class DKPhotoGalleryResource {
     
 }
 
-public class DKPhotoGalleryLocalizedString {
-    
-    public class func localizedStringForKey(_ key: String) -> String {
-        return NSLocalizedString(key, tableName: "DKPhotoGalleryResource", bundle:Bundle.photoGalleryResourceBundle(), value: "", comment: "")
-    }
-    
-    public class func localizedStringForKey(_ key: String, value: String) -> String {
-        return NSLocalizedString(key, tableName: "DKPhotoGalleryResource", bundle:Bundle.photoGalleryResourceBundle(), value: value, comment: "")
-    }
-    
+private var CustomLocalizationBlock: ((_ title: String) -> String?)?
+
+public func DKPhotoGalleryCustomLocalizationBlock(block: @escaping ((_ title: String) -> String?)) {
+    CustomLocalizationBlock = block
 }
 
-public func DKPhotoGalleryLocalizedStringWithKey(_ key: String) -> String {
-    return DKPhotoGalleryLocalizedString.localizedStringForKey(key)
-}
-
-public func DKPhotoGalleryLocalizedStringWithKey(_ key: String, value: String) -> String {
-    return DKPhotoGalleryLocalizedString.localizedStringForKey(key, value: value)
+public func DKPhotoGalleryLocalizedStringWithKey(_ key: String, value: String? = nil) -> String {
+    let string = CustomLocalizationBlock?(key)
+    return string ?? NSLocalizedString(key, tableName: "DKPhotoGallery",
+                                       bundle:Bundle.photoGalleryResourceBundle(),
+                                       value: value ?? "",
+                                       comment: "")
 }
 

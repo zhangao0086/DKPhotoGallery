@@ -30,12 +30,12 @@
 		9CC9545A1F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */; };
 		9CC9545C1F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954471F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift */; };
 		9CC9545D1F63F5ED00B32CA9 /* DKPhotoWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954481F63F5ED00B32CA9 /* DKPhotoWebVC.swift */; };
-		9CC9545F1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9544C1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle */; };
 		9CC954601F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */; };
 		9CC954611F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9544F1F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift */; };
 		9CC954621F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954501F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift */; };
 		9CC954631F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954511F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift */; };
 		9CC954641F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954521F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift */; };
+		9CDC7B051FE12754008867C8 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */; };
 		9CE9F3FD1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE9F3FC1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift */; };
 		CEACCD10881A529AFD8963CF /* Pods_DKPhotoGalleryDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6970844F8FF0A60303F425B /* Pods_DKPhotoGalleryDemo.framework */; };
 /* End PBXBuildFile section */
@@ -67,12 +67,12 @@
 		9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoProgressIndicatorProtocol.swift; sourceTree = "<group>"; };
 		9CC954471F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoQRCodeResultVC.swift; sourceTree = "<group>"; };
 		9CC954481F63F5ED00B32CA9 /* DKPhotoWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoWebVC.swift; sourceTree = "<group>"; };
-		9CC9544C1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKPhotoGalleryResource.bundle; sourceTree = "<group>"; };
 		9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryResource.swift; sourceTree = "<group>"; };
 		9CC9544F1F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryInteractiveTransition.swift; sourceTree = "<group>"; };
 		9CC954501F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionController.swift; sourceTree = "<group>"; };
 		9CC954511F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionDismiss.swift; sourceTree = "<group>"; };
 		9CC954521F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionPresent.swift; sourceTree = "<group>"; };
+		9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKPhotoGallery.bundle; sourceTree = "<group>"; };
 		9CE9F3FC1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoContentAnimationView.swift; sourceTree = "<group>"; };
 		F64EB454C6A4CFEC60F3E347 /* Pods-DKPhotoGalleryDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		F6970844F8FF0A60303F425B /* Pods_DKPhotoGalleryDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DKPhotoGalleryDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,7 +195,7 @@
 		9CC9544B1F63F5ED00B32CA9 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				9CC9544C1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle */,
+				9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */,
 				9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */,
 			);
 			path = Resource;
@@ -285,9 +285,9 @@
 			files = (
 				9CC954321F63F51200B32CA9 /* LaunchScreen.storyboard in Resources */,
 				9CC9542F1F63F51200B32CA9 /* Assets.xcassets in Resources */,
-				9CC9545F1F63F5ED00B32CA9 /* DKPhotoGalleryResource.bundle in Resources */,
 				9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */,
 				9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */,
+				9CDC7B051FE12754008867C8 /* DKPhotoGallery.bundle in Resources */,
 				9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

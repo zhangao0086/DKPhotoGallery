@@ -319,8 +319,10 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 alertController.addAction(customLongPressAction)
             }
         }
-
-        alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.longPress.cancel"),
+                                                style: .cancel,
+                                                handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
     }

@@ -1,6 +1,6 @@
 //
 //  DKPlayerView.swift
-//  DKPhotoGalleryDemo
+//  DKPhotoGallery
 //
 //  Created by ZhangAo on 28/09/2017.
 //  Copyright © 2017 ZhangAo. All rights reserved.
@@ -777,7 +777,7 @@ open class DKPlayerView: UIView {
                 if let error = currentItem.error {
                     self.showPlayError(error.localizedDescription)
                 } else {
-                    self.showPlayError("未知错误")
+                    self.showPlayError(DKPhotoGalleryLocalizedStringWithKey("preview.player.error.unknown"))
                 }
                 
                 self.autoPlayOrShowErrorOnce = false
