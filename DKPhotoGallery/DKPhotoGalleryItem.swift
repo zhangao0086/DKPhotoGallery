@@ -28,6 +28,8 @@ public class DKPhotoGalleryItemConstant: NSObject {
 @objc
 open class DKPhotoGalleryItem: NSObject {
     
+    open var thumbnail: UIImage?
+    
     open var image: UIImage?
     open var imageURL: URL?
     
@@ -54,6 +56,12 @@ open class DKPhotoGalleryItem: NSObject {
         self.init()
         
         self.videoURL = videoURL
+    }
+    
+    convenience init(asset: PHAsset) {
+        self.init()
+        
+        self.asset = asset
     }
     
     public class func items(withImageURLs URLs: [URL]) -> [DKPhotoGalleryItem] {

@@ -54,6 +54,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open var customPreviewActions: [Any]?
     open var singleTapBlock: (() -> Void)?
     
+    private var thumbnailView = DKPhotoImageView()
+    
     @available(iOS 9.0, *)
     private var _customPreviewActions: [UIPreviewActionItem]? {
         return self.customPreviewActions as! [UIPreviewActionItem]?
@@ -105,6 +107,10 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         if self.enableIndicatorView() {
             self.indicatorView = DKPhotoProgressIndicator(with: self.view)
         }
+        
+        self.thumbnailView.frame = self.contentView.bounds
+        self.thumbnailView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.contentView.addSubview(self.thumbnailView)
         
         self.setupGestures()
     }
@@ -164,8 +170,14 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     private func startFetchContent() {
-        self.showsIndicator()
-        
+        if let thumbnail = self.item.thumbnail {
+            self.thumbnailView.isHidden = false
+            self.thumbnailView.image = thumbnail
+            self.centerContentView(with: thumbnail.size)
+        } else {
+            self.showsIndicator()
+        }
+
         self.fetchContent(withProgressBlock: { [weak self] (progress) in
             if progress > 0 {
                 self?.setIndicatorProgress(progress)
@@ -175,25 +187,29 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
                 self.updateContentView(with: data)
                 self.centerContentView()
                 self.hidesError()
+                self.thumbnailView.isHidden = true
             } else {
                 self.showError()
             }
-            
+
             self.hidesIndicator()
         }
     }
     
     private func centerContentView() {
-        let contentSize = self.contentSize()
-        if !contentSize.equalTo(CGSize.zero) {
+        self.centerContentView(with: self.contentSize())
+    }
+    
+    private func centerContentView(with size: CGSize) {
+        if !size.equalTo(CGSize.zero) {
             var frame = CGRect.zero
             
             if self.scrollView.contentSize.equalTo(CGSize.zero) {
-                frame = AVMakeRect(aspectRatio: contentSize, insideRect: self.scrollView.bounds)
+                frame = AVMakeRect(aspectRatio: size, insideRect: self.scrollView.bounds)
             } else {
-                frame = AVMakeRect(aspectRatio: contentSize, insideRect: CGRect(x: 0, y: 0,
-                                                                                width: self.scrollView.contentSize.width,
-                                                                                height: self.scrollView.contentSize.height))
+                frame = AVMakeRect(aspectRatio: size, insideRect: CGRect(x: 0, y: 0,
+                                                                         width: self.scrollView.contentSize.width,
+                                                                         height: self.scrollView.contentSize.height))
             }
             
             let boundsSize = self.scrollView.bounds.size

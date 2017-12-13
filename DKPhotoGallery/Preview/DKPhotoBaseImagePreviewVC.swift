@@ -144,6 +144,8 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     public override func showError() {
+        if self.item.thumbnail != nil { return }
+        
         guard let contentView = self.contentView as? DKPhotoImageView else { return }
         
         contentView.image = DKPhotoGalleryResource.downloadFailedImage()
