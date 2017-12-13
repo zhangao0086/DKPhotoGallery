@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         DKPhotoGalleryItem(imageURL: URL(string:"http://images.fineartamerica.com/images-medium-large-5/galaxy-road-kevin-palmer.jpg")!),
         DKPhotoGalleryItem(imageURL: URL(string:"http://www.79n.cn/uploads/allimg/150905/error.jpg")!),
         DKPhotoGalleryItem(imageURL: URL(fileURLWithPath: Bundle.main.path(forResource: "empire-state-building-picture-ext-day", ofType: "jpg")!)),
-        DKPhotoGalleryItem(videoURL: URL(string:"http://cdn.video.shaozi.com/movie.mp4")!),
+        DKPhotoGalleryItem(videoURL: URL(string:"http://cn-video.shaozi.com/movie.mp4")!),
         DKPhotoGalleryItem(videoURL: URL(fileURLWithPath: Bundle.main.path(forResource: "movie", ofType: "mp4")!)),
         DKPhotoGalleryItem(videoURL: URL(string:"http://cdn.video.shaozi.com/movie1.mp4")!),
         DKPhotoGalleryItem(videoURL: URL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
 		gallery.presentingFromImageView = sender.view as? UIImageView
         gallery.presentationIndex = 0
         
-        gallery.dismissImageViewBlock = { [weak self] dismissIndex in
+        gallery.finishedBlock = { [weak self] dismissIndex in
             if dismissIndex == 0 {
                 return self?.imageView
             } else {

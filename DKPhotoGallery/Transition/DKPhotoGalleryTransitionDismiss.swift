@@ -23,7 +23,29 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
         let containerView = transitionContext.containerView
-        let fromContentView = self.gallery.currentContentView()
+        
+        var fromContentView: UIView!
+        if self.gallery.currentContentVC().previewType == .photo {
+            fromContentView = DKPhotoContentAnimationView(image: self.gallery.currentContentVC().snapshotImage())
+            fromContentView.frame = self.gallery.currentContentView().superview!.convert(self.gallery.currentContentView().frame, to: nil)
+            fromContentView.contentMode = self.gallery.currentContentView().contentMode
+            fromContentView.layer.cornerRadius = self.gallery.currentContentView().layer.cornerRadius
+            fromContentView.clipsToBounds = self.gallery.currentContentView().clipsToBounds
+            
+            self.gallery.currentContentView().isHidden = true
+        } else { // .video
+            let playerView = self.gallery.currentContentView() as! DKPlayerView
+            playerView.autoresizingMask = []
+            let frame = self.gallery.currentContentView().superview!.convert(playerView.frame, to: nil)
+            
+            fromContentView = DKPhotoContentAnimationView(view: playerView)
+            fromContentView.frame = frame
+            fromContentView.contentMode = playerView.contentMode
+            fromContentView.layer.cornerRadius = playerView.layer.cornerRadius
+            fromContentView.clipsToBounds = playerView.clipsToBounds
+        }
+        
+        containerView.addSubview(fromContentView)
         
         self.gallery.setNavigationBarHidden(true, animated: true)
         
@@ -35,6 +57,8 @@ open class DKPhotoGalleryTransitionDismiss: NSObject, UIViewControllerAnimatedTr
                 fromContentView.frame = toImageViewFrameInScreen
                 fromContentView.contentMode = toImageView.contentMode
                 fromContentView.backgroundColor = toImageView.backgroundColor
+                fromContentView.layer.cornerRadius = toImageView.layer.cornerRadius
+                fromContentView.clipsToBounds = toImageView.clipsToBounds
                 self.gallery.updateContextBackground(alpha: 0, animated: false)
             }) { (finished) in
                 toImageView.isHidden = false

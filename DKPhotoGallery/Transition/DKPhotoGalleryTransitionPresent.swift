@@ -30,11 +30,12 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
         
         if let fromImageView = self.gallery.presentingFromImageView, let fromImage = fromImageView.image {
             let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil)
-            let snapshotImageView = DKPhotoImageView(image: fromImage)
+            let snapshotImageView = DKPhotoContentAnimationView(image: fromImage)
             snapshotImageView.frame = fromImageViewFrameInScreen!
             snapshotImageView.contentMode = fromImageView.contentMode
             snapshotImageView.backgroundColor = UIColor.white
-            snapshotImageView.clipsToBounds = true
+            snapshotImageView.clipsToBounds = fromImageView.clipsToBounds
+            snapshotImageView.layer.cornerRadius = fromImageView.layer.cornerRadius
             
             containerView.addSubview(snapshotImageView)
             
@@ -42,6 +43,8 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
                 let frame = AVMakeRect(aspectRatio: fromImage.size, insideRect: toViewFinalFrame)
                 snapshotImageView.frame = frame
                 snapshotImageView.contentMode = toView.contentMode
+                snapshotImageView.clipsToBounds = toView.clipsToBounds
+                snapshotImageView.layer.cornerRadius = toView.layer.cornerRadius
                 containerView.backgroundColor = UIColor.black
             }) { (finished) in
                 let wasCanceled = transitionContext.transitionWasCancelled
@@ -57,7 +60,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
             containerView.addSubview(toView)
             
             toView.alpha = 0
-            UIView.animate(withDuration: transitionDuration, animations: { 
+            UIView.animate(withDuration: transitionDuration, animations: {
                 toView.alpha = 1
             }, completion: { (finished) in
                 let wasCanceled = transitionContext.transitionWasCancelled
