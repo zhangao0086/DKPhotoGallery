@@ -55,6 +55,12 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.prefillingReuseQueue()
     }
     
+    internal func filterVisibleVCs<T>(with className: T.Type) -> [T]? {
+        return self.visibleVCs.values.filter { previewVC -> Bool in
+            return type(of: previewVC) == className
+        } as? [T]
+    }
+    
     // MARK: - Private
     
     private func updateWithCurrentIndex(needToSetContentOffset need: Bool, onlyCurrentIndex: Bool = false) {
@@ -109,19 +115,9 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         let previewVC = vc!
         
+        self.prepareToShow?(previewVC)
+        
         previewVC.item = item
-        previewVC.customPreviewActions = self.customPreviewActions
-        previewVC.customLongPressActions = self.customLongPressActions
-        
-        if let singleTapBlock = self.singleTapBlock {
-            previewVC.singleTapBlock = singleTapBlock
-        }
-        
-        if previewVC.previewType == .video, let dismissBlock = self.dismissBlock, let videoPreviewVC = previewVC as? DKPhotoPlayerPreviewVC {
-            videoPreviewVC.closeBlock = {
-                dismissBlock()
-            }
-        }
         
         self.visibleVCs[index] = previewVC
         
@@ -181,7 +177,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.mainView.addSubview(vc4.view)
         self.addToReuseQueue(vc: vc4)
         
-        let vc5 = DKPhotoPlayerPreviewVC()
+        let vc5 = self.currentVC.previewType == .photo ? DKPhotoPlayerPreviewVC() : DKPhotoImagePreviewVC()
         vc5.view.isHidden = true
         self.mainView.addSubview(vc5.view)
         self.addToReuseQueue(vc: vc5)
@@ -198,14 +194,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
-    
-    // MARK: - Touch 3D
-    
-    @available(iOS 9.0, *)
-    open override var previewActionItems: [UIPreviewActionItem] {
-        return self.currentVC.previewActionItems
-    }
-    
+        
     // MARK: - UIScrollViewDelegate
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

@@ -152,13 +152,54 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }
     
     open func toggleControlView() {
-        if self.contentVC.currentVC.previewType == .photo {
-            if self.isNavigationBarHidden {
-                self.setNavigationBarHidden(false, animated: true)
-                self.statusBar?.alpha = 1
+        if self.isNavigationBarHidden {
+            self.showsControlView()
+        } else {
+            self.hidesControlView()
+        }
+    }
+    
+    open func showsControlView () {
+        self.isNavigationBarHidden = false
+        self.statusBar?.alpha = 1
+        
+        if let videoPreviewVCs = self.contentVC.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
+            let _ = videoPreviewVCs.map { $0.isControlHidden = false }
+        }
+    }
+    
+    open func hidesControlView () {
+        self.isNavigationBarHidden = true
+        self.statusBar?.alpha = 0
+        
+        if let videoPreviewVCs = self.contentVC.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
+            let _ = videoPreviewVCs.map { $0.isControlHidden = true }
+        }
+    }
+    
+    private func setup(previewVC: DKPhotoBasePreviewVC) {
+        previewVC.customLongPressActions = self.customLongPressActions
+        previewVC.customPreviewActions = self.customPreviewActions
+        previewVC.singleTapBlock = { [weak self] in
+            self?.handleSingleTap()
+        }
+        
+        if previewVC.previewType == .video, let videoPreviewVC = previewVC as? DKPhotoPlayerPreviewVC {
+            if self.singleTapMode == .dismiss {
+                videoPreviewVC.closeBlock = { [weak self] in
+                    self?.dismissGallery()
+                }
+                videoPreviewVC.isControlHidden = true
+                videoPreviewVC.autoHidesControlView = true
+                videoPreviewVC.tapToToggleControlView = true
             } else {
-                self.setNavigationBarHidden(true, animated: true)
-                self.statusBar?.alpha = 0
+                videoPreviewVC.isControlHidden = self.isNavigationBarHidden
+                videoPreviewVC.autoHidesControlView = false
+                videoPreviewVC.tapToToggleControlView = false
+                
+                videoPreviewVC.beginPlayBlock = { [weak self] in
+                    self?.hidesControlView()
+                }
             }
         }
     }
