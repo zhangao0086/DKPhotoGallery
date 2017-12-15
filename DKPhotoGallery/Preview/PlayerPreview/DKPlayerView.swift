@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import MBProgressHUD
 
 private var DKPlayerViewKVOContext = 0
 
@@ -634,11 +633,7 @@ open class DKPlayerView: UIView {
     }
     
     private func showPlayError(_ message: String) {
-        let hud = MBProgressHUD.showAdded(to: self, animated: true)
-        hud.mode = .text
-        hud.label.numberOfLines = 0
-        hud.label.text = message
-        hud.hide(animated: true, afterDelay: 2)
+        self.makeSimpleToast(message)
     }
     
     private func isTriableError(_ error: NSError) -> Bool {

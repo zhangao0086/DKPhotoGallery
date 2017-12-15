@@ -3,6 +3,4 @@ use_frameworks!
 
 target "DKPhotoGalleryDemo" do
 	pod 'DKPhotoGallery', :path => '../'
-	pod 'SDWebImage', '~> 4.1'
-    pod 'MBProgressHUD', '~> 1.0.0', :inhibit_warnings => true
 end

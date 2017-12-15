@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import MBProgressHUD
 
 public enum DKPhotoPreviewType {
     case photo, video
@@ -40,6 +39,43 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     func defaultLongPressActions() -> [UIAlertAction]
     
     var previewType: DKPhotoPreviewType { get }
+}
+
+internal extension UIView {
+    
+    func makeSimpleToast(_ message: String) {
+        let container = UIToolbar()
+        container.layer.cornerRadius = 5
+        container.clipsToBounds = true
+        
+        let toastLabel = UILabel()
+        toastLabel.numberOfLines = 0
+        toastLabel.backgroundColor = UIColor.clear
+        toastLabel.textColor = UIColor.darkText
+        toastLabel.textAlignment = .center;
+        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.text = message
+        
+        let margin = CGFloat(20)
+        let padding = CGFloat(10)
+
+        let size = toastLabel.sizeThatFits(CGSize(width: self.bounds.width - margin * 2 - padding * 2, height: 200))
+        container.frame = CGRect(x: (self.bounds.width - size.width) / 2,
+                                  y: (self.bounds.height - size.height) / 2,
+                                  width: size.width + padding,
+                                  height: size.height + padding)
+        
+        toastLabel.frame = CGRect(x: 0, y: 0, width: container.bounds.width, height: container.bounds.height)
+        container.addSubview(toastLabel)
+        
+        self.addSubview(container)
+        
+        UIView.animate(withDuration: 1.0, delay: 2.0, options: .curveEaseOut, animations: {
+            container.alpha = 0.0
+        }, completion: {(isCompleted) in
+            container.removeFromSuperview()
+        })
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -137,11 +173,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
         self.scrollView.contentSize = CGSize.zero
     }
     
-    open func showTips(_ tips: String) {
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.mode = .text
-        hud.label.text = tips
-        hud.hide(animated: true, afterDelay: 2)
+    open func showTips(_ message: String) {
+        self.view.makeSimpleToast(message)
     }
     
     open func setNeedsUpdateContent() {

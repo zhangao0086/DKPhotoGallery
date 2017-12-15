@@ -17,7 +17,7 @@
     "git": "https://github.com/zhangao0086/DKPhotoGallery.git",
     "tag": "0.0.1"
   },
-  "resources": "DKPhotoGallery/Resource/DKPhotoGalleryResource.bundle",
+  "resources": "DKPhotoGallery/Resource/DKPhotoGallery.bundle",
   "frameworks": [
     "Foundation",
     "UIKit",
@@ -25,15 +25,13 @@
     "WebKit",
     "AVFoundation",
     "AVKit",
-    "AssetsLibrary"
+    "AssetsLibrary",
+    "MobileCoreServices"
   ],
   "requires_arc": true,
   "dependencies": {
     "SDWebImage/GIF": [
       "~> 4.0"
-    ],
-    "MBProgressHUD": [
-      "1.0.0"
     ]
   },
   "subspecs": [

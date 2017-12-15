@@ -4,28 +4,20 @@ PODS:
     - DKPhotoGallery/Model (= 0.0.1)
     - DKPhotoGallery/Preview (= 0.0.1)
     - DKPhotoGallery/Resource (= 0.0.1)
-    - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (~> 4.0)
   - DKPhotoGallery/Core (0.0.1):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
-    - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (~> 4.0)
   - DKPhotoGallery/Model (0.0.1):
-    - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (~> 4.0)
   - DKPhotoGallery/Preview (0.0.1):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
-    - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (~> 4.0)
   - DKPhotoGallery/Resource (0.0.1):
-    - MBProgressHUD (= 1.0.0)
     - SDWebImage/GIF (~> 4.0)
   - FLAnimatedImage (1.0.12)
-  - MBProgressHUD (1.0.0)
-  - SDWebImage (4.2.1):
-    - SDWebImage/Core (= 4.2.1)
   - SDWebImage/Core (4.2.1)
   - SDWebImage/GIF (4.2.1):
     - FLAnimatedImage (~> 1.0)
@@ -33,19 +25,16 @@ PODS:
 
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
-  - MBProgressHUD (~> 1.0.0)
-  - SDWebImage (~> 4.1)
 
 EXTERNAL SOURCES:
   DKPhotoGallery:
     :path: ../
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 64d6fe74642b2b5991285168a4bda693336a8d00
+  DKPhotoGallery: 19ca69e99803e416ba17ac781636c5734ee87c03
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541
 
-PODFILE CHECKSUM: d7d063312276e33ad71473c8c762b001eea73210
+PODFILE CHECKSUM: 482dbd2c285e9f063b7c682bd1a718c858d5208e
 
 COCOAPODS: 1.3.1

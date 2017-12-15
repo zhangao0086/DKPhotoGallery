@@ -14,7 +14,6 @@ Pod::Spec.new do |s|
     s.requires_arc  = true
 
     s.dependency 'SDWebImage/GIF', '~> 4.0'
-    s.dependency 'MBProgressHUD', '1.0.0'
 
     s.subspec 'Core' do |core|
         core.dependency 'DKPhotoGallery/Model'
