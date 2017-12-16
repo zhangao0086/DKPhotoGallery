@@ -40,25 +40,25 @@ open class DKPhotoGalleryItem: NSObject {
     
     open var extraInfo: [String: Any]?
     
-    convenience init(image: UIImage) {
+    convenience public init(image: UIImage) {
         self.init()
         
         self.image = image
     }
     
-    convenience init(imageURL: URL) {
+    convenience public init(imageURL: URL) {
         self.init()
         
         self.imageURL = imageURL
     }
     
-    convenience init(videoURL: URL) {
+    convenience public init(videoURL: URL) {
         self.init()
         
         self.videoURL = videoURL
     }
     
-    convenience init(asset: PHAsset) {
+    convenience public init(asset: PHAsset) {
         self.init()
         
         self.asset = asset
