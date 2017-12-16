@@ -17,6 +17,7 @@ class DKPhotoProgressIndicator: UIView, DKPhotoProgressIndicatorProtocol {
         
         view.addSubview(self)
         
+        self.isHidden = true
         self.backgroundColor = UIColor.clear
     }
     
