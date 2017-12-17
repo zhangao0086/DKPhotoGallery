@@ -18,8 +18,8 @@ PODS:
   - DKPhotoGallery/Resource (0.0.1):
     - SDWebImage/GIF (~> 4.0)
   - FLAnimatedImage (1.0.12)
-  - SDWebImage/Core (4.2.1)
-  - SDWebImage/GIF (4.2.1):
+  - SDWebImage/Core (4.2.2)
+  - SDWebImage/GIF (4.2.2):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
 
@@ -33,7 +33,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DKPhotoGallery: 19ca69e99803e416ba17ac781636c5734ee87c03
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541
+  SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
 
 PODFILE CHECKSUM: 482dbd2c285e9f063b7c682bd1a718c858d5208e
 

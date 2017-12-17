@@ -7,48 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C1F97541F98870F007D0575 /* DKPhotoImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F97531F988613007D0575 /* DKPhotoImagePreviewVC.swift */; };
-		9C1FED8C1FE10B5500D5576A /* DKPhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1FED8B1FE10B5500D5576A /* DKPhotoImageView.swift */; };
 		9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 9C38FABD1F933D59008FE96E /* movie.mp4 */; };
-		9C4BC1D91F7CDFC600022AE0 /* DKPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4BC1D81F7CDFC600022AE0 /* DKPlayerView.swift */; };
 		9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */; };
-		9CA180981F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */; };
-		9CA1809A1F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */; };
-		9CA1809C1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */; };
 		9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954271F63F51200B32CA9 /* AppDelegate.swift */; };
 		9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954291F63F51200B32CA9 /* ViewController.swift */; };
 		9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542B1F63F51200B32CA9 /* Main.storyboard */; };
 		9CC9542F1F63F51200B32CA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542E1F63F51200B32CA9 /* Assets.xcassets */; };
 		9CC954321F63F51200B32CA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC954301F63F51200B32CA9 /* LaunchScreen.storyboard */; };
-		9CC954531F63F5ED00B32CA9 /* DKPhotoGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9543A1F63F5ED00B32CA9 /* DKPhotoGallery.swift */; };
-		9CC954541F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9543B1F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift */; };
-		9CC954551F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9543C1F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift */; };
-		9CC954561F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9543D1F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift */; };
-		9CC954581F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954411F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift */; };
-		9CC954591F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954421F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift */; };
-		9CC9545A1F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */; };
-		9CC9545C1F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954471F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift */; };
-		9CC9545D1F63F5ED00B32CA9 /* DKPhotoWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954481F63F5ED00B32CA9 /* DKPhotoWebVC.swift */; };
-		9CC954601F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */; };
-		9CC954611F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9544F1F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift */; };
-		9CC954621F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954501F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift */; };
-		9CC954631F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954511F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift */; };
-		9CC954641F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954521F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift */; };
-		9CDC7B051FE12754008867C8 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */; };
-		9CE9F3FD1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE9F3FC1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift */; };
 		CEACCD10881A529AFD8963CF /* Pods_DKPhotoGalleryDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6970844F8FF0A60303F425B /* Pods_DKPhotoGalleryDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2CD20709011A5B5CE41858F0 /* Pods-DKPhotoGalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
-		9C1F97531F988613007D0575 /* DKPhotoImagePreviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoImagePreviewVC.swift; sourceTree = "<group>"; };
-		9C1FED8B1FE10B5500D5576A /* DKPhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoImageView.swift; sourceTree = "<group>"; };
 		9C38FABD1F933D59008FE96E /* movie.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = movie.mp4; sourceTree = "<group>"; };
-		9C4BC1D81F7CDFC600022AE0 /* DKPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPlayerView.swift; sourceTree = "<group>"; };
 		9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "empire-state-building-picture-ext-day.jpg"; sourceTree = "<group>"; };
-		9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPlayerPreviewVC.swift; sourceTree = "<group>"; };
-		9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoBaseImagePreviewVC.swift; sourceTree = "<group>"; };
-		9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPreviewFactory.swift; sourceTree = "<group>"; };
 		9CC954241F63F51200B32CA9 /* DKPhotoGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DKPhotoGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC954271F63F51200B32CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CC954291F63F51200B32CA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,22 +28,6 @@
 		9CC9542E1F63F51200B32CA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CC954311F63F51200B32CA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CC954331F63F51200B32CA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9CC9543A1F63F5ED00B32CA9 /* DKPhotoGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGallery.swift; sourceTree = "<group>"; };
-		9CC9543B1F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryContentVC.swift; sourceTree = "<group>"; };
-		9CC9543C1F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryItem.swift; sourceTree = "<group>"; };
-		9CC9543D1F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryScrollView.swift; sourceTree = "<group>"; };
-		9CC954411F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoBasePreviewVC.swift; sourceTree = "<group>"; };
-		9CC954421F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoProgressIndicator.swift; sourceTree = "<group>"; };
-		9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoProgressIndicatorProtocol.swift; sourceTree = "<group>"; };
-		9CC954471F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoQRCodeResultVC.swift; sourceTree = "<group>"; };
-		9CC954481F63F5ED00B32CA9 /* DKPhotoWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoWebVC.swift; sourceTree = "<group>"; };
-		9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryResource.swift; sourceTree = "<group>"; };
-		9CC9544F1F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryInteractiveTransition.swift; sourceTree = "<group>"; };
-		9CC954501F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionController.swift; sourceTree = "<group>"; };
-		9CC954511F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionDismiss.swift; sourceTree = "<group>"; };
-		9CC954521F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionPresent.swift; sourceTree = "<group>"; };
-		9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKPhotoGallery.bundle; sourceTree = "<group>"; };
-		9CE9F3FC1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoContentAnimationView.swift; sourceTree = "<group>"; };
 		F64EB454C6A4CFEC60F3E347 /* Pods-DKPhotoGalleryDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		F6970844F8FF0A60303F425B /* Pods_DKPhotoGalleryDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DKPhotoGalleryDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -97,28 +53,9 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		9C1F97521F988613007D0575 /* ImagePreview */ = {
-			isa = PBXGroup;
-			children = (
-				9C1F97531F988613007D0575 /* DKPhotoImagePreviewVC.swift */,
-				9C1FED8B1FE10B5500D5576A /* DKPhotoImageView.swift */,
-			);
-			path = ImagePreview;
-			sourceTree = "<group>";
-		};
-		9CA180961F6BAA9700B530E9 /* PlayerPreview */ = {
-			isa = PBXGroup;
-			children = (
-				9CA180971F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift */,
-				9C4BC1D81F7CDFC600022AE0 /* DKPlayerView.swift */,
-			);
-			path = PlayerPreview;
-			sourceTree = "<group>";
-		};
 		9CC9541B1F63F51200B32CA9 = {
 			isa = PBXGroup;
 			children = (
-				9CC954391F63F5ED00B32CA9 /* DKPhotoGallery */,
 				9CC954261F63F51200B32CA9 /* DKPhotoGalleryDemo */,
 				9CC954251F63F51200B32CA9 /* Products */,
 				59151C6F04FC61B9DB0A047A /* Pods */,
@@ -147,66 +84,6 @@
 				9CC954331F63F51200B32CA9 /* Info.plist */,
 			);
 			path = DKPhotoGalleryDemo;
-			sourceTree = "<group>";
-		};
-		9CC954391F63F5ED00B32CA9 /* DKPhotoGallery */ = {
-			isa = PBXGroup;
-			children = (
-				9CC9543A1F63F5ED00B32CA9 /* DKPhotoGallery.swift */,
-				9CC9543B1F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift */,
-				9CC9543C1F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift */,
-				9CC9543D1F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift */,
-				9CA1809B1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift */,
-				9CC9543E1F63F5ED00B32CA9 /* Preview */,
-				9CC9544B1F63F5ED00B32CA9 /* Resource */,
-				9CC9544E1F63F5ED00B32CA9 /* Transition */,
-			);
-			name = DKPhotoGallery;
-			path = ../DKPhotoGallery;
-			sourceTree = "<group>";
-		};
-		9CC9543E1F63F5ED00B32CA9 /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				9CC954411F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift */,
-				9CC954421F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift */,
-				9CC954431F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift */,
-				9CA180991F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift */,
-				9CE9F3FC1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift */,
-				9C1F97521F988613007D0575 /* ImagePreview */,
-				9CA180961F6BAA9700B530E9 /* PlayerPreview */,
-				9CC954461F63F5ED00B32CA9 /* QRCode */,
-			);
-			path = Preview;
-			sourceTree = "<group>";
-		};
-		9CC954461F63F5ED00B32CA9 /* QRCode */ = {
-			isa = PBXGroup;
-			children = (
-				9CC954471F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift */,
-				9CC954481F63F5ED00B32CA9 /* DKPhotoWebVC.swift */,
-			);
-			path = QRCode;
-			sourceTree = "<group>";
-		};
-		9CC9544B1F63F5ED00B32CA9 /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				9CDC7B041FE12753008867C8 /* DKPhotoGallery.bundle */,
-				9CC9544D1F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift */,
-			);
-			path = Resource;
-			sourceTree = "<group>";
-		};
-		9CC9544E1F63F5ED00B32CA9 /* Transition */ = {
-			isa = PBXGroup;
-			children = (
-				9CC9544F1F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift */,
-				9CC954501F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift */,
-				9CC954511F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift */,
-				9CC954521F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift */,
-			);
-			path = Transition;
 			sourceTree = "<group>";
 		};
 		D36E5F1CBA29D71E29B115B6 /* Frameworks */ = {
@@ -284,7 +161,6 @@
 				9CC9542F1F63F51200B32CA9 /* Assets.xcassets in Resources */,
 				9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */,
 				9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */,
-				9CDC7B051FE12754008867C8 /* DKPhotoGallery.bundle in Resources */,
 				9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,29 +230,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CC954561F63F5ED00B32CA9 /* DKPhotoGalleryScrollView.swift in Sources */,
-				9CC954551F63F5ED00B32CA9 /* DKPhotoGalleryItem.swift in Sources */,
-				9CA1809A1F6BB00B00B530E9 /* DKPhotoBaseImagePreviewVC.swift in Sources */,
 				9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */,
-				9CC954581F63F5ED00B32CA9 /* DKPhotoBasePreviewVC.swift in Sources */,
-				9C1F97541F98870F007D0575 /* DKPhotoImagePreviewVC.swift in Sources */,
-				9CC9545C1F63F5ED00B32CA9 /* DKPhotoQRCodeResultVC.swift in Sources */,
-				9CC954611F63F5ED00B32CA9 /* DKPhotoGalleryInteractiveTransition.swift in Sources */,
-				9CC954591F63F5ED00B32CA9 /* DKPhotoProgressIndicator.swift in Sources */,
-				9CC9545A1F63F5ED00B32CA9 /* DKPhotoProgressIndicatorProtocol.swift in Sources */,
-				9CC954541F63F5ED00B32CA9 /* DKPhotoGalleryContentVC.swift in Sources */,
-				9CC954631F63F5ED00B32CA9 /* DKPhotoGalleryTransitionDismiss.swift in Sources */,
-				9C4BC1D91F7CDFC600022AE0 /* DKPlayerView.swift in Sources */,
-				9CC9545D1F63F5ED00B32CA9 /* DKPhotoWebVC.swift in Sources */,
-				9CC954601F63F5ED00B32CA9 /* DKPhotoGalleryResource.swift in Sources */,
-				9CE9F3FD1FB1BA48006312E8 /* DKPhotoContentAnimationView.swift in Sources */,
-				9C1FED8C1FE10B5500D5576A /* DKPhotoImageView.swift in Sources */,
-				9CC954641F63F5ED00B32CA9 /* DKPhotoGalleryTransitionPresent.swift in Sources */,
 				9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */,
-				9CA180981F6BAAB400B530E9 /* DKPhotoPlayerPreviewVC.swift in Sources */,
-				9CC954531F63F5ED00B32CA9 /* DKPhotoGallery.swift in Sources */,
-				9CC954621F63F5ED00B32CA9 /* DKPhotoGalleryTransitionController.swift in Sources */,
-				9CA1809C1F6BC2C600B530E9 /* DKPhotoPreviewFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
