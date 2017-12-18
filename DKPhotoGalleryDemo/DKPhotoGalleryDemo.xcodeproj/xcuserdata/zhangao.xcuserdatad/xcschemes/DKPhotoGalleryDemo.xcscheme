@@ -29,6 +29,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9CA897EA1FE766BC007E7C25"
+               BuildableName = "DKPhotoGalleryDemoTests.xctest"
+               BlueprintName = "DKPhotoGalleryDemoTests"
+               ReferencedContainer = "container:DKPhotoGalleryDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

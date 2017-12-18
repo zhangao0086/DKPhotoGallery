@@ -3,4 +3,10 @@ use_frameworks!
 
 target "DKPhotoGalleryDemo" do
 	pod 'DKPhotoGallery', :path => '../'
+
+    target 'DKPhotoGalleryDemoTests' do
+        inherit! :search_paths
+        # Pods for testing
+    end
+
 end
