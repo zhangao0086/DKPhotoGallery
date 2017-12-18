@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// Manage all resource files and internationalization support for DKPhotoGallery
+/// Manage all resource files and internationalization support for DKPhotoGallery.
 public class DKPhotoGalleryResource {
     
     // MARK: - Internationalization

@@ -10,7 +10,7 @@ import UIKit
 import Photos
 
 public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL"    // URL.
-public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize"  // UInt. The number of bytes of the image.
+public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize: String = "DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize"  // (Optional)UInt. The number of bytes of the image.
 
 @objc
 public class DKPhotoGalleryItemConstant: NSObject {
@@ -25,9 +25,12 @@ public class DKPhotoGalleryItemConstant: NSObject {
     
 }
 
+//////////////////////////////////////////////////////////////////
+
 @objc
 open class DKPhotoGalleryItem: NSObject {
     
+    /// The image to be set initially, until the image request finishes.
     open var thumbnail: UIImage?
     
     open var image: UIImage?
@@ -35,9 +38,19 @@ open class DKPhotoGalleryItem: NSObject {
     
     open var videoURL: URL?
     
+    /**
+     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via mediaType of the asset.
+     
+     See more: DKPhotoPreviewFactory.swift
+     */
     open var asset: PHAsset?
     open var assetLocalIdentifier: String?
     
+    /**
+     Used for some optional features.
+     
+     For ImagePreview, you can enable the original image download feature with a key named DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL.
+     */
     open var extraInfo: [String: Any]?
     
     convenience public init(image: UIImage) {

@@ -13,15 +13,12 @@ extension DKPhotoBasePreviewVC {
     
     public class func photoPreviewClass(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC.Type {
         if item.image != nil {
-            
             return DKPhotoImagePreviewVC.self
             
         } else if item.imageURL != nil {
-            
             return DKPhotoImagePreviewVC.self
             
         } else if let asset = item.asset {
-            
             if asset.mediaType == .video {
                 return DKPhotoPlayerPreviewVC.self
             } else {
@@ -31,10 +28,11 @@ extension DKPhotoBasePreviewVC {
         } else if let assetLocalIdentifier = item.assetLocalIdentifier {
             item.asset = PHAsset.fetchAssets(withLocalIdentifiers: [assetLocalIdentifier], options: nil).firstObject
             item.assetLocalIdentifier = nil
-            
             return self.photoPreviewClass(with: item)
+            
         } else if item.videoURL != nil {
             return DKPhotoPlayerPreviewVC.self
+            
         } else {
             assertionFailure()
             return DKPhotoBasePreviewVC.self
