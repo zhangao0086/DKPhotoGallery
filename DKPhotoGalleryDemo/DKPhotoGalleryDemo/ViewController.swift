@@ -50,7 +50,7 @@ class ViewController: UIViewController {
 		let gallery = DKPhotoGallery()
         gallery.singleTapMode = .dismiss
 		gallery.items = self.items
-		gallery.presentingFromImageView = sender.view as? UIImageView
+		gallery.presentingFromImageView = self.imageView
         gallery.presentationIndex = 0
         
         gallery.finishedBlock = { [weak self] dismissIndex in
