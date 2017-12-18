@@ -353,7 +353,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
             }
         }
         
-        alertController.addAction(UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.longPress.cancel"),
+        alertController.addAction(UIAlertAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.image.longPress.cancel"),
                                                 style: .cancel,
                                                 handler: nil))
         

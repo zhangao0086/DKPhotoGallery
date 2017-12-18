@@ -91,7 +91,7 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
                                                                 completeBlock(avAsset, nil)
                                                             } else {
                                                                 let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                    NSLocalizedDescriptionKey : DKPhotoGalleryLocalizedStringWithKey("preview.player.fetch.error")
+                                                                    NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.player.fetch.error")
                                                                     ])
                                                                 completeBlock(nil, error)
                                                             }

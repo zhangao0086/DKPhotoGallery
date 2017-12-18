@@ -24,7 +24,7 @@ class DKPhotoQRCodeResultVC: UIViewController {
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor.white
-        self.title = DKPhotoGalleryLocalizedStringWithKey("preview.image.extractQRCode.result.text.title")
+        self.title = DKPhotoGalleryResource.localizedStringWithKey("preview.image.extractQRCode.result.text.title")
         
         self.textView.frame = self.view.bounds
         self.textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

@@ -8,71 +8,74 @@
 
 import UIKit
 
-public extension Bundle {
+/// Manage all resource files and internationalization support for DKPhotoGallery
+public class DKPhotoGalleryResource {
     
-    class func photoGalleryResourceBundle() -> Bundle {
-        let assetPath = Bundle(for: DKPhotoGalleryResource.self).resourcePath!
-        return Bundle(path: (assetPath as NSString).appendingPathComponent("DKPhotoGallery.bundle"))!
+    // MARK: - Internationalization
+    
+    public class func localizedStringWithKey(_ key: String, value: String? = nil) -> String {
+        let string = customLocalizationBlock?(key)
+        return string ?? NSLocalizedString(key, tableName: "DKPhotoGallery",
+                                           bundle:Bundle.photoGalleryResourceBundle(),
+                                           value: value ?? "",
+                                           comment: "")
     }
     
-}
+    public static var customLocalizationBlock: ((_ title: String) -> String?)?
 
-public class DKPhotoGalleryResource {
-
+    // MARK: - Images
+    
+    public class func downloadFailedImage() -> UIImage {
+        return imageForResource("ImageFailed")
+    }
+    
+    public class func closeVideoImage() -> UIImage {
+        return imageForResource("VideoClose")
+    }
+    
+    public class func videoPlayImage() -> UIImage {
+        return imageForResource("VideoPlay")
+    }
+    
+    public class func videoToolbarPlayImage() -> UIImage {
+        return imageForResource("ToolbarPlay")
+    }
+    
+    public class func videoToolbarPauseImage() -> UIImage {
+        return imageForResource("ToolbarPause")
+    }
+    
+    public class func videoPlayControlBackgroundImage() -> UIImage {
+        return stretchImgFromMiddle(imageForResource("VideoPlayControlBackground"))
+    }
+    
+    public class func videoTimeSliderImage() -> UIImage {
+        return imageForResource("VideoTimeSlider")
+    }
+    
+    // MARK: - Private
+    
     private class func imageForResource(_ name: String) -> UIImage {
         let bundle = Bundle.photoGalleryResourceBundle()
         let imagePath = bundle.path(forResource: name, ofType: "png", inDirectory: "Images")
         let image = UIImage(contentsOfFile: imagePath!)
         return image!
     }
-	
-	private class func stretchImgFromMiddle(_ image: UIImage) -> UIImage {
-		let centerX = image.size.width / 2
-		let centerY = image.size.height / 2
-		return image.resizableImage(withCapInsets: UIEdgeInsets(top: centerY, left: centerX, bottom: centerY, right: centerX))
-	}
     
-    class func downloadFailedImage() -> UIImage {
-        return imageForResource("ImageFailed")
-    }
-    
-    class func closeVideoImage() -> UIImage {
-        return imageForResource("VideoClose")
-    }
-    
-    class func videoPlayImage() -> UIImage {
-        return imageForResource("VideoPlay")
-    }
-    
-    class func videoToolbarPlayImage() -> UIImage {
-        return imageForResource("ToolbarPlay")
-    }
-    
-    class func videoToolbarPauseImage() -> UIImage {
-        return imageForResource("ToolbarPause")
-    }
-    
-    class func videoPlayControlBackgroundImage() -> UIImage {
-        return stretchImgFromMiddle(imageForResource("VideoPlayControlBackground"))
-    }
-    
-    class func videoTimeSliderImage() -> UIImage {
-        return imageForResource("VideoTimeSlider")
+    private class func stretchImgFromMiddle(_ image: UIImage) -> UIImage {
+        let centerX = image.size.width / 2
+        let centerY = image.size.height / 2
+        return image.resizableImage(withCapInsets: UIEdgeInsets(top: centerY, left: centerX, bottom: centerY, right: centerX))
     }
     
 }
 
-private var CustomLocalizationBlock: ((_ title: String) -> String?)?
-
-public func DKPhotoGalleryCustomLocalizationBlock(block: @escaping ((_ title: String) -> String?)) {
-    CustomLocalizationBlock = block
-}
-
-public func DKPhotoGalleryLocalizedStringWithKey(_ key: String, value: String? = nil) -> String {
-    let string = CustomLocalizationBlock?(key)
-    return string ?? NSLocalizedString(key, tableName: "DKPhotoGallery",
-                                       bundle:Bundle.photoGalleryResourceBundle(),
-                                       value: value ?? "",
-                                       comment: "")
+private extension Bundle {
+    
+    class func photoGalleryResourceBundle() -> Bundle {
+        let assetPath = Bundle(for: DKPhotoGalleryResource.self).resourcePath!
+        return Bundle(path: (assetPath as NSString).appendingPathComponent("DKPhotoGallery.bundle"))!
+    }
+    
 }
 

@@ -49,7 +49,7 @@ class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
                     completeBlock(image, data, error)
                 } else {
                     let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                        NSLocalizedDescriptionKey : DKPhotoGalleryLocalizedStringWithKey("preview.image.fetch.error")
+                        NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
                         ])
                     completeBlock(nil, nil, error)
                 }
@@ -93,7 +93,7 @@ class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
                                                                 completeBlock(nil, data, nil)
                                                             } else {
                                                                 let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                    NSLocalizedDescriptionKey : DKPhotoGalleryLocalizedStringWithKey("preview.image.fetch.error")
+                                                                    NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
                                                                     ])
                                                                 completeBlock(nil, nil, error)
                                                             }
@@ -108,7 +108,7 @@ class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
                                                             completeBlock(image, nil, nil)
                                                         } else {
                                                             let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                NSLocalizedDescriptionKey : DKPhotoGalleryLocalizedStringWithKey("preview.image.fetch.error")
+                                                                NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
                                                                 ])
                                                             completeBlock(nil, nil, error)
                                                         }
@@ -174,9 +174,9 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     
     private func updateDownloadOriginalButtonTitle() {
         if let extraInfo = self.item.extraInfo, let fileSize = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize] as? UInt {
-            self.downloadOriginalImageButton.setTitle(DKPhotoGalleryLocalizedStringWithKey("preview.image.download.original.title") + "(\(self.formattedFileSize(fileSize)))", for: .normal)
+            self.downloadOriginalImageButton.setTitle(DKPhotoGalleryResource.localizedStringWithKey("preview.image.download.original.title") + "(\(self.formattedFileSize(fileSize)))", for: .normal)
         } else {
-            self.downloadOriginalImageButton.setTitle(DKPhotoGalleryLocalizedStringWithKey("preview.image.download.original.title"),
+            self.downloadOriginalImageButton.setTitle(DKPhotoGalleryResource.localizedStringWithKey("preview.image.download.original.title"),
                                                       for: .normal)
         }
         self.updateDownloadOriginalButtonFrame()
@@ -245,7 +245,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                     SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
                 } else {
                     error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                        NSLocalizedDescriptionKey : DKPhotoGalleryLocalizedStringWithKey("preview.image.fetch.error")
+                        NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
                         ])
                 }
             }

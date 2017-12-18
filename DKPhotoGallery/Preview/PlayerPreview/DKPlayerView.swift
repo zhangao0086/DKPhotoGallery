@@ -777,7 +777,7 @@ open class DKPlayerView: UIView {
                 if let error = currentItem.error {
                     self.showPlayError(error.localizedDescription)
                 } else {
-                    self.showPlayError(DKPhotoGalleryLocalizedStringWithKey("preview.player.error.unknown"))
+                    self.showPlayError(DKPhotoGalleryResource.localizedStringWithKey("preview.player.error.unknown"))
                 }
                 
                 self.autoPlayOrShowErrorOnce = false

@@ -71,7 +71,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
                             if let error = error {
                                 self.showTips(error.localizedDescription)
                             } else {
-                                self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.result.success"))
+                                self.showTips(DKPhotoGalleryResource.localizedStringWithKey("preview.image.saveImage.result.success"))
                             }
                         })
                     } else if let image = contentView.image {
@@ -80,7 +80,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
                 case .restricted:
                     fallthrough
                 case .denied:
-                    self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.permission.error"))
+                    self.showTips(DKPhotoGalleryResource.localizedStringWithKey("preview.image.saveImage.permission.error"))
                 default:
                     break
                 }
@@ -92,7 +92,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         if let error = error {
             self.showTips(error.localizedDescription)
         } else {
-            self.showTips(DKPhotoGalleryLocalizedStringWithKey("preview.image.saveImage.result.success"))
+            self.showTips(DKPhotoGalleryResource.localizedStringWithKey("preview.image.saveImage.result.success"))
         }
     }
     
@@ -168,7 +168,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     
     @available(iOS 9.0, *)
     public override func defaultPreviewActions() -> [UIPreviewAction] {
-        let saveActionItem = UIPreviewAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.3DTouch.saveImage.title"),
+        let saveActionItem = UIPreviewAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.3DTouch.saveImage.title"),
                                              style: .default) { (action, previewViewController) in
                                                 self.saveImageToAlbum()
         }
@@ -180,7 +180,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         var actions = [UIAlertAction]()
         
         if let QRCodeResult = self.detectStringFromImage() {
-            let detectQRCodeAction = UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.extractQRCode.title"),
+            let detectQRCodeAction = UIAlertAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.image.extractQRCode.title"),
                                                    style: .default,
                                                    handler: { [weak self] (action) in
                                                     self?.previewQRCode(with: QRCodeResult)
@@ -188,7 +188,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
             actions.append(detectQRCodeAction)
         }
         
-        let saveImageAction = UIAlertAction(title: DKPhotoGalleryLocalizedStringWithKey("preview.image.longPress.saveImage.title"),
+        let saveImageAction = UIAlertAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.image.longPress.saveImage.title"),
                                             style: .default) { [weak self] (action) in
                                                 self?.saveImageToAlbum()
         }
