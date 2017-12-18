@@ -8,7 +8,6 @@ Pod::Spec.new do |s|
     s.platform      = :ios, '8.0'
     s.source        = { :git => 'https://github.com/zhangao0086/DKPhotoGallery.git', 
                        :tag => s.version.to_s }
-    s.resource      = 'DKPhotoGallery/Resource/DKPhotoGallery.bundle'
 
     s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary', 'MobileCoreServices'
     s.requires_arc  = true
@@ -39,6 +38,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'Resource' do |resource|
         resource.source_files = 'DKPhotoGallery/Resource/*.swift'
+        resource.resource = 'DKPhotoGallery/Resource/DKPhotoGallery.bundle'
     end
 
 end
