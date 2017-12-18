@@ -47,6 +47,8 @@ self.present(photoGallery: gallery)
 
 ```
 
+## DKPhotoGalleryItem
+
 Create a DKPhotoGalleryItem with a UIImage or a URL or a PHAsset.
 ```swift
 @objc
@@ -74,6 +76,27 @@ open class DKPhotoGalleryItem: NSObject {
      For ImagePreview, you can enable the original image download feature with a key named DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL.
      */
     open var extraInfo: [String: Any]?
+}
+```
+
+## Extract QR Code
+
+## Enable the original image download
+
+## Localization
+The default supported languages:
+
+- en.lproj
+- zh-Hans.lproj
+
+You can also add a hook to return your own localized string:
+```swift
+DKPhotoGalleryResource.customLocalizationBlock = { title in
+    if title == "preview.image.longPress.cancel" {
+        return "This is a test."
+    } else {
+        return nil
+    }
 }
 ```
 
