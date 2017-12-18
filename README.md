@@ -29,8 +29,53 @@ pod 'DKPhotoGallery'
 
 ## Usage
 ```swift
+let gallery = DKPhotoGallery()
+gallery.singleTapMode = .dismiss
+gallery.items = self.items
+gallery.presentingFromImageView = self.imageView
+gallery.presentationIndex = 0
 
-````
+gallery.finishedBlock = { [weak self] dismissIndex in
+    if dismissIndex == 0 {
+        return self?.imageView
+    } else {
+        return nil
+    }
+}
+
+self.present(photoGallery: gallery)
+
+```
+
+Create a DKPhotoGalleryItem with a UIImage or a URL or a PHAsset.
+```swift
+@objc
+open class DKPhotoGalleryItem: NSObject {
+    
+    /// The image to be set initially, until the image request finishes.
+    open var thumbnail: UIImage?
+    
+    open var image: UIImage?
+    open var imageURL: URL?
+    
+    open var videoURL: URL?
+    
+    /**
+     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via mediaType of the asset.
+     
+     See more: DKPhotoPreviewFactory.swift
+     */
+    open var asset: PHAsset?
+    open var assetLocalIdentifier: String?
+    
+    /**
+     Used for some optional features.
+     
+     For ImagePreview, you can enable the original image download feature with a key named DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL.
+     */
+    open var extraInfo: [String: Any]?
+}
+```
 
 ## License
 DKPhotoGallery is released under the MIT license. See LICENSE for details.
