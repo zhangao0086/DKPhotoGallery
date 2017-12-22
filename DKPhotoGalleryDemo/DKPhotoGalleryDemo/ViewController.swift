@@ -9,7 +9,7 @@
 import UIKit
 import DKPhotoGallery
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIViewControllerPreviewingDelegate {
 
 	let items = [
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image1")),
@@ -44,13 +44,26 @@ class ViewController: UIViewController {
         DKPhotoGalleryItem(videoURL: URL(string:"https://s3.amazonaws.com/lookvideos.mp4/t/05093dabec6c9448f7058a4a08f998155b03cc41.mp4")!),
 	]
 
-    @IBOutlet var imageView: UIImageView?
+    @IBOutlet var imageView: UIImageView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if #available(iOS 9.0, *) {
+            self.registerForPreviewing(with: self, sourceView: self.imageView)
+        }
+    }
 
-	@IBAction func imageClicked(_ sender: UITapGestureRecognizer) {
-		let gallery = DKPhotoGallery()
+    @IBAction func imageClicked(_ sender: UITapGestureRecognizer) {
+        let gallery = self.createGallery()
+        self.present(photoGallery: gallery)
+    }
+    
+    func createGallery() -> DKPhotoGallery {
+        let gallery = DKPhotoGallery()
         gallery.singleTapMode = .dismiss
-		gallery.items = self.items
-		gallery.presentingFromImageView = self.imageView
+        gallery.items = self.items
+        gallery.presentingFromImageView = self.imageView
         gallery.presentationIndex = 0
         
         gallery.finishedBlock = { [weak self] dismissIndex in
@@ -61,7 +74,17 @@ class ViewController: UIViewController {
             }
         }
         
-        self.present(photoGallery: gallery)
+        return gallery
+    }
+    
+    // MARK: - UIViewControllerPreviewingDelegate
+    
+    public func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        return self.createGallery()
+    }
+    
+    public func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.present(photoGallery: viewControllerToCommit as! DKPhotoGallery)
     }
 }
 

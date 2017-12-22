@@ -167,7 +167,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     @available(iOS 9.0, *)
-    public override func defaultPreviewActions() -> [UIPreviewAction] {
+    public override func defaultPreviewActions() -> [UIPreviewActionItem] {
         let saveActionItem = UIPreviewAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.3DTouch.saveImage.title"),
                                              style: .default) { (action, previewViewController) in
                                                 self.saveImageToAlbum()

@@ -34,7 +34,7 @@ public protocol DKPhotoBasePreviewDataSource : NSObjectProtocol {
     func enableIndicatorView() -> Bool
         
     @available(iOS 9.0, *)
-    func defaultPreviewActions() -> [UIPreviewAction]
+    func defaultPreviewActions() -> [UIPreviewActionItem]
     
     func defaultLongPressActions() -> [UIAlertAction]
     
@@ -436,7 +436,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     }
     
     @available(iOS 9.0, *)
-    public func defaultPreviewActions() -> [UIPreviewAction] {
+    public func defaultPreviewActions() -> [UIPreviewActionItem] {
         return []
     }
     

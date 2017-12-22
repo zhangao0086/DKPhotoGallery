@@ -35,7 +35,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     weak open var galleryDelegate: DKPhotoGalleryDelegate?
     
     open var customLongPressActions: [UIAlertAction]?
-    open var customPreviewActions: [Any]? // [UIPreviewAction]
+    open var customPreviewActions: [Any]? // [UIPreviewActionItem]
     
     open var transitionController: DKPhotoGalleryTransitionController?
     
