@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
                                 'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
                                 'DKPhotoGallery/DKPhotoPreviewFactory.swift',
-                                'DKPhotoGallery/Transition/*.swift',
+                                'DKPhotoGallery/Transition/*.swift'
     end
 
     s.subspec 'Model' do |model|
