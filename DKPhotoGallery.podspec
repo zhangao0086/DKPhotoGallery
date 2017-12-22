@@ -21,8 +21,7 @@ Pod::Spec.new do |s|
         core.source_files  =    'DKPhotoGallery/DKPhotoGallery.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
-                                'DKPhotoGallery/DKPhotoPreviewFactory.swift',
-                                'DKPhotoGallery/Transition/*.swift'
+                                'DKPhotoGallery/DKPhotoPreviewFactory.swift'
     end
 
     s.subspec 'Model' do |model|
@@ -34,6 +33,12 @@ Pod::Spec.new do |s|
         preview.dependency 'DKPhotoGallery/Resource'
 
         preview.source_files = 'DKPhotoGallery/Preview/**/*.swift'
+    end
+
+    s.subspec 'Transition' do |transition|
+        transition.dependency 'DKPhotoGallery/Core'
+
+        transition.source_files = 'DKPhotoGallery/Transition/*.swift'
     end
 
     s.subspec 'Resource' do |resource|
