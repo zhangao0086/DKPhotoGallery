@@ -30,7 +30,7 @@ class DKPhotoGalleryScrollView: UIScrollView {
     
     public func update(_ itemCount: Int) {
         self.contentSize = CGSize(width: CGFloat(itemCount * Int((screenWidth() + 20))),
-                                  height: screenHeight())
+                                  height: 0)
         self.items = []
         
         for _ in 0 ..< itemCount {

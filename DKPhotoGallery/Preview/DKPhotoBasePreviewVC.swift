@@ -104,6 +104,8 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open override func loadView() {
         super.loadView()
         
+        self.view.autoresizingMask = []
+        
         self.scrollView = UIScrollView(frame: self.view.bounds)
         self.view.addSubview(self.scrollView)
         
