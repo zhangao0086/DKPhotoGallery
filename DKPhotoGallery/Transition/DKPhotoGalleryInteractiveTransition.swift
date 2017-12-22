@@ -39,7 +39,11 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
         case .began:
             self.isInteracting = true
             self.fromContentView = self.gallery.currentContentView()
-            self.fromRect = self.fromContentView?.frame
+            if let fromContentView = fromContentView {
+                self.fromRect = fromContentView.superview?.convert(fromContentView.frame, to: nil)
+            } else {
+                self.fromRect = CGRect.zero
+            }
             
             self.toImageView = self.gallery.finishedBlock?(self.gallery.currentIndex())
             self.toImageView?.isHidden = true
