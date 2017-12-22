@@ -271,7 +271,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
             if image != nil || data != nil {
-                completeBlock(image ?? data, nil)
+                completeBlock(data ?? image, nil)
             } else {
                 downloader.downloadImage(with: identifier, progressBlock: { (progress) in
                     progressBlock(progress)
@@ -279,7 +279,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                     if error == nil {
                         SDImageCache.shared().store(image, imageData: data, forKey: key, toDisk: true, completion: nil)
                         
-                        completeBlock(image ?? data, nil)
+                        completeBlock(data ?? image, nil)
                     } else {
                         completeBlock(nil, error)
                     }
