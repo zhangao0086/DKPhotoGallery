@@ -10,14 +10,17 @@ import UIKit
 
 @objc
 public protocol DKPhotoGalleryDelegate : NSObjectProtocol {
-
+    
+    /// Called by the gallery just after it shows the index.
     @objc optional func photoGallery(_ gallery: DKPhotoGallery, didShow index: Int)
     
 }
 
 @objc
 public enum DKPhotoGallerySingleTapMode : Int {
-    case dismiss, toggleControlView
+    case
+    dismiss, // Dismiss DKPhotoGallery when user tap on the screen.
+    toggleControlView
 }
 
 @objc
@@ -48,6 +51,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         self.view.backgroundColor = UIColor.black
         
         self.navigationBar.barStyle = .blackTranslucent
+        self.navigationBar.barTintColor = UIColor.gray
         
         let contentVC = DKPhotoGalleryContentVC()
         self.contentVC = contentVC
