@@ -236,21 +236,31 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         DKPhotoImagePreviewVC.ioQueue.async {
             let key = URL.absoluteString
             
-            var error: Error?
+            var imageError: Error?
             var image = SDImageCache.shared().imageFromMemoryCache(forKey: key)
             
             if image == nil {
-                if let compressedImage = UIImage(contentsOfFile: URL.path) {
-                    image = self.decompressImage(with: compressedImage)
-                    SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
-                } else {
-                    error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                        NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
-                        ])
+                do {
+                    let data = try Data(contentsOf: URL)
+                    if NSData.sd_imageFormat(forImageData: data) == .GIF {
+                        image = UIImage.sd_animatedGIF(with: data)
+                        
+                        SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
+                    } else if let compressedImage = UIImage.sd_image(with: data) {
+                        image = self.decompressImage(with: compressedImage)
+                        
+                        SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
+                    } else {
+                        imageError = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
+                            NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
+                            ])
+                    }
+                } catch {
+                    imageError = error
                 }
             }
             
-            completeBlock(image, error)
+            completeBlock(image, imageError)
         }
     }
     

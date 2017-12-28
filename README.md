@@ -28,6 +28,7 @@ pod 'DKPhotoGallery'
 ```
 
 ## Usage
+
 ```swift
 let gallery = DKPhotoGallery()
 gallery.singleTapMode = .dismiss
@@ -50,6 +51,7 @@ self.present(photoGallery: gallery)
 ## DKPhotoGalleryItem
 
 Create a DKPhotoGalleryItem with a UIImage or a URL or a PHAsset.
+
 ```swift
 @objc
 open class DKPhotoGalleryItem: NSObject {
@@ -81,7 +83,7 @@ open class DKPhotoGalleryItem: NSObject {
 
 ## Extract QR Code
 
-## Enable the original image download
+## Enable the original image download feature
 
 ## Localization
 The default supported languages:
@@ -90,6 +92,7 @@ The default supported languages:
 - zh-Hans.lproj
 
 You can also add a hook to return your own localized string:
+
 ```swift
 DKPhotoGalleryResource.customLocalizationBlock = { title in
     if title == "preview.image.longPress.cancel" {
