@@ -306,7 +306,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if width == 0 || height == 0 { return image }
         
-        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, image.scale)
         
         guard let context = UIGraphicsGetCurrentContext() else { return image }
         
