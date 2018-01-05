@@ -68,10 +68,10 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
             strongSelf.galleryDelegate?.photoGallery?(strongSelf, didShow: index)
         }
         
+        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
+        
         contentVC.items = self.items
         contentVC.currentIndex = min(self.presentationIndex, self.items!.count - 1)
-        
-        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
         
         let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
         let key = String(data: keyData, encoding: String.Encoding.ascii)!
