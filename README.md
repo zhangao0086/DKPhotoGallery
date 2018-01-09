@@ -65,7 +65,7 @@ open class DKPhotoGalleryItem: NSObject {
     open var videoURL: URL?
     
     /**
-     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via mediaType of the asset.
+     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.
      
      See more: DKPhotoPreviewFactory.swift
      */
@@ -82,6 +82,8 @@ open class DKPhotoGalleryItem: NSObject {
 ```
 
 ## Extract QR Code
+
+<img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/QRCode.gif" />
 
 ## Enable the original image download feature
 

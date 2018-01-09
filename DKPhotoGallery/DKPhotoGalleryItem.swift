@@ -39,7 +39,7 @@ open class DKPhotoGalleryItem: NSObject {
     open var videoURL: URL?
     
     /**
-     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via mediaType of the asset.
+     DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.
      
      See more: DKPhotoPreviewFactory.swift
      */
