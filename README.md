@@ -87,6 +87,8 @@ open class DKPhotoGalleryItem: NSObject {
 
 ## Enable the original image download feature
 
+<img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/Original.gif" />
+
 ## Localization
 The default supported languages:
 
