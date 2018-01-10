@@ -89,6 +89,14 @@ open class DKPhotoGalleryItem: NSObject {
 
 <img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/Original.gif" />
 
+```swift
+let item = DKPhotoGalleryItem(imageURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/b29259d837d4aaeef4b33c9dbc964a5b?x-oss-process=image/resize,m_lfit,h_512,w_512/quality,Q_80")!)
+item.extraInfo = [
+    DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL: URL(string:"https://sz-preview.oss-cn-hangzhou.aliyuncs.com/pics/10003/b29259d837d4aaeef4b33c9dbc964a5b")!
+]
+
+```
+
 ## Localization
 The default supported languages:
 
