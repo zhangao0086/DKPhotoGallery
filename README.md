@@ -3,6 +3,8 @@ DKPhotoGallery
 
  [![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
 
+<img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/photoGallery.gif" />
+
 ### Features
 
 - PNG|JPEG|GIF|PHAsset
