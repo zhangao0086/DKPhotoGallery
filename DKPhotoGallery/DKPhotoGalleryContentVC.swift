@@ -8,6 +8,29 @@
 
 import UIKit
 
+fileprivate class DKPhotoGalleryContentFooterViewContainer: UIView {
+    
+    private var footerView: UIView
+    
+    init(footerView: UIView) {
+        self.footerView = footerView
+        
+        super.init(frame: CGRect.zero)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+        
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.footerView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.footerView.bounds.height)
+    }
+}
+
+////////////////////////////////////////////////////////////
+
 @objc
 open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
@@ -34,6 +57,25 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     private var reuseableVCs: [ObjectIdentifier : [DKPhotoBasePreviewVC] ] = [:] // DKPhotoBasePreviewVC.Type : [DKPhotoBasePreviewVC]
     private var visibleVCs: [Int : DKPhotoBasePreviewVC] = [:]
     
+    open var footerView: UIView? {
+        didSet {
+            self.updateFooterView()
+            
+            if let footerViewContainer = self.footerViewContainer {
+                footerViewContainer.alpha = 0
+                self.setFooterViewHidden(false, animated: true)
+            }
+        }
+    }
+    
+    open var footerViewContainerColor: UIColor? {
+        willSet {
+            self.footerViewContainer?.backgroundColor = newValue
+        }
+    }
+    
+    private var footerViewContainer: DKPhotoGalleryContentFooterViewContainer?
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,6 +89,8 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.view.addSubview(self.mainView)
         
         self.updateWithCurrentIndex(needToSetContentOffset: true, onlyCurrentIndex: true)
+        
+        self.updateFooterView()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +110,47 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         return filtered
     }
     
+    internal func setFooterViewHidden(_ hidden: Bool, animated: Bool, completeBlock: (() -> Void)? = nil) {
+        guard let footerView = self.footerViewContainer else { return }
+        
+        let alpha = CGFloat(hidden ? 0 : 1)
+        
+        if footerView.alpha != alpha {
+            let footerViewAnimationBlock = {
+                footerView.alpha = alpha
+            }
+            
+            if animated {
+                UIView.animate(withDuration: 0.2, animations: footerViewAnimationBlock) { finished in
+                    completeBlock?()
+                }
+            } else {
+                footerViewAnimationBlock()
+            }
+        }
+    }
+    
     // MARK: - Private
+    
+    private func updateFooterView() {
+        guard self.isViewLoaded else { return }
+        
+        if let footerView = self.footerView {
+            self.footerViewContainer = DKPhotoGalleryContentFooterViewContainer(footerView: footerView)
+            self.footerViewContainer!.backgroundColor = self.footerViewContainerColor
+            
+            let footerViewHeight = footerView.bounds.height + (DKPhotoGallery.isIphoneX() ? 34 : 0)
+            self.footerViewContainer!.frame = CGRect(x: 0, y: self.view.bounds.height - footerViewHeight,
+                                                     width: self.view.bounds.width, height: footerViewHeight)
+            self.footerViewContainer!.addSubview(footerView)
+            self.view.addSubview(self.footerViewContainer!)
+        } else if let footerViewContainer = self.footerViewContainer {
+            self.setFooterViewHidden(true, animated: true) {
+                footerViewContainer.removeFromSuperview()
+            }
+            self.footerViewContainer = nil
+        }
+    }
     
     private func updateWithCurrentIndex(needToSetContentOffset need: Bool, onlyCurrentIndex: Bool = false) {
         if need {

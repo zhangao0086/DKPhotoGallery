@@ -40,18 +40,31 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open var customLongPressActions: [UIAlertAction]?
     open var customPreviewActions: [Any]? // [UIPreviewActionItem]
     
+    open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.7) {
+        willSet {
+            self.contentVC?.footerViewContainerColor = newValue
+        }
+    }
+    open var footerView: UIView? {
+        didSet {
+            self.contentVC?.footerView = self.footerView
+            self.updateFooterView()
+        }
+    }
+    
     open var transitionController: DKPhotoGalleryTransitionController?
     
     internal var statusBar: UIView?
-    internal weak var contentVC: DKPhotoGalleryContentVC!
+    internal weak var contentVC: DKPhotoGalleryContentVC?
     
     open override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.black
         
-        self.navigationBar.barStyle = .blackTranslucent
-        self.navigationBar.barTintColor = UIColor.gray
+        self.navigationBar.setBackgroundImage(DKPhotoGallery.imageFromColor(color: navigationBarBackgroundColor),
+                                              for: .default)
+        self.navigationBar.isTranslucent = true
         
         let contentVC = DKPhotoGalleryContentVC()
         self.contentVC = contentVC
@@ -68,10 +81,15 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
             strongSelf.galleryDelegate?.photoGallery?(strongSelf, didShow: index)
         }
         
-        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(DKPhotoGallery.dismissGallery))
+        contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
+                                                                     target: self,
+                                                                     action: #selector(DKPhotoGallery.dismissGallery))
         
         contentVC.items = self.items
         contentVC.currentIndex = min(self.presentationIndex, self.items!.count - 1)
+        
+        contentVC.footerViewContainerColor = self.navigationBarBackgroundColor
+        contentVC.footerView = self.footerView
         
         let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
         let key = String(data: keyData, encoding: String.Encoding.ascii)!
@@ -82,13 +100,19 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     private lazy var doSetupOnce: () -> Void = {
         self.isNavigationBarHidden = true
+        self.setFooterViewHidden(true, animated: false)
+        
         if self.singleTapMode == .toggleControlView {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: {
                 self.setNavigationBarHidden(false, animated: true)
+                self.setFooterViewHidden(false, animated: true)
                 self.showsControlView()
             })
             self.statusBar?.alpha = 1
         } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: {
+                self.setFooterViewHidden(false, animated: true)
+            })
             self.statusBar?.alpha = 0
         }
 
@@ -131,19 +155,19 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }
     
     open func currentContentView() -> UIView {
-        return self.contentVC.currentContentView
+        return self.contentVC!.currentContentView
     }
     
     open func currentContentVC() -> DKPhotoBasePreviewVC {
-        return self.contentVC.currentVC
+        return self.contentVC!.currentVC
     }
     
     open func currentIndex() -> Int {
-        return self.contentVC.currentIndex
+        return self.contentVC!.currentIndex
     }
     
     open func updateNavigation() {
-        self.contentVC.navigationItem.title = "\(self.contentVC.currentIndex + 1)/\(self.items!.count)"
+        self.contentVC!.navigationItem.title = "\(self.contentVC!.currentIndex + 1)/\(self.items!.count)"
     }
     
     open func handleSingleTap() {
@@ -166,8 +190,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open func showsControlView () {
         self.isNavigationBarHidden = false
         self.statusBar?.alpha = 1
+        self.contentVC?.setFooterViewHidden(false, animated: false)
         
-        if let videoPreviewVCs = self.contentVC.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
+        if let videoPreviewVCs = self.contentVC?.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
             let _ = videoPreviewVCs.map { $0.isControlHidden = false }
         }
     }
@@ -175,9 +200,25 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open func hidesControlView () {
         self.isNavigationBarHidden = true
         self.statusBar?.alpha = 0
+        self.contentVC?.setFooterViewHidden(true, animated: false)
         
-        if let videoPreviewVCs = self.contentVC.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
+        if let videoPreviewVCs = self.contentVC?.filterVisibleVCs(with: DKPhotoPlayerPreviewVC.self) {
             let _ = videoPreviewVCs.map { $0.isControlHidden = true }
+        }
+    }
+    
+    @available(iOS 9.0, *)
+    open override var previewActionItems: [UIPreviewActionItem] {
+        return self.contentVC!.currentVC.previewActionItems
+    }
+    
+    // MARK: - Private, internal
+    
+    private func updateFooterView() {
+        if self.footerView != nil {
+            if self.singleTapMode == .toggleControlView && self.isNavigationBarHidden {
+                self.contentVC?.setFooterViewHidden(true, animated: false)
+            }
         }
     }
     
@@ -224,10 +265,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
             block()
         }
     }
-	
-    @available(iOS 9.0, *)
-    open override var previewActionItems: [UIPreviewActionItem] {
-        return self.contentVC.currentVC.previewActionItems
+    
+    internal func setFooterViewHidden(_ hidden: Bool, animated: Bool) {
+        self.contentVC?.setFooterViewHidden(hidden, animated: animated)
     }
     
     // MARK: - UINavigationController
@@ -236,30 +276,59 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     open override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         super.pushViewController(viewController, animated: animated)
         
-        if self.isNavigationBarHidden {
-            self._isNavigationBarHidden = true
-            
-            self.setNavigationBarHidden(false, animated: true)
-            
-            UIView.animate(withDuration: 0.1, animations: {
-                self.statusBar?.alpha = 1
-            })
+        if self.viewControllers.count == 2 {
+            if self.isNavigationBarHidden {
+                self._isNavigationBarHidden = true
+                
+                self.setNavigationBarHidden(false, animated: true)
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.statusBar?.alpha = 1
+                })
+            }
         }
     }
     
     open override func popViewController(animated: Bool) -> UIViewController? {
-        if self._isNavigationBarHidden {
-            self._isNavigationBarHidden = false
-            
-            self.setNavigationBarHidden(true, animated: true)
-            
-            UIView.animate(withDuration: 0.1, animations: {
-                self.statusBar?.alpha = 0
-            })
+        let vc = super.popViewController(animated: animated)
+        
+        if self.viewControllers.count == 1 {
+            if self._isNavigationBarHidden {
+                self._isNavigationBarHidden = false
+                
+                self.setNavigationBarHidden(true, animated: true)
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.statusBar?.alpha = 0
+                })
+            }
         }
-            
-        return super.popViewController(animated: animated)
+        
+        return vc
     }
+    
+    // MARK: - Utilities
+    
+    internal class func isIphoneX() -> Bool {
+        return max(UIScreen.main.bounds.height, UIScreen.main.bounds.width) >= 812
+    }
+    
+    internal class func imageFromColor(color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        
+        // create a 1 by 1 pixel context
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+        
+        color.setFill()
+        UIRectFill(rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        return image!
+    }
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +338,9 @@ public extension UIViewController {
     public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
         gallery.modalPresentationStyle = .custom
         
-        gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery, presentedViewController: gallery, presenting: self)
+        gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery,
+                                                                          presentedViewController: gallery,
+                                                                          presenting: self)
         gallery.transitioningDelegate = gallery.transitionController
         
         gallery.transitionController!.prepareInteractiveGesture()
