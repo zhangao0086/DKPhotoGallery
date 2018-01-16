@@ -26,26 +26,26 @@ public enum DKPhotoGallerySingleTapMode : Int {
 @objc
 open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate {
 	
-    open var items: [DKPhotoGalleryItem]?
+    @objc open var items: [DKPhotoGalleryItem]?
     
-    open var finishedBlock: ((_ index: Int) -> UIImageView?)?
+    @objc open var finishedBlock: ((_ index: Int) -> UIImageView?)?
     
-    open var presentingFromImageView: UIImageView?
-    open var presentationIndex = 0
+    @objc open var presentingFromImageView: UIImageView?
+    @objc open var presentationIndex = 0
     
-    open var singleTapMode = DKPhotoGallerySingleTapMode.toggleControlView
+    @objc open var singleTapMode = DKPhotoGallerySingleTapMode.toggleControlView
     
-    weak open var galleryDelegate: DKPhotoGalleryDelegate?
+    @objc weak open var galleryDelegate: DKPhotoGalleryDelegate?
     
-    open var customLongPressActions: [UIAlertAction]?
-    open var customPreviewActions: [Any]? // [UIPreviewActionItem]
+    @objc open var customLongPressActions: [UIAlertAction]?
+    @objc open var customPreviewActions: [Any]? // [UIPreviewActionItem]
     
-    open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.7) {
+    @objc open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.7) {
         willSet {
             self.contentVC?.footerViewContainerColor = newValue
         }
     }
-    open var footerView: UIView? {
+    @objc open var footerView: UIView? {
         didSet {
             self.contentVC?.footerView = self.footerView
             self.updateFooterView()
@@ -154,23 +154,23 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
     }
     
-    open func currentContentView() -> UIView {
+    @objc open func currentContentView() -> UIView {
         return self.contentVC!.currentContentView
     }
     
-    open func currentContentVC() -> DKPhotoBasePreviewVC {
+    @objc open func currentContentVC() -> DKPhotoBasePreviewVC {
         return self.contentVC!.currentVC
     }
     
-    open func currentIndex() -> Int {
+    @objc open func currentIndex() -> Int {
         return self.contentVC!.currentIndex
     }
     
-    open func updateNavigation() {
+    @objc open func updateNavigation() {
         self.contentVC!.navigationItem.title = "\(self.contentVC!.currentIndex + 1)/\(self.items!.count)"
     }
     
-    open func handleSingleTap() {
+    @objc open func handleSingleTap() {
         switch self.singleTapMode {
         case .toggleControlView:
             self.toggleControlView()
@@ -179,7 +179,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
     }
     
-    open func toggleControlView() {
+    @objc open func toggleControlView() {
         if self.isNavigationBarHidden {
             self.showsControlView()
         } else {
@@ -187,7 +187,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
     }
     
-    open func showsControlView () {
+    @objc open func showsControlView () {
         self.isNavigationBarHidden = false
         self.statusBar?.alpha = 1
         self.contentVC?.setFooterViewHidden(false, animated: false)
@@ -197,7 +197,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         }
     }
     
-    open func hidesControlView () {
+    @objc open func hidesControlView () {
         self.isNavigationBarHidden = true
         self.statusBar?.alpha = 0
         self.contentVC?.setFooterViewHidden(true, animated: false)
