@@ -525,7 +525,7 @@ open class DKPlayerView: UIView {
                                                           toItem: self.controlView,
                                                           attribute: .bottom,
                                                           multiplier: 1,
-                                                          constant: DKPhotoGallery.isIphoneX() ? -34 : 0))
+                                                          constant: DKPhotoBasePreviewVC.isIphoneX() ? -34 : 0))
         
         if let controlParentView = self.controlParentView {
             controlParentView.addSubview(self.controlView)

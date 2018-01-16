@@ -308,11 +308,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }
     
     // MARK: - Utilities
-    
-    internal class func isIphoneX() -> Bool {
-        return max(UIScreen.main.bounds.height, UIScreen.main.bounds.width) >= 812
-    }
-    
+        
     internal class func imageFromColor(color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         
