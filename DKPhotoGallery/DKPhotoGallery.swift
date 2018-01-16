@@ -40,7 +40,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     @objc open var customLongPressActions: [UIAlertAction]?
     @objc open var customPreviewActions: [Any]? // [UIPreviewActionItem]
     
-    @objc open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.7) {
+    @objc open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.9) {
         willSet {
             self.contentVC?.footerViewContainerColor = newValue
         }
