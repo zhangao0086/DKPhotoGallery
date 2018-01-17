@@ -40,11 +40,6 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     @objc open var customLongPressActions: [UIAlertAction]?
     @objc open var customPreviewActions: [Any]? // [UIPreviewActionItem]
     
-    @objc open var navigationBarBackgroundColor = UIColor.gray.withAlphaComponent(0.9) {
-        willSet {
-            self.contentVC?.footerViewContainerColor = newValue
-        }
-    }
     @objc open var footerView: UIView? {
         didSet {
             self.contentVC?.footerView = self.footerView
@@ -62,8 +57,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         
         self.view.backgroundColor = UIColor.black
         
-        self.navigationBar.setBackgroundImage(DKPhotoGallery.imageFromColor(color: navigationBarBackgroundColor),
-                                              for: .default)
+        self.navigationBar.tintColor = UIColor.darkGray
         self.navigationBar.isTranslucent = true
         
         let contentVC = DKPhotoGalleryContentVC()
@@ -88,7 +82,6 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         contentVC.items = self.items
         contentVC.currentIndex = min(self.presentationIndex, self.items!.count - 1)
         
-        contentVC.footerViewContainerColor = self.navigationBarBackgroundColor
         contentVC.footerView = self.footerView
         
         let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])

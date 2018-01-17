@@ -8,7 +8,7 @@
 
 import UIKit
 
-fileprivate class DKPhotoGalleryContentFooterViewContainer: UIView {
+fileprivate class DKPhotoGalleryContentFooterViewContainer : UIToolbar {
     
     private var footerView: UIView
     
@@ -67,13 +67,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-    open var footerViewContainerColor: UIColor? {
-        willSet {
-            self.footerViewContainer?.backgroundColor = newValue
-        }
-    }
-    
+        
     private var footerViewContainer: DKPhotoGalleryContentFooterViewContainer?
     
     open override func viewDidLoad() {
@@ -137,7 +131,6 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         if let footerView = self.footerView {
             self.footerViewContainer = DKPhotoGalleryContentFooterViewContainer(footerView: footerView)
-            self.footerViewContainer!.backgroundColor = self.footerViewContainerColor
             
             let footerViewHeight = footerView.bounds.height + (DKPhotoBasePreviewVC.isIphoneX() ? 34 : 0)
             self.footerViewContainer!.frame = CGRect(x: 0, y: self.view.bounds.height - footerViewHeight,
