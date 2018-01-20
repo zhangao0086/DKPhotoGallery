@@ -8,14 +8,18 @@
 
 import UIKit
 
-fileprivate class DKPhotoGalleryContentFooterViewContainer : UIToolbar {
+fileprivate class DKPhotoGalleryContentFooterViewContainer : UIView {
     
     private var footerView: UIView
+    private var backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     
     init(footerView: UIView) {
         self.footerView = footerView
         
         super.init(frame: CGRect.zero)
+        
+        self.addSubview(self.backgroundView)
+        self.backgroundView.contentView.addSubview(footerView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,6 +29,7 @@ fileprivate class DKPhotoGalleryContentFooterViewContainer : UIToolbar {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        self.backgroundView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
         self.footerView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.footerView.bounds.height)
     }
 }
@@ -135,7 +140,6 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             let footerViewHeight = footerView.bounds.height + (DKPhotoBasePreviewVC.isIphoneX() ? 34 : 0)
             self.footerViewContainer!.frame = CGRect(x: 0, y: self.view.bounds.height - footerViewHeight,
                                                      width: self.view.bounds.width, height: footerViewHeight)
-            self.footerViewContainer!.addSubview(footerView)
             self.view.addSubview(self.footerViewContainer!)
         } else if let footerViewContainer = self.footerViewContainer {
             self.setFooterViewHidden(true, animated: true) {
