@@ -113,12 +113,13 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }()
     
     private let defaultStatusBarStyle = UIApplication.shared.statusBarStyle
+    private static var _preferredStatusBarStyle = UIStatusBarStyle.default
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.doSetupOnce()
         
-        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarStyle = DKPhotoGallery._preferredStatusBarStyle
         
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
@@ -316,6 +317,14 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
         UIGraphicsEndImageContext()
         
         return image!
+    }
+    
+    public class func setPreferredStatusBarStyle(statusBarStyle: UIStatusBarStyle) {
+        _preferredStatusBarStyle = statusBarStyle
+    }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return DKPhotoGallery._preferredStatusBarStyle
     }
 
 }
