@@ -68,11 +68,11 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
                 case .authorized:
                     if let animatedImage = contentView.animatedImage {
                         ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                            if let error = error {
-                                self.showTips(error.localizedDescription)
-                            } else {
-                                self.showTips(DKPhotoGalleryResource.localizedStringWithKey("preview.image.saveImage.result.success"))
-                            }
+                            self.showImageSaveResult(with: error)
+                        })
+                    } else if let imageURL = self.item.imageURL, imageURL.isFileURL, let data = try? Data(contentsOf: imageURL) {
+                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: data, metadata: [:], completionBlock: { (newURL, error) in
+                            self.showImageSaveResult(with: error)
                         })
                     } else if let image = contentView.image {
                         UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -89,6 +89,10 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        self.showImageSaveResult(with: error)
+    }
+    
+    func showImageSaveResult(with error: Error?) {
         if let error = error {
             self.showTips(error.localizedDescription)
         } else {

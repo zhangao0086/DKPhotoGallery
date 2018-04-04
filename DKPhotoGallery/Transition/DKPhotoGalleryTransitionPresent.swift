@@ -33,7 +33,7 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
             let snapshotImageView = DKPhotoContentAnimationView(image: fromImage)
             snapshotImageView.frame = fromImageViewFrameInScreen!
             snapshotImageView.contentMode = fromImageView.contentMode
-            snapshotImageView.backgroundColor = UIColor.white
+            snapshotImageView.backgroundColor = fromImageView.backgroundColor
             snapshotImageView.clipsToBounds = fromImageView.clipsToBounds
             snapshotImageView.layer.cornerRadius = fromImageView.layer.cornerRadius
             
