@@ -31,53 +31,53 @@ public class DKPhotoGalleryItemConstant: NSObject {
 open class DKPhotoGalleryItem: NSObject {
     
     /// The image to be set initially, until the image request finishes.
-    open var thumbnail: UIImage?
+    @objc open var thumbnail: UIImage?
     
-    open var image: UIImage?
-    open var imageURL: URL?
+    @objc open var image: UIImage?
+    @objc open var imageURL: URL?
     
-    open var videoURL: URL?
+    @objc open var videoURL: URL?
     
     /**
      DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.
      
      See more: DKPhotoPreviewFactory.swift
      */
-    open var asset: PHAsset?
-    open var assetLocalIdentifier: String?
+    @objc open var asset: PHAsset?
+    @objc open var assetLocalIdentifier: String?
     
     /**
      Used for some optional features.
      
      For ImagePreview, you can enable the original image download feature with a key named DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL.
      */
-    open var extraInfo: [String: Any]?
+    @objc open var extraInfo: [String: Any]?
     
-    convenience public init(image: UIImage) {
+    @objc convenience public init(image: UIImage) {
         self.init()
         
         self.image = image
     }
     
-    convenience public init(imageURL: URL) {
+    @objc convenience public init(imageURL: URL) {
         self.init()
         
         self.imageURL = imageURL
     }
     
-    convenience public init(videoURL: URL) {
+    @objc convenience public init(videoURL: URL) {
         self.init()
         
         self.videoURL = videoURL
     }
     
-    convenience public init(asset: PHAsset) {
+    @objc convenience public init(asset: PHAsset) {
         self.init()
         
         self.asset = asset
     }
     
-    public class func items(withImageURLs URLs: [URL]) -> [DKPhotoGalleryItem] {
+    @objc public class func items(withImageURLs URLs: [URL]) -> [DKPhotoGalleryItem] {
         var items: [DKPhotoGalleryItem] = []
         for URL in URLs {
             let item = DKPhotoGalleryItem()
@@ -89,7 +89,7 @@ open class DKPhotoGalleryItem: NSObject {
         return items
     }
     
-    public class func items(withImageURLStrings URLStrings: [String]) -> [DKPhotoGalleryItem] {
+    @objc public class func items(withImageURLStrings URLStrings: [String]) -> [DKPhotoGalleryItem] {
         var items: [DKPhotoGalleryItem] = []
         for URLString in URLStrings {
             let item = DKPhotoGalleryItem()
