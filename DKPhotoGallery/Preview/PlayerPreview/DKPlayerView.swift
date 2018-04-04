@@ -525,7 +525,7 @@ open class DKPlayerView: UIView {
                                                           toItem: self.controlView,
                                                           attribute: .bottom,
                                                           multiplier: 1,
-                                                          constant: self.isIphoneX() ? -34 : 0))
+                                                          constant: DKPhotoBasePreviewVC.isIphoneX() ? -34 : 0))
         
         if let controlParentView = self.controlParentView {
             controlParentView.addSubview(self.controlView)
@@ -661,10 +661,6 @@ open class DKPlayerView: UIView {
                 self.bufferingIndicator.stopAnimating()
             }
         }
-    }
-    
-    private func isIphoneX() -> Bool {
-        return max(UIScreen.main.bounds.height, UIScreen.main.bounds.width) >= 812
     }
     
     // MARK: - Observer
