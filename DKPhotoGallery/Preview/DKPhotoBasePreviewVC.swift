@@ -80,15 +80,16 @@ internal extension UIView {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+@objc
 open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhotoBasePreviewDataSource {
     
-    open internal(set) var item: DKPhotoGalleryItem!
+    @objc open internal(set) var item: DKPhotoGalleryItem!
     
-    open private(set) var contentView: UIView!
+    @objc open private(set) var contentView: UIView!
     
-    open var customLongPressActions: [UIAlertAction]?
-    open var customPreviewActions: [Any]?
-    open var singleTapBlock: (() -> Void)?
+    @objc open var customLongPressActions: [UIAlertAction]?
+    @objc open var customPreviewActions: [Any]?
+    @objc open var singleTapBlock: (() -> Void)?
     
     private var thumbnailView = UIImageView()
     
