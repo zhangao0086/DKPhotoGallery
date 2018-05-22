@@ -12,7 +12,7 @@
 		9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */; };
 		9CA897FC1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA897FB1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift */; };
 		9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954271F63F51200B32CA9 /* AppDelegate.swift */; };
-		9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954291F63F51200B32CA9 /* ViewController.swift */; };
+		9CC9542A1F63F51200B32CA9 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954291F63F51200B32CA9 /* DemoViewController.swift */; };
 		9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542B1F63F51200B32CA9 /* Main.storyboard */; };
 		9CC9542F1F63F51200B32CA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542E1F63F51200B32CA9 /* Assets.xcassets */; };
 		9CC954321F63F51200B32CA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC954301F63F51200B32CA9 /* LaunchScreen.storyboard */; };
@@ -41,7 +41,7 @@
 		9CA897FD1FE77311007E7C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CC954241F63F51200B32CA9 /* DKPhotoGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DKPhotoGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC954271F63F51200B32CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9CC954291F63F51200B32CA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9CC954291F63F51200B32CA9 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		9CC9542C1F63F51200B32CA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9CC9542E1F63F51200B32CA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CC954311F63F51200B32CA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				9CC954271F63F51200B32CA9 /* AppDelegate.swift */,
-				9CC954291F63F51200B32CA9 /* ViewController.swift */,
+				9CC954291F63F51200B32CA9 /* DemoViewController.swift */,
 				9CC9542B1F63F51200B32CA9 /* Main.storyboard */,
 				9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */,
 				9C38FABD1F933D59008FE96E /* movie.mp4 */,
@@ -367,7 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CC9542A1F63F51200B32CA9 /* ViewController.swift in Sources */,
+				9CC9542A1F63F51200B32CA9 /* DemoViewController.swift in Sources */,
 				9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qnh-ST-RJu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qnh-ST-RJu">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Demo View Controller-->
         <scene sceneID="eXD-6q-SgV">
             <objects>
-                <viewController id="Qnh-ST-RJu" customClass="ViewController" customModule="DKPhotoGalleryDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Qnh-ST-RJu" customClass="DemoViewController" customModule="DKPhotoGalleryDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FSz-up-k9V"/>
                         <viewControllerLayoutGuide type="bottom" id="haY-BM-2fI"/>
@@ -21,27 +23,78 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image1" translatesAutoresizingMaskIntoConstraints="NO" id="aWS-DK-2fG">
-                                <rect key="frame" x="67.5" y="519" width="240" height="128"/>
-                                <color key="backgroundColor" red="1" green="0.370817061" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="gCA-Wf-eoB"/>
-                                    <constraint firstAttribute="height" constant="128" id="oUq-Di-Km0"/>
-                                </constraints>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7yR-g1-1Xf">
+                                <rect key="frame" x="0.0" y="20" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ImageCell" id="rK0-9Z-yKO" customClass="PreviewCell" customModule="DKPhotoGalleryDemo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="110"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rK0-9Z-yKO" id="vZZ-5M-zAd">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="109.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A9j-aJ-dUP">
+                                                    <rect key="frame" x="15" y="10" width="89.5" height="89.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" secondItem="A9j-aJ-dUP" secondAttribute="width" id="VNI-WE-tBd"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3H-bl-EaZ">
+                                                    <rect key="frame" x="15" y="11" width="360" height="88"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="A9j-aJ-dUP" firstAttribute="top" secondItem="vZZ-5M-zAd" secondAttribute="top" constant="10" id="3RD-4c-gV0"/>
+                                                <constraint firstItem="A3H-bl-EaZ" firstAttribute="leading" secondItem="A9j-aJ-dUP" secondAttribute="leading" id="D1w-gR-8PF"/>
+                                                <constraint firstItem="A9j-aJ-dUP" firstAttribute="leading" secondItem="vZZ-5M-zAd" secondAttribute="leading" constant="15" id="XxB-tR-uls"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="A3H-bl-EaZ" secondAttribute="bottom" id="id0-Od-jqF"/>
+                                                <constraint firstAttribute="bottom" secondItem="A9j-aJ-dUP" secondAttribute="bottom" constant="10" id="qsh-6J-zHH"/>
+                                                <constraint firstAttribute="trailing" secondItem="A3H-bl-EaZ" secondAttribute="trailing" id="rsN-Xr-Yai"/>
+                                                <constraint firstItem="A3H-bl-EaZ" firstAttribute="top" secondItem="vZZ-5M-zAd" secondAttribute="topMargin" id="tBJ-eE-F04"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="contentImageView" destination="A9j-aJ-dUP" id="VMH-u6-6bB"/>
+                                            <outlet property="contentLabel" destination="A3H-bl-EaZ" id="DN7-Dp-keA"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="hHI-cX-wSj" appends="YES" id="iAR-Lj-hsr"/>
+                                    <outlet property="dataSource" destination="Qnh-ST-RJu" id="p5J-Wz-YO2"/>
+                                    <outlet property="delegate" destination="Qnh-ST-RJu" id="akZ-oy-xte"/>
                                 </connections>
-                            </imageView>
+                            </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65V-Vo-ghP">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Incremental Loading" id="bYe-BH-dWR"/>
+                                    <barButtonItem style="plain" id="SiK-QU-ZAR">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="lSE-qa-DZE">
+                                            <rect key="frame" x="182.5" y="6.5" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </switch>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="haY-BM-2fI" firstAttribute="top" secondItem="aWS-DK-2fG" secondAttribute="bottom" constant="20" id="BOi-e7-Afc"/>
-                            <constraint firstItem="aWS-DK-2fG" firstAttribute="centerX" secondItem="51W-0G-Wh1" secondAttribute="centerX" id="zYI-Pr-DoW"/>
+                            <constraint firstItem="65V-Vo-ghP" firstAttribute="top" secondItem="7yR-g1-1Xf" secondAttribute="bottom" id="8ea-2E-qPy"/>
+                            <constraint firstItem="7yR-g1-1Xf" firstAttribute="leading" secondItem="51W-0G-Wh1" secondAttribute="leading" id="OWc-Gz-TFQ"/>
+                            <constraint firstAttribute="trailing" secondItem="7yR-g1-1Xf" secondAttribute="trailing" id="TaY-p3-Ex7"/>
+                            <constraint firstAttribute="trailing" secondItem="65V-Vo-ghP" secondAttribute="trailing" id="pIR-dy-6m0"/>
+                            <constraint firstItem="65V-Vo-ghP" firstAttribute="leading" secondItem="51W-0G-Wh1" secondAttribute="leading" id="tsP-1F-cpq"/>
+                            <constraint firstItem="haY-BM-2fI" firstAttribute="top" secondItem="65V-Vo-ghP" secondAttribute="bottom" id="tui-dC-mnv"/>
+                            <constraint firstItem="7yR-g1-1Xf" firstAttribute="top" secondItem="FSz-up-k9V" secondAttribute="bottom" id="v7b-OG-8CG"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="aWS-DK-2fG" id="aQS-MN-yvV"/>
+                        <outlet property="enableIncrementalSwitch" destination="lSE-qa-DZE" id="EoQ-eZ-b0R"/>
+                        <outlet property="tableView" destination="7yR-g1-1Xf" id="Co5-1L-D9n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kci-5p-EiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -51,10 +104,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="640" y="-532"/>
+            <point key="canvasLocation" x="639.20000000000005" y="-532.98350824587715"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Image1" width="561" height="320"/>
-    </resources>
 </document>
