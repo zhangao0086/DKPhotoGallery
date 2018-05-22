@@ -133,7 +133,7 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.black
+        self.view.backgroundColor = UIColor.clear
         
         self.contentView = self.createContentView()
         self.contentView.frame = self.view.bounds
@@ -182,10 +182,6 @@ open class DKPhotoBasePreviewVC: UIViewController, UIScrollViewDelegate, DKPhoto
     
     open func setNeedsUpdateContent() {
         self.startFetchContent()
-    }
-    
-    open func updateContextBackground(alpha: CGFloat) {
-        self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
     }
     
     open func prepareForReuse() {

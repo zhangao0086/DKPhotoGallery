@@ -365,17 +365,19 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             }
         }
         
-        if let _ = self.downloadURL {
+        if let downloadURL = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
                 SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
                     
-                    self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                    if let downloadURL = self.downloadURL {
+                        self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                    }
                 })
             } else {
-                self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
             }
         } else if let asset = self.asset {
             self.asyncFetchImage(with: asset, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)

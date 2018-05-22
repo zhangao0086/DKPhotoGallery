@@ -45,7 +45,10 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
                 self.fromRect = CGRect.zero
             }
             
-            self.toImageView = self.gallery.finishedBlock?(self.gallery.currentIndex())
+            let currentIndex = self.gallery.currentIndex()
+            let currentItem = self.gallery.item(for: currentIndex)
+            
+            self.toImageView = self.gallery.finishedBlock?(currentIndex, currentItem)
             self.toImageView?.isHidden = true
         case .changed:
             let fraction = CGFloat(fabsf(Float(offset.y / 200)))
@@ -74,7 +77,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
         case .ended,
              .cancelled:
             self.isInteracting = false
-            let shouldComplete = self.percent > 0.35
+            let shouldComplete = self.percent > 0.1
             if !shouldComplete || recognizer.state == .cancelled {
                 if let fromContentView = self.fromContentView {
                     let toImageView = self.toImageView
