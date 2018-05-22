@@ -14,10 +14,12 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
     
     private var fromContentView: UIView?
     private var fromRect: CGRect!
+    private var toImageView: UIImageView?
     
     internal var isInteracting = false
-    private var percent: CGFloat = 0
-    private var toImageView: UIImageView?
+    private var interactingBeginPoint = CGPoint.zero
+    private var interactingLastPoint = CGPoint.zero
+    private var interactingPercent: CGFloat = 0
     
     convenience init(gallery: DKPhotoGallery) {
         self.init()
@@ -38,6 +40,8 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
         switch recognizer.state {
         case .began:
             self.isInteracting = true
+            self.interactingBeginPoint = offset
+            self.interactingLastPoint = offset
             self.fromContentView = self.gallery.currentContentView()
             if let fromContentView = fromContentView {
                 self.fromRect = fromContentView.superview?.convert(fromContentView.frame, to: nil)
@@ -51,14 +55,21 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
             self.toImageView = self.gallery.finishedBlock?(currentIndex, currentItem)
             self.toImageView?.isHidden = true
         case .changed:
+            let oldOrientation = self.interactingLastPoint.y - self.interactingBeginPoint.y >= 0
+            let newOrientation = offset.y - self.interactingLastPoint.y >= 0
+            if oldOrientation != newOrientation {
+                self.interactingBeginPoint = offset
+            }
+            
+            self.interactingLastPoint = offset
             let fraction = CGFloat(fabsf(Float(offset.y / 200)))
-            self.percent = fmin(fraction, 1.0)
+            self.interactingPercent = fmin(fraction, 1.0)
             
             if let fromContentView = self.fromContentView {
                 let currentLocation = recognizer.location(in: nil)
                 let originalLocation = CGPoint(x: currentLocation.x - offset.x, y: currentLocation.y - offset.y)
                 var percent = CGFloat(1.0)
-                percent = fmax(offset.y > 0 ? 1 - self.percent : CGFloat(1), 0.5)
+                percent = fmax(offset.y > 0 ? 1 - self.interactingPercent : 1.0, 0.5)
                 let currentWidth = self.fromRect.width * percent
                 let currentHeight = self.fromRect.height * percent
                 
@@ -69,15 +80,15 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
                 fromContentView.frame = (fromContentView.superview?.convert(result, from: nil))!
                 
                 if offset.y < 0 {
-                    self.percent = -self.percent
+                    self.interactingPercent = -self.interactingPercent
                 }
                 
-                self.gallery.updateContextBackground(alpha: CGFloat(fabsf(Float(1 - self.percent))), animated: true)
+                self.gallery.updateContextBackground(alpha: CGFloat(fabsf(Float(1.0 - self.interactingPercent))), animated: true)
             }
         case .ended,
              .cancelled:
             self.isInteracting = false
-            let shouldComplete = self.percent > 0.1
+            let shouldComplete = self.interactingLastPoint.y - self.interactingBeginPoint.y > 10
             if !shouldComplete || recognizer.state == .cancelled {
                 if let fromContentView = self.fromContentView {
                     let toImageView = self.toImageView
@@ -95,7 +106,7 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
                 self.finish()
             }
             self.fromContentView = nil
-            self.percent = 0
+            self.interactingPercent = 0
             self.toImageView = nil
         default:
             break
