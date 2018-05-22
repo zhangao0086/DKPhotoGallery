@@ -40,7 +40,8 @@ public enum DKPhotoGallerySingleTapMode : Int {
 }
 
 @objc
-open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate, DKPhotoGalleryContentDataSource {
+open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate,
+DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
 	
     @objc open var items: [DKPhotoGalleryItem]?
     @objc open var incrementalDataSource: DKPhotoGalleryIncrementalDataSource?
@@ -97,6 +98,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
         
         contentVC.dataSource = self
+        contentVC.delegate = self
         contentVC.currentIndex = min(self.presentationIndex, self.numberOfItems() - 1)
         
         contentVC.footerView = self.footerView
@@ -348,6 +350,16 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
                 }
                 resultHandler(items?.count ?? 0)
             }
+        }
+    }
+    
+    // MARK: - DKPhotoGalleryContentDelegate
+    
+    internal func contentVCCanScrollToPreviousOrNext(_ contentVC: DKPhotoGalleryContentVC) -> Bool {
+        if let isInteracting = self.transitionController?.interactiveController?.isInteracting, isInteracting {
+            return !isInteracting
+        } else {
+            return true
         }
     }
     

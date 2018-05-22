@@ -52,12 +52,19 @@ internal protocol DKPhotoGalleryContentDataSource {
 
 }
 
+internal protocol DKPhotoGalleryContentDelegate {
+    
+    func contentVCCanScrollToPreviousOrNext(_ contentVC: DKPhotoGalleryContentVC) -> Bool
+    
+}
+
 ////////////////////////////////////////////////////////////
 
 @objc
 open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
     internal var dataSource: DKPhotoGalleryContentDataSource!
+    internal var delegate: DKPhotoGalleryContentDelegate?
     
     public var pageChangeBlock: ((_ index: Int) -> Void)?
     public var prepareToShow: ((_ previewVC: DKPhotoBasePreviewVC) -> Void)?
@@ -313,19 +320,25 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
     private func scrollToPrevious() {
-        if self.currentIndex > 0 {
-            self.currentIndex -= 1
-            self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex + 2)
-            self.updateWithCurrentIndex(needToSetContentOffset: true)
-        }
+        guard self.currentIndex > 0 else { return }
+        
+        self.currentIndex -= 1
+        self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex + 2)
+        self.updateWithCurrentIndex(needToSetContentOffset: true)
     }
     
     private func scrollToNext() {
-        if self.currentIndex < self.dataSource.numberOfItems() - 1 {
-            self.currentIndex += 1
-            self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex - 2)
-            self.updateWithCurrentIndex(needToSetContentOffset: true)
-        }
+        guard self.currentIndex < self.dataSource.numberOfItems() - 1 else { return }
+        
+        self.currentIndex += 1
+        self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex - 2)
+        self.updateWithCurrentIndex(needToSetContentOffset: true)
+    }
+    
+    private func scrollToCurrentPage() {
+        guard self.currentIndex >= 0 && self.currentIndex <= self.dataSource.numberOfItems() - 1 else { return }
+        
+        self.updateWithCurrentIndex(needToSetContentOffset: true)
     }
     
     private func updateLeftIncrementalIndicator() {
@@ -341,7 +354,9 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             self.dataSource.incrementalItemsForLeft { [weak self] (count) in
                 guard let strongSelf = self else { return }
                 
-                let shouldScrollToPrevious = !scrollView.isDragging && scrollView.contentOffset.x == -strongSelf.pullDistance
+                let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
+                let shouldScrollToPrevious = canScrollToPreviousOrNext && !scrollView.isDragging &&
+                    scrollView.contentOffset.x == -strongSelf.pullDistance
                 
                 if count > 0 {
                     strongSelf.currentIndex += count
@@ -354,7 +369,9 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                     scrollView.contentInset.left = 0
                     if shouldScrollToPrevious {
                         strongSelf.scrollToPrevious()
-                    }                    
+                    } else {
+                        strongSelf.scrollToCurrentPage()
+                    }
                 })
             }
         } else {
@@ -375,7 +392,8 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             self.dataSource.incrementalItemsForRight { [weak self] (count) in
                 guard let strongSelf = self else { return }
                 
-                let shouldScrollToNext = !scrollView.isDragging &&
+                let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
+                let shouldScrollToNext = canScrollToPreviousOrNext && !scrollView.isDragging &&
                     scrollView.contentSize.width == scrollView.contentOffset.x + scrollView.bounds.width - strongSelf.pullDistance
                 
                 if count > 0 {
@@ -388,6 +406,8 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                     scrollView.contentInset.right = 0
                     if shouldScrollToNext {
                         strongSelf.scrollToNext()
+                    } else {
+                        strongSelf.scrollToCurrentPage()
                     }
                 })
             }

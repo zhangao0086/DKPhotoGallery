@@ -12,7 +12,7 @@ open class DKPhotoGalleryTransitionController: UIPresentationController, UIViewC
 
     open var gallery: DKPhotoGallery!
     
-    private var interactiveController: DKPhotoGalleryInteractiveTransition?
+    internal var interactiveController: DKPhotoGalleryInteractiveTransition?
     
     init(gallery: DKPhotoGallery, presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
