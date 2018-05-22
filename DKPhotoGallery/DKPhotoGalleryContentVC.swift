@@ -362,6 +362,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                     strongSelf.currentIndex += count
                     strongSelf.mainView.insertBefore(totalCount: count)
                     strongSelf.updateRightIncrementalIndicatorFrameIfNeeded()
+                    strongSelf.updateWithCurrentIndex(needToSetContentOffset: false)
                 }
                 
                 strongSelf.leftIncrementalIndicator.stopAnimation()
@@ -369,7 +370,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                     scrollView.contentInset.left = 0
                     if shouldScrollToPrevious {
                         strongSelf.scrollToPrevious()
-                    } else {
+                    } else if !scrollView.isDragging {
                         strongSelf.scrollToCurrentPage()
                     }
                 })
@@ -399,6 +400,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                 if count > 0 {
                     strongSelf.mainView.insertAfter(totalCount: count)
                     strongSelf.updateRightIncrementalIndicatorFrameIfNeeded()
+                    strongSelf.updateWithCurrentIndex(needToSetContentOffset: false)
                 }
                 
                 strongSelf.rightIncrementalIndicator.stopAnimation()
@@ -406,7 +408,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                     scrollView.contentInset.right = 0
                     if shouldScrollToNext {
                         strongSelf.scrollToNext()
-                    } else {
+                    } else if !scrollView.isDragging {
                         strongSelf.scrollToCurrentPage()
                     }
                 })
