@@ -183,7 +183,7 @@ extension DKPhotoIncrementalIndicator {
     
 }
 
-fileprivate class DKPhotoIncrementalLeftIndicator : DKPhotoIncrementalIndicator {
+public class DKPhotoIncrementalLeftIndicator : DKPhotoIncrementalIndicator {
     
     override func updateFrame() {
         guard let scrollView = self.superview as? UIScrollView else { return }
@@ -214,7 +214,7 @@ fileprivate class DKPhotoIncrementalLeftIndicator : DKPhotoIncrementalIndicator 
     }
 }
 
-fileprivate class DKPhotoIncrementalRightIndicator : DKPhotoIncrementalIndicator {
+public class DKPhotoIncrementalRightIndicator : DKPhotoIncrementalIndicator {
     
     override func updateFrame() {
         guard let scrollView = self.superview as? UIScrollView else { return }
