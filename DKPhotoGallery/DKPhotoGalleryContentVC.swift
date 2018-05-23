@@ -112,6 +112,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.mainView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         self.mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.mainView.delegate = self
+        self.mainView.decelerationRate = UIScrollViewDecelerationRateFast
         self.mainView.set(totalCount: self.dataSource.numberOfItems())
         self.view.addSubview(self.mainView)
         
@@ -271,10 +272,10 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                 for index in fromIndex ... toIndex {
                     self.showViewIfNeeded(at: index)
                 }
+                
+                self.currentIndex = index
             }
         }
-        
-        self.currentIndex = index
     }
         
     private func showViewIfNeeded(at index: Int) {
@@ -361,11 +362,11 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         
         self.updateVisibleViews(index: self.currentIndex, scrollToIndex: false)
     }
-    
-    private func isScrollViewBouncing() -> Bool {
-        if self.mainView.contentOffset.x < -(self.mainView.contentInset.left) {
+
+    private func isInScrollContentSize(contentOffset: CGPoint) -> Bool {
+        if contentOffset.x > -(self.mainView.contentInset.left) {
             return true
-        } else if self.mainView.contentOffset.x > self.mainView.contentSize.width - self.mainView.bounds.width + self.mainView.contentInset.right {
+        } else if contentOffset.x < self.mainView.contentSize.width - self.mainView.bounds.width + self.mainView.contentInset.right {
             return true
         } else {
             return false
@@ -409,17 +410,10 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - UIScrollViewDelegate
-    
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard !self.isScrollViewBouncing() else { return }
-        
-        self.resetScaleForVisibleVCs()
-    }
-    
-    private var scrollToCurrentPageWhenEndDragging = false
+
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        guard !self.isScrollViewBouncing() else { return }
-        
+        guard self.isInScrollContentSize(contentOffset: scrollView.contentOffset) else { return }
+
         let halfPageWidth = self.mainView.pageWidth() * 0.5
         var newIndex = self.currentIndex
         
@@ -429,31 +423,28 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             newIndex = self.currentIndex - 1 // Move left
         } else if movedX > halfPageWidth {
             newIndex = self.currentIndex + 1 // Move right
+        } else if abs(velocity.x) >= 0.25 {
+            newIndex = (velocity.x > 0) ? self.currentIndex + 1 : self.currentIndex - 1
         }
+        newIndex = max(0, min(self.dataSource.numberOfItems() - 1, newIndex))
         
         if newIndex != self.currentIndex {
             self.updateVisibleViews(index: newIndex, scrollToIndex: false)
         }
         
-        if abs(velocity.x) >= 2 {
-            targetContentOffset.pointee.x = self.mainView.cellOrigin(for: self.currentIndex).x
-        } else {
-            // If velocity is too slow, stop and move with default velocity
-            targetContentOffset.pointee.x = scrollView.contentOffset.x
-            self.scrollToCurrentPageWhenEndDragging = true
-        }
+        targetContentOffset.pointee.x = self.mainView.cellOrigin(for: self.currentIndex).x
     }
-
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard !self.isScrollViewBouncing() && self.scrollToCurrentPageWhenEndDragging else { return }
-
-        self.scrollToCurrentPageWhenEndDragging = false
-
-        UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseOut, .allowUserInteraction], animations: {
-            self.mainView.scroll(to: self.currentIndex)
-        }, completion: { (finished) in
-            self.resetScaleForVisibleVCs()
-        })
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.x / scrollView.bounds.width
+        let offset = abs(CGFloat(self.currentIndex) - position)
+        
+        if 1 - offset < 0.1 {
+            let index = Int(position.rounded())
+            if index != self.currentIndex {
+                self.updateVisibleViews(index: index, scrollToIndex: false)
+            }
+        }
     }
     
 }
