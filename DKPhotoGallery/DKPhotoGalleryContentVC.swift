@@ -40,6 +40,8 @@ internal protocol DKPhotoGalleryContentDataSource {
     
     func item(for index: Int) -> DKPhotoGalleryItem
     
+    func index(of item: DKPhotoGalleryItem) -> Int?
+    
     func numberOfItems() -> Int
     
     func hasIncrementalDataForLeft() -> Bool
@@ -76,7 +78,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
     public var currentVC: DKPhotoBasePreviewVC {
-        get { return self.previewVC(for: self.dataSource.item(for: self.currentIndex)) }
+        get { return self.visibleVCs[self.dataSource.item(for: self.currentIndex)]! }
     }
     
     public var currentContentView: UIView {
@@ -97,25 +99,9 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         }
     }
         
-    private var footerViewContainer: DKPhotoGalleryContentFooterViewContainer?
-    
-    private let pullDistance = CGFloat(60)
-    private let indicatorSize = CGFloat(30)
-    lazy private var leftIncrementalIndicator: DKPhotoIncrementalIndicator = {
-        let indicator = DKPhotoIncrementalIndicator(frame: CGRect(x: (-self.pullDistance - self.indicatorSize) / 2,
-                                                                  y: (self.view.bounds.height - self.indicatorSize) / 2,
-                                                                  width: self.indicatorSize, height: self.indicatorSize))
-        self.mainView.addSubview(indicator)
-        return indicator
-    }()
-    
-    lazy private var rightIncrementalIndicator: DKPhotoIncrementalIndicator = {
-        let indicator = DKPhotoIncrementalIndicator(frame: CGRect(x: 0,
-                                                                  y: (self.view.bounds.height - self.indicatorSize) / 2,
-                                                                  width: self.indicatorSize, height: self.indicatorSize))
-        self.mainView.addSubview(indicator)
-        return indicator
-    }()
+    private var footerViewContainer: DKPhotoGalleryContentFooterViewContainer?    
+    private var leftIncrementalIndicator: DKPhotoIncrementalIndicator?
+    private var rightIncrementalIndicator: DKPhotoIncrementalIndicator?
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,21 +115,82 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.mainView.set(totalCount: self.dataSource.numberOfItems())
         self.view.addSubview(self.mainView)
         
-        self.updateWithCurrentIndex(needToSetContentOffset: true, onlyCurrentIndex: true)
+        self.updateVisibleViews(index: self.currentIndex, scrollToIndex: true, indexOnly: true)
         
         self.updateFooterView()
+        
+        if self.dataSource.hasIncrementalDataForLeft() {
+            self.leftIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .left) {
+                self.dataSource.incrementalItemsForLeft { [weak self] (count) in
+                    guard let strongSelf = self, let leftIncrementalIndicator = strongSelf.leftIncrementalIndicator else { return }
+                    
+                    let scrollView = strongSelf.mainView
+                    let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
+                    let shouldScrollToPrevious = canScrollToPreviousOrNext && !scrollView.isDragging &&
+                        scrollView.contentOffset.x == -leftIncrementalIndicator.pullDistance
+                    
+                    if count > 0 {
+                        strongSelf.currentIndex += count
+                        strongSelf.mainView.insertBefore(totalCount: count)
+                        strongSelf.updateVisibleViews(index: strongSelf.currentIndex, scrollToIndex: false)
+                    }
+                    
+                    leftIncrementalIndicator.endRefreshing()
+                    UIView.animate(withDuration: 0.4, animations: {
+                        if shouldScrollToPrevious {
+                            strongSelf.scrollToPrevious()
+                        } else if !scrollView.isDragging {
+                            strongSelf.scrollToCurrentPage()
+                        } else {
+                            scrollView.contentOffset = scrollView.contentOffset
+                        }
+                    }, completion: { finished in
+                        leftIncrementalIndicator.isEnabled = strongSelf.dataSource.hasIncrementalDataForLeft()
+                    })
+                }
+            }
+            
+            self.mainView.addSubview(self.leftIncrementalIndicator!)
+        }
+        
+        if self.dataSource.hasIncrementalDataForRight() {
+            self.rightIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .right) {
+                self.dataSource.incrementalItemsForRight { [weak self] (count) in
+                    guard let strongSelf = self, let rightIncrementalIndicator = strongSelf.rightIncrementalIndicator else { return }
+                    
+                    let scrollView = strongSelf.mainView
+                    let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
+                    let shouldScrollToNext = canScrollToPreviousOrNext && !scrollView.isDragging &&
+                        scrollView.contentSize.width == scrollView.contentOffset.x + scrollView.bounds.width - rightIncrementalIndicator.pullDistance
+                    
+                    if count > 0 {
+                        strongSelf.mainView.insertAfter(totalCount: count)
+                        strongSelf.updateVisibleViews(index: strongSelf.currentIndex, scrollToIndex: false)
+                    }
+                    
+                    rightIncrementalIndicator.endRefreshing()
+                    UIView.animate(withDuration: 0.4, animations: {
+                        if shouldScrollToNext {
+                            strongSelf.scrollToNext()
+                        } else if !scrollView.isDragging {
+                            strongSelf.scrollToCurrentPage()
+                        } else {
+                            scrollView.contentOffset = scrollView.contentOffset
+                        }
+                    }, completion: { finished in
+                        rightIncrementalIndicator.isEnabled = strongSelf.dataSource.hasIncrementalDataForRight()
+                    })
+                }
+            }
+            
+            self.mainView.addSubview(self.rightIncrementalIndicator!)
+        }
     }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.prefillingReuseQueue()
-    }
-    
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        self.updateRightIncrementalIndicatorFrameIfNeeded()
     }
     
     internal func filterVisibleVCs<T>(with className: T.Type) -> [T]? {
@@ -197,16 +244,28 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    private func updateWithCurrentIndex(needToSetContentOffset need: Bool, animated: Bool = false, onlyCurrentIndex: Bool = false) {
+    private func updateVisibleViews(index: Int, scrollToIndex need: Bool, animated: Bool = false, indexOnly: Bool = false) {
         if need {
-            self.mainView.scroll(to: self.currentIndex, animated: animated)
+            self.mainView.scroll(to: index, animated: animated)
         }
-        
-        if onlyCurrentIndex {
-            self.showViewIfNeeded(at: self.currentIndex)
+     
+        if indexOnly {
+            self.showViewIfNeeded(at: index)
         } else {
-            let fromIndex = self.currentIndex > 0 ? self.currentIndex - 1 : 0
-            let toIndex = min(self.currentIndex + 1, self.dataSource.numberOfItems() - 1)
+            let fromIndex = index > 0 ? index - 1 : 0
+            let toIndex = min(index + 1, self.dataSource.numberOfItems() - 1)
+            
+            for (visibleItem, visibleVC) in self.visibleVCs {
+                if let visibleIndex = self.dataSource.index(of: visibleItem) {
+                    if visibleIndex != index {
+                        visibleVC.photoPreviewWillDisappear()
+                        
+                        if visibleIndex < fromIndex || visibleIndex > toIndex {
+                            self.addToReuseQueueFromVisibleQueueIfNeeded(index: visibleIndex)
+                        }
+                    }
+                }
+            }
             
             UIView.performWithoutAnimation {
                 for index in fromIndex ... toIndex {
@@ -214,8 +273,10 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
+        
+        self.currentIndex = index
     }
-    
+        
     private func showViewIfNeeded(at index: Int) {
         let item = self.dataSource.item(for: index)
         
@@ -298,7 +359,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
                 self.addToReuseQueue(vc: previewVC)
         }
         
-        self.updateWithCurrentIndex(needToSetContentOffset: false)
+        self.updateVisibleViews(index: self.currentIndex, scrollToIndex: false)
     }
     
     private func isScrollViewBouncing() -> Bool {
@@ -321,109 +382,22 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
     private func scrollToPrevious() {
         guard self.currentIndex > 0 else { return }
-        
-        self.currentIndex -= 1
-        self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex + 2)
-        self.updateWithCurrentIndex(needToSetContentOffset: true)
+
+        self.updateVisibleViews(index: self.currentIndex - 1, scrollToIndex: true)
     }
     
     private func scrollToNext() {
         guard self.currentIndex < self.dataSource.numberOfItems() - 1 else { return }
         
-        self.currentIndex += 1
-        self.addToReuseQueueFromVisibleQueueIfNeeded(index: self.currentIndex - 2)
-        self.updateWithCurrentIndex(needToSetContentOffset: true)
+        self.updateVisibleViews(index: self.currentIndex + 1, scrollToIndex: true)
     }
     
     private func scrollToCurrentPage() {
         guard self.currentIndex >= 0 && self.currentIndex <= self.dataSource.numberOfItems() - 1 else { return }
-        
-        self.updateWithCurrentIndex(needToSetContentOffset: true)
+
+        self.updateVisibleViews(index: self.currentIndex, scrollToIndex: true)
     }
-    
-    private func updateLeftIncrementalIndicator() {
-        let scrollView = self.mainView
-        
-        let progress = Float(min(1, abs(scrollView.contentOffset.x) / self.pullDistance))
-        if !scrollView.isDragging && progress == 1 {
-            let originalContentOffsetX = scrollView.contentOffset.x
-            scrollView.contentInset.left = self.pullDistance
-            scrollView.contentOffset.x = originalContentOffsetX
-            self.leftIncrementalIndicator.startAnimation()
-            
-            self.dataSource.incrementalItemsForLeft { [weak self] (count) in
-                guard let strongSelf = self else { return }
-                
-                let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
-                let shouldScrollToPrevious = canScrollToPreviousOrNext && !scrollView.isDragging &&
-                    scrollView.contentOffset.x == -strongSelf.pullDistance
-                
-                if count > 0 {
-                    strongSelf.currentIndex += count
-                    strongSelf.mainView.insertBefore(totalCount: count)
-                    strongSelf.updateRightIncrementalIndicatorFrameIfNeeded()
-                    strongSelf.updateWithCurrentIndex(needToSetContentOffset: false)
-                }
-                
-                strongSelf.leftIncrementalIndicator.stopAnimation()
-                UIView.animate(withDuration: 0.4, animations: {
-                    scrollView.contentInset.left = 0
-                    if shouldScrollToPrevious {
-                        strongSelf.scrollToPrevious()
-                    } else if !scrollView.isDragging {
-                        strongSelf.scrollToCurrentPage()
-                    }
-                })
-            }
-        } else {
-            self.leftIncrementalIndicator.setProgress(progress)
-        }
-    }
-    
-    private func updateRightIncrementalIndicator() {
-        let scrollView = self.mainView
-        
-        let progress = Float(min(1, (scrollView.contentOffset.x - (scrollView.contentSize.width - scrollView.bounds.width)) / self.pullDistance))
-        if !scrollView.isDragging && progress == 1 {
-            let originalContentOffsetX = scrollView.contentOffset.x
-            scrollView.contentInset.right = self.pullDistance
-            scrollView.contentOffset.x = originalContentOffsetX
-            self.rightIncrementalIndicator.startAnimation()
-            
-            self.dataSource.incrementalItemsForRight { [weak self] (count) in
-                guard let strongSelf = self else { return }
-                
-                let canScrollToPreviousOrNext = strongSelf.delegate?.contentVCCanScrollToPreviousOrNext(strongSelf) ?? true
-                let shouldScrollToNext = canScrollToPreviousOrNext && !scrollView.isDragging &&
-                    scrollView.contentSize.width == scrollView.contentOffset.x + scrollView.bounds.width - strongSelf.pullDistance
-                
-                if count > 0 {
-                    strongSelf.mainView.insertAfter(totalCount: count)
-                    strongSelf.updateRightIncrementalIndicatorFrameIfNeeded()
-                    strongSelf.updateWithCurrentIndex(needToSetContentOffset: false)
-                }
-                
-                strongSelf.rightIncrementalIndicator.stopAnimation()
-                UIView.animate(withDuration: 0.4, animations: {
-                    scrollView.contentInset.right = 0
-                    if shouldScrollToNext {
-                        strongSelf.scrollToNext()
-                    } else if !scrollView.isDragging {
-                        strongSelf.scrollToCurrentPage()
-                    }
-                })
-            }
-        } else {
-            self.rightIncrementalIndicator.setProgress(progress)
-        }
-    }
-    
-    private func updateRightIncrementalIndicatorFrameIfNeeded() {
-        if self.dataSource.hasIncrementalDataForRight() {
-            self.rightIncrementalIndicator.frame.origin.x = self.mainView.contentSize.width + (self.pullDistance - self.indicatorSize) / 2
-        }
-    }
-    
+
     // MARK: - Orientations & Status Bar
     
     open override var shouldAutorotate: Bool {
@@ -447,20 +421,18 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         guard !self.isScrollViewBouncing() else { return }
         
         let halfPageWidth = self.mainView.pageWidth() * 0.5
-        let originalIndex = self.currentIndex
+        var newIndex = self.currentIndex
         
         // Check which way to move
         let movedX = targetContentOffset.pointee.x - self.mainView.cellOrigin(for: self.currentIndex).x
         if movedX < -halfPageWidth {
-            self.currentIndex -= 1 // Move left
+            newIndex = self.currentIndex - 1 // Move left
         } else if movedX > halfPageWidth {
-            self.currentIndex += 1 // Move right
+            newIndex = self.currentIndex + 1 // Move right
         }
         
-        if originalIndex != self.currentIndex {
-            self.currentVC.photoPreviewWillDisappear()
-            self.addToReuseQueueFromVisibleQueueIfNeeded(index: originalIndex > self.currentIndex ? originalIndex + 1 : originalIndex - 1)
-            self.updateWithCurrentIndex(needToSetContentOffset: false)
+        if newIndex != self.currentIndex {
+            self.updateVisibleViews(index: newIndex, scrollToIndex: false)
         }
         
         if abs(velocity.x) >= 2 {
@@ -482,18 +454,6 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         }, completion: { (finished) in
             self.resetScaleForVisibleVCs()
         })
-    }
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.x <= 0 {
-            if self.dataSource.hasIncrementalDataForLeft() && scrollView.contentInset.left == 0 {
-                self.updateLeftIncrementalIndicator()
-            }
-        } else if scrollView.contentOffset.x >= scrollView.contentSize.width - scrollView.bounds.width {
-            if self.dataSource.hasIncrementalDataForRight() && scrollView.contentInset.right == 0 {
-                self.updateRightIncrementalIndicator()
-            }
-        }
     }
     
 }

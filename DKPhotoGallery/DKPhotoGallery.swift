@@ -301,6 +301,14 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         }
     }
     
+    internal func index(of item: DKPhotoGalleryItem) -> Int? {
+        if let items = self.items {
+            return items.index(of: item)
+        } else {
+            fatalError("Please add at least one item.")
+        }
+    }
+    
     private var hasMoreForLeft = true
     internal func hasIncrementalDataForLeft() -> Bool {
         if let _ = self.incrementalDataSource {
