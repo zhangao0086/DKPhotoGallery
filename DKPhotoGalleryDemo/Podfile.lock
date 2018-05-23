@@ -1,22 +1,22 @@
 PODS:
-  - DKPhotoGallery (0.0.1):
-    - DKPhotoGallery/Core (= 0.0.1)
-    - DKPhotoGallery/Model (= 0.0.1)
-    - DKPhotoGallery/Preview (= 0.0.1)
-    - DKPhotoGallery/Resource (= 0.0.1)
-    - SDWebImage/GIF (~> 4.0)
-  - DKPhotoGallery/Core (0.0.1):
+  - DKPhotoGallery (0.0.5):
+    - DKPhotoGallery/Core (= 0.0.5)
+    - DKPhotoGallery/Model (= 0.0.5)
+    - DKPhotoGallery/Preview (= 0.0.5)
+    - DKPhotoGallery/Resource (= 0.0.5)
+    - SDWebImage/GIF (= 4.2.2)
+  - DKPhotoGallery/Core (0.0.5):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
-    - SDWebImage/GIF (~> 4.0)
-  - DKPhotoGallery/Model (0.0.1):
-    - SDWebImage/GIF (~> 4.0)
-  - DKPhotoGallery/Preview (0.0.1):
+    - SDWebImage/GIF (= 4.2.2)
+  - DKPhotoGallery/Model (0.0.5):
+    - SDWebImage/GIF (= 4.2.2)
+  - DKPhotoGallery/Preview (0.0.5):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
-    - SDWebImage/GIF (~> 4.0)
-  - DKPhotoGallery/Resource (0.0.1):
-    - SDWebImage/GIF (~> 4.0)
+    - SDWebImage/GIF (= 4.2.2)
+  - DKPhotoGallery/Resource (0.0.5):
+    - SDWebImage/GIF (= 4.2.2)
   - FLAnimatedImage (1.0.12)
   - SDWebImage/Core (4.2.2)
   - SDWebImage/GIF (4.2.2):
@@ -26,15 +26,20 @@ PODS:
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FLAnimatedImage
+    - SDWebImage
+
 EXTERNAL SOURCES:
   DKPhotoGallery:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 7536f22c5a62432e478c9e95a59ff093dc025af3
+  DKPhotoGallery: 305b1fdb534307025d7a8762ff2be12dc0636285
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
 
 PODFILE CHECKSUM: 5d73f49af17d8def99de6a78b51da88d5397f19a
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.0
