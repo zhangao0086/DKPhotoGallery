@@ -436,7 +436,7 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.x / scrollView.bounds.width
+        let position = self.mainView.positionFromContentOffset()
         let offset = abs(CGFloat(self.currentIndex) - position)
         
         if 1 - offset < 0.1 {

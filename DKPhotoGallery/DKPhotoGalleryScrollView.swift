@@ -99,6 +99,10 @@ class DKPhotoGalleryScrollView: UIScrollView {
         return CGPoint(x: CGFloat(index) * cellWidth(), y: 0)
     }
     
+    public func positionFromContentOffset() -> CGFloat {
+        return self.contentOffset.x / cellWidth()
+    }
+    
     public func cellWidth() -> CGFloat {
         return pageWidth() + 20
     }
