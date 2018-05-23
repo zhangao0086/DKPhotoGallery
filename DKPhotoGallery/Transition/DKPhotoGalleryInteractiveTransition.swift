@@ -56,7 +56,9 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
             let currentItem = self.gallery.item(for: currentIndex)
             
             self.toImageView = self.gallery.finishedBlock?(currentIndex, currentItem)
-            self.toImageView?.isHidden = true
+            if let _ = self.toImageView?.image {
+                self.toImageView?.isHidden = true
+            }
         case .changed:
             let oldOrientation = self.interactingLastPoint.y - self.interactingBeginPoint.y >= 0
             let newOrientation = offset.y - self.interactingLastPoint.y >= 0
@@ -99,7 +101,9 @@ class DKPhotoGalleryInteractiveTransition: UIPercentDrivenInteractiveTransition,
                         fromContentView.frame = self.fromRect
                         self.gallery.updateContextBackground(alpha: 1, animated: false)
                     }) { (finished) in
-                        toImageView?.isHidden = false
+                        if let _ = toImageView?.image {
+                            toImageView?.isHidden = false
+                        }
                     }
                 }
             } else {
