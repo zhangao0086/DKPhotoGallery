@@ -36,7 +36,7 @@ fileprivate class DKPhotoGalleryContentFooterViewContainer : UIView {
 
 ////////////////////////////////////////////////////////////
 
-internal protocol DKPhotoGalleryContentDataSource {
+internal protocol DKPhotoGalleryContentDataSource: class {
     
     func item(for index: Int) -> DKPhotoGalleryItem
     
@@ -54,7 +54,7 @@ internal protocol DKPhotoGalleryContentDataSource {
 
 }
 
-internal protocol DKPhotoGalleryContentDelegate {
+internal protocol DKPhotoGalleryContentDelegate: class {
     
     func contentVCCanScrollToPreviousOrNext(_ contentVC: DKPhotoGalleryContentVC) -> Bool
     
@@ -65,8 +65,8 @@ internal protocol DKPhotoGalleryContentDelegate {
 @objc
 open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
     
-    internal var dataSource: DKPhotoGalleryContentDataSource!
-    internal var delegate: DKPhotoGalleryContentDelegate?
+    internal weak var dataSource: DKPhotoGalleryContentDataSource!
+    internal weak var delegate: DKPhotoGalleryContentDelegate?
     
     public var pageChangeBlock: ((_ index: Int) -> Void)?
     public var prepareToShow: ((_ previewVC: DKPhotoBasePreviewVC) -> Void)?
@@ -121,8 +121,10 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.updateFooterView()
         
         if self.dataSource.hasIncrementalDataForLeft() {
-            self.leftIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .left) {
-                self.dataSource.incrementalItemsForLeft { [weak self] (count) in
+            self.leftIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .left) { [weak self] in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.dataSource.incrementalItemsForLeft { [weak self] (count) in
                     guard let strongSelf = self, let leftIncrementalIndicator = strongSelf.leftIncrementalIndicator else { return }
                     
                     let scrollView = strongSelf.mainView
@@ -155,8 +157,10 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         }
         
         if self.dataSource.hasIncrementalDataForRight() {
-            self.rightIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .right) {
-                self.dataSource.incrementalItemsForRight { [weak self] (count) in
+            self.rightIncrementalIndicator = DKPhotoIncrementalIndicator.indicator(with: .right) { [weak self] in
+                guard let strongSelf = self else { return }
+                
+                strongSelf.dataSource.incrementalItemsForRight { [weak self] (count) in
                     guard let strongSelf = self, let rightIncrementalIndicator = strongSelf.rightIncrementalIndicator else { return }
                     
                     let scrollView = strongSelf.mainView
