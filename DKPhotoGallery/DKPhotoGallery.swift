@@ -301,14 +301,6 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         }
     }
     
-    internal func index(of item: DKPhotoGalleryItem) -> Int? {
-        if let items = self.items {
-            return items.index(of: item)
-        } else {
-            fatalError("Please add at least one item.")
-        }
-    }
-    
     private var hasMoreForLeft = true
     internal func hasIncrementalDataForLeft() -> Bool {
         if let _ = self.incrementalDataSource {
@@ -321,14 +313,16 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
     internal func incrementalItemsForLeft(resultHandler: @escaping ((Int) -> Void)) {
         guard let incrementalDataSource = self.incrementalDataSource else { return }
         
-        incrementalDataSource.photoGallery(self, itemsBefore: self.items?.first) { (items, error) in
+        incrementalDataSource.photoGallery(self, itemsBefore: self.items?.first) { [weak self] (items, error) in
+            guard let strongSelf = self else { return }
+            
             if let _ = error {
                 resultHandler(0)
             } else {
                 if let items = items, items.count > 0 {
-                    self.items = items + (self.items ?? [])
+                    strongSelf.items = items + (strongSelf.items ?? [])
                 } else {
-                    self.hasMoreForLeft = false
+                    strongSelf.hasMoreForLeft = false
                 }
                 resultHandler(items?.count ?? 0)
             }
@@ -347,14 +341,16 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
     internal func incrementalItemsForRight(resultHandler: @escaping ((Int) -> Void)) {
         guard let incrementalDataSource = self.incrementalDataSource else { return }
         
-        incrementalDataSource.photoGallery(self, itemsAfter: self.items?.last) { (items, error) in
+        incrementalDataSource.photoGallery(self, itemsAfter: self.items?.last) { [weak self] (items, error) in
+            guard let strongSelf = self else { return }
+            
             if let _ = error {
                 resultHandler(0)
             } else {
                 if let items = items, items.count > 0 {
-                    self.items = (self.items ?? []) + items
+                    strongSelf.items = (strongSelf.items ?? []) + items
                 } else {
-                    self.hasMoreForRight = false
+                    strongSelf.hasMoreForRight = false
                 }
                 resultHandler(items?.count ?? 0)
             }

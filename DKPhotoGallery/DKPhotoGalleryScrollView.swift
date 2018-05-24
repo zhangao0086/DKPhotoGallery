@@ -10,7 +10,8 @@ import UIKit
 
 class DKPhotoGalleryScrollView: UIScrollView {
     
-    private var items = Array<UIView?>()
+    private var views = Array<UIView?>()
+    private var items = [DKPhotoGalleryItem : UIView]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,58 +31,49 @@ class DKPhotoGalleryScrollView: UIScrollView {
     public func set(totalCount: Int) {
         self.contentSize = CGSize(width: CGFloat(totalCount) * cellWidth() - 20,
                                   height: 0)
-        self.items = []
-        
-        for _ in 0 ..< totalCount {
-            self.items.append(nil)
-        }
+        self.views = Array<UIView?>(repeating: nil, count: totalCount)
     }
     
     public func insertBefore(totalCount: Int) {
         let lastIndex = Int(self.contentOffset.x / cellWidth())
         
-        for _ in 0 ..< totalCount {
-            self.items.insert(nil, at: 0)
-        }
+        self.views = Array<UIView?>(repeating: nil, count: totalCount) + self.views
         
-        for index in max(0, totalCount + lastIndex - 1) ... min(self.items.count - 1, totalCount + lastIndex + 1) {
-            if let view = self.items[index] {
+        for index in max(0, totalCount + lastIndex - 1) ... min(self.views.count - 1, totalCount + lastIndex + 1) {
+            if let view = self.views[index] {
                 view.frame.origin.x = self.cellOrigin(for: index).x
             }
         }
         
-        self.contentSize.width = CGFloat(self.items.count) * cellWidth() - 20
-        self.contentOffset.x += (CGFloat(totalCount) * cellWidth())
+        let originalContentOffset = self.contentOffset
+        self.contentSize.width = CGFloat(self.views.count) * cellWidth() - 20
+        self.contentOffset.x = originalContentOffset.x + CGFloat(totalCount) * cellWidth()
     }
     
     public func insertAfter(totalCount: Int) {
-        for _ in 0 ..< totalCount {
-            self.items.append(nil)
-        }
+        self.views += Array<UIView?>(repeating: nil, count: totalCount)
         
-        self.contentSize.width = CGFloat(self.items.count) * cellWidth() - 20
+        self.contentSize.width = CGFloat(self.views.count) * cellWidth() - 20
     }
     
-    public func set(vc: UIViewController, atIndex index: Int) {
-        if self.items[index] != vc.view {
-            self.items[index] = vc.view
-            
-            if vc.view.superview == nil {
-                self.addSubview(vc.view)
-            } else {
-                vc.viewWillAppear(true)
-                vc.view.isHidden = false
-                vc.viewDidAppear(true)
-            }
-            vc.view.frame = self.cellRect(for: index)
+    public func set(vc: UIViewController, item: DKPhotoGalleryItem, atIndex index: Int) {
+        self.views[index] = vc.view
+        
+        if vc.view.superview == nil {
+            self.addSubview(vc.view)
+        } else {
+            vc.viewWillAppear(true)
+            vc.view.isHidden = false
+            vc.viewDidAppear(true)
         }
+        vc.view.frame = self.cellRect(for: index)
+        self.items[item] = vc.view
     }
     
-    public func remove(vc: UIViewController, atIndex index: Int) {
-        if self.items[index] == vc.view {
-            self.items[index] = nil
+    public func remove(vc: UIViewController, item: DKPhotoGalleryItem) {
+        if let view = self.items[item], !view.isHidden {
             vc.viewWillDisappear(true)
-            vc.view.isHidden = true
+            view.isHidden = true
             vc.viewDidDisappear(true)
         }
     }
