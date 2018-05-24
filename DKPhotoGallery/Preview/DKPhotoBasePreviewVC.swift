@@ -52,7 +52,7 @@ internal extension UIView {
         toastLabel.numberOfLines = 0
         toastLabel.backgroundColor = UIColor.clear
         toastLabel.textColor = UIColor.darkText
-        toastLabel.textAlignment = .center;
+        toastLabel.textAlignment = .center
         toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
         toastLabel.text = message
         
