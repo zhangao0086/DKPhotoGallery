@@ -300,9 +300,13 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
     
     private func decompressImage(with image: UIImage) -> UIImage {
         guard let imageRef = image.cgImage else { return image }
-
-        let width = imageRef.width
-        let height = imageRef.height
+        
+//        // Odd behavior. Occasionally get an incorrect(very small) value.
+//        let width = imageRef.width
+//        let height = imageRef.height
+        
+        let width = image.size.width * image.scale
+        let height = image.size.height * image.scale
         
         if width == 0 || height == 0 { return image }
         
