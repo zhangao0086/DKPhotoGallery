@@ -436,7 +436,7 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
 
 public extension UIViewController {
     
-    public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
+    @objc public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
         gallery.modalPresentationStyle = .custom
         
         gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery,
