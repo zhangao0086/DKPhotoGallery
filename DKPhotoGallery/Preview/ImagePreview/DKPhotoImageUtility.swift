@@ -27,18 +27,17 @@ extension UIImage {
     func decompress() -> UIImage {
         guard let imageRef = self.cgImage else { return self }
         
-        let width = imageRef.width
-        let height = imageRef.height
+        let resolution = self.resolution()
         
-        if width == 0 || height == 0 { return self }
+        if resolution.width == 0 || resolution.height == 0 { return self }
         
-        let sourceTotalPixels = width * height
+        let sourceTotalPixels = resolution.width * resolution.height
         let sourceTotalMB = CGFloat(sourceTotalPixels) / Constant.pixelsPerMB
         
         if sourceTotalMB > Constant.destImageSizeMB {
             return self.downsizing()
         } else {
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, self.scale)
+            UIGraphicsBeginImageContextWithOptions(resolution, false, self.scale)
             
             guard let context = UIGraphicsGetCurrentContext() else { return self }
             
@@ -47,44 +46,32 @@ extension UIImage {
             }
             
             context.scaleBy(x: 1, y: -1)
-            context.translateBy(x: 0, y: CGFloat(-height))
-            context.draw(imageRef, in: CGRect(x: 0, y: 0, width: width, height: height))
+            context.translateBy(x: 0, y: CGFloat(-resolution.height))
+            context.draw(imageRef, in: CGRect(x: 0, y: 0, width: resolution.width, height: resolution.height))
             
             guard let decompressedImageRef = context.makeImage() else { return self }
             
             return UIImage(cgImage: decompressedImageRef, scale: self.scale, orientation: self.imageOrientation)
         }
     }
+    
+    private func resolution() -> CGSize {
+//        // Odd behavior. Occasionally get an incorrect(very small) value.
+//        let width = imageRef.width
+//        let height = imageRef.height
+        return CGSize(width: self.size.width * self.scale, height: self.size.height * self.scale)
+    }
 
     /// Supported formats are: PNG, TIFF, JPEG. Unsupported formats: GIF, BMP, interlaced images.
     /// See Apple's Large Image Downsizing Sample Code ( https://developer.apple.com/library/archive/samplecode/LargeImageDownsizing/ )
-    private func downsizing() -> UIImage {
-        func bitmapInfo(imageRef: CGImage) -> CGBitmapInfo {
-            let alphaInfo = CGImageAlphaInfo(rawValue: imageRef.alphaInfo.rawValue & CGBitmapInfo.alphaInfoMask.rawValue)
-            
-            var hasAlpha = false
-            if (alphaInfo == CGImageAlphaInfo.premultipliedLast ||
-                alphaInfo == CGImageAlphaInfo.premultipliedFirst ||
-                alphaInfo == CGImageAlphaInfo.last ||
-                alphaInfo == CGImageAlphaInfo.first) {
-                hasAlpha = true
-            }
-            
-            // BGRA8888 (premultiplied) or BGRX8888
-            // same as UIGraphicsBeginImageContext() and -[UIView drawRect:]
-            let bitmapInfo = CGBitmapInfo(rawValue: CGImageByteOrderInfo.order32Little.rawValue |
-                (hasAlpha ? CGImageAlphaInfo.premultipliedFirst.rawValue : CGImageAlphaInfo.noneSkipFirst.rawValue))
-            
-            return bitmapInfo
-        }
-        
+    private func downsizing() -> UIImage {        
         return autoreleasepool { () -> UIImage in
             guard let sourceImageRef = self.cgImage
                 else { return self }
             
             // get the width and height of the input image using
             // core graphics image helper functions.
-            let sourceResolution = CGSize(width: sourceImageRef.width, height: sourceImageRef.height)
+            let sourceResolution = self.resolution()
             
             // use the width and height to calculate the total number of pixels
             // in the input image.
@@ -117,7 +104,7 @@ extension UIImage {
                                               bitsPerComponent: 8,
                                               bytesPerRow: Int(bytesPerRow),
                                               space: CGColorSpaceCreateDeviceRGB(),
-                                              bitmapInfo: bitmapInfo(imageRef: sourceImageRef).rawValue)
+                                              bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
                 else { return self }
             
             // flip the output graphics context so that it aligns with the
@@ -186,7 +173,7 @@ extension UIImage {
                     }
                     
                     // read and write a tile sized portion of pixels from the input image to the output image.
-                    destContext.draw(sourceImageRef, in: destTile)
+                    destContext.draw(sourceTileImageRef!, in: destTile)
                 }
             }
             
