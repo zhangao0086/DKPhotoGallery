@@ -15,11 +15,11 @@ public let DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize: String = "DKPh
 @objc
 public class DKPhotoGalleryItemConstant: NSObject {
     
-    public class func extraInfoKeyRemoteImageOriginalURL() -> String {
+    @objc public class func extraInfoKeyRemoteImageOriginalURL() -> String {
         return DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL
     }
     
-    public class func extraInfoKeyRemoteImageOriginalSize() -> String {
+    @objc public class func extraInfoKeyRemoteImageOriginalSize() -> String {
         return DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalSize
     }
     
