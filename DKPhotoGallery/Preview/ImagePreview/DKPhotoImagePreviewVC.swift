@@ -132,7 +132,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                         
                         completeBlock(data, nil)
                     } else if let compressedImage = UIImage.sd_image(with: data) {
-                        image = self.decompressImage(with: compressedImage)
+                        image = compressedImage.decompress()
                         
                         SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
                         
@@ -183,35 +183,6 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                 })
             }
         }
-    }
-    
-    private func decompressImage(with image: UIImage) -> UIImage {
-        guard let imageRef = image.cgImage else { return image }
-        
-//        // Odd behavior. Occasionally get an incorrect(very small) value.
-//        let width = imageRef.width
-//        let height = imageRef.height
-        
-        let width = image.size.width * image.scale
-        let height = image.size.height * image.scale
-        
-        if width == 0 || height == 0 { return image }
-        
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, image.scale)
-        
-        guard let context = UIGraphicsGetCurrentContext() else { return image }
-        
-        defer {
-            UIGraphicsEndImageContext()
-        }
-        
-        context.scaleBy(x: 1, y: -1)
-        context.translateBy(x: 0, y: CGFloat(-height))
-        context.draw(imageRef, in: CGRect(x: 0, y: 0, width: width, height: height))
-        
-        guard let decompressedImageRef = context.makeImage() else { return image }
-        
-        return UIImage(cgImage: decompressedImageRef, scale: image.scale, orientation: image.imageOrientation)
     }
     
     // MARK: - DKPhotoBasePreviewDataSource
