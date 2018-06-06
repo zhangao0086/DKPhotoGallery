@@ -3,7 +3,8 @@ DKPhotoGallery
 
  [![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
 
-<img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/PhotoGallery.gif" />
+<img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/PhotoGallery.gif" />
+<img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/Incremental.gif" />
 
 ### Features
 
@@ -12,6 +13,7 @@ DKPhotoGallery
 - Image caching with SDWebImage
 - Original image download
 - Extract QR Code(Text、URL)
+- Incremental fetching items
 - Localization
 - 3D Touch
 
@@ -38,9 +40,9 @@ gallery.items = self.items
 gallery.presentingFromImageView = self.imageView
 gallery.presentationIndex = 0
 
-gallery.finishedBlock = { [weak self] dismissIndex in
-    if dismissIndex == 0 {
-        return self?.imageView
+gallery.finishedBlock = { dismissIndex, dismissItem in
+    if item == dismissItem {
+        return imageView
     } else {
         return nil
     }
@@ -87,7 +89,7 @@ open class DKPhotoGalleryItem: NSObject {
 
 <img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/QRCode.gif" />
 
-## Enable the original image download feature
+## Enable the original image download
 
 <img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/Original.gif" />
 
@@ -105,7 +107,7 @@ The default supported languages:
 - en.lproj
 - zh-Hans.lproj
 
-You can also add a hook to return your own localized string:
+You can also add a hook to return your own localized strings:
 
 ```swift
 DKPhotoGalleryResource.customLocalizationBlock = { title in

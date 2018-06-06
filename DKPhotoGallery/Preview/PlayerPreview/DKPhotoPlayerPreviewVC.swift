@@ -44,12 +44,7 @@ open class DKPhotoPlayerPreviewVC: DKPhotoBasePreviewVC {
         super.photoPreviewWillDisappear()
         
         self.playerView?.pause()
-    }
-    
-    open override func updateContextBackground(alpha: CGFloat) {
-        super.updateContextBackground(alpha: alpha)
-        
-        self.playerView?.updateContextBackground(alpha: alpha)
+        self.playerView?.playButton.isHidden = false
     }
     
     open override func prepareForReuse() {

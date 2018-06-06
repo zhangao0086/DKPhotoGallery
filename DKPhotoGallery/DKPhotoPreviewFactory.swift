@@ -9,9 +9,10 @@
 import Foundation
 import Photos
 
+@objc
 extension DKPhotoBasePreviewVC {
     
-    public class func photoPreviewClass(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC.Type {
+    @objc public class func photoPreviewClass(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC.Type {
         if item.image != nil {
             return DKPhotoImagePreviewVC.self
             
@@ -39,7 +40,7 @@ extension DKPhotoBasePreviewVC {
         }
     }
     
-    public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
+    @objc public class func photoPreviewVC(with item: DKPhotoGalleryItem) -> DKPhotoBasePreviewVC {
         let previewVC = self.photoPreviewClass(with: item).init()
         previewVC.item = item
         

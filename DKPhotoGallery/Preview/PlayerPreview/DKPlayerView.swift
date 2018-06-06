@@ -139,8 +139,9 @@ open class DKPlayerView: UIView {
     
     public var isFinishedPlaying = false
     
+    public let playButton = UIButton(type: .custom)
+    
     private let closeButton = UIButton(type: .custom)
-    private let playButton = UIButton(type: .custom)
     private let playPauseButton = UIButton(type: .custom)
     private let timeSlider = UISlider()
     private let startTimeLabel = UILabel()

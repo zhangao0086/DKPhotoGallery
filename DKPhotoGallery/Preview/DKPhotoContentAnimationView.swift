@@ -143,7 +143,7 @@ open class DKPhotoContentAnimationView: UIView {
         case .scaleAspectFit:  layoutAspectFit()
         case .scaleAspectFill: layoutAspectFill()
         case .scaleToFill:     layoutFill()
-        case .redraw:          break;
+        case .redraw:          break
         case .center:          layoutCenter()
         case .top:             layoutTop()
         case .bottom:          layoutBottom()

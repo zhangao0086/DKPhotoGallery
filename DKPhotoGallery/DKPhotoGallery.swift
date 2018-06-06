@@ -17,6 +17,22 @@ public protocol DKPhotoGalleryDelegate : NSObjectProtocol {
 }
 
 @objc
+public protocol DKPhotoGalleryIncrementalDataSource : NSObjectProtocol {
+    
+    @objc optional func numberOfItems(in gallery: DKPhotoGallery) -> Int
+    
+    // Return 'nil' to indicate that no more items can be made in the given direction.
+    @objc func photoGallery(_ gallery: DKPhotoGallery,
+                            itemsBefore item: DKPhotoGalleryItem?,
+                            resultHandler: @escaping ((_ items: [DKPhotoGalleryItem]?, _ error: Error?) -> Void))
+    
+    @objc func photoGallery(_ gallery: DKPhotoGallery,
+                            itemsAfter item: DKPhotoGalleryItem?,
+                            resultHandler: @escaping ((_ items: [DKPhotoGalleryItem]?, _ error: Error?) -> Void))
+    
+}
+
+@objc
 public enum DKPhotoGallerySingleTapMode : Int {
     case
     dismiss, // Dismiss DKPhotoGallery when user tap on the screen.
@@ -24,11 +40,13 @@ public enum DKPhotoGallerySingleTapMode : Int {
 }
 
 @objc
-open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate {
+open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioningDelegate,
+DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
 	
     @objc open var items: [DKPhotoGalleryItem]?
+    @objc open var incrementalDataSource: DKPhotoGalleryIncrementalDataSource?
     
-    @objc open var finishedBlock: ((_ index: Int) -> UIImageView?)?
+    @objc open var finishedBlock: ((_ index: Int, _ item: DKPhotoGalleryItem) -> UIImageView?)?
     
     @objc open var presentingFromImageView: UIImageView?
     @objc open var presentationIndex = 0
@@ -79,8 +97,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
         
-        contentVC.items = self.items
-        contentVC.currentIndex = min(self.presentationIndex, self.items!.count - 1)
+        contentVC.dataSource = self
+        contentVC.delegate = self
+        contentVC.currentIndex = min(self.presentationIndex, self.numberOfItems() - 1)
         
         contentVC.footerView = self.footerView
         
@@ -161,7 +180,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     }
     
     @objc open func updateNavigation() {
-        self.contentVC!.navigationItem.title = "\(self.contentVC!.currentIndex + 1)/\(self.items!.count)"
+        self.contentVC!.navigationItem.title = "\(self.contentVC!.currentIndex + 1)/\(self.numberOfItems())"
     }
     
     @objc open func handleSingleTap() {
@@ -245,9 +264,9 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     internal func updateContextBackground(alpha: CGFloat, animated: Bool) {
         let block = {
-            self.currentContentVC().updateContextBackground(alpha: alpha)
             self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
-            
+            self.currentContentVC().view.superview?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+
             if self.isNavigationBarHidden {
                 self.statusBar?.alpha = 1 - alpha
             }
@@ -262,6 +281,90 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
     
     internal func setFooterViewHidden(_ hidden: Bool, animated: Bool) {
         self.contentVC?.setFooterViewHidden(hidden, animated: animated)
+    }
+    
+    // MARK: - DKPhotoGalleryContentDataSource
+    
+    internal func numberOfItems() -> Int {
+        if let items = self.items, items.count > 0 {
+            return items.count
+        } else {
+            fatalError("Please add at least one item.")
+        }
+    }
+    
+    internal func item(for index: Int) -> DKPhotoGalleryItem {
+        if let items = self.items {
+            return items[index]
+        } else {
+            fatalError("Please add at least one item.")
+        }
+    }
+    
+    private var hasMoreForLeft = true
+    internal func hasIncrementalDataForLeft() -> Bool {
+        if let _ = self.incrementalDataSource {
+            return self.hasMoreForLeft
+        } else {
+            return false
+        }
+    }
+    
+    internal func incrementalItemsForLeft(resultHandler: @escaping ((Int) -> Void)) {
+        guard let incrementalDataSource = self.incrementalDataSource else { return }
+        
+        incrementalDataSource.photoGallery(self, itemsBefore: self.items?.first) { [weak self] (items, error) in
+            guard let strongSelf = self else { return }
+            
+            if let _ = error {
+                resultHandler(0)
+            } else {
+                if let items = items, items.count > 0 {
+                    strongSelf.items = items + (strongSelf.items ?? [])
+                } else {
+                    strongSelf.hasMoreForLeft = false
+                }
+                resultHandler(items?.count ?? 0)
+            }
+        }
+    }
+    
+    private var hasMoreForRight = true
+    internal func hasIncrementalDataForRight() -> Bool {
+        if let _ = self.incrementalDataSource {
+            return self.hasMoreForRight
+        } else {
+            return false
+        }
+    }
+    
+    internal func incrementalItemsForRight(resultHandler: @escaping ((Int) -> Void)) {
+        guard let incrementalDataSource = self.incrementalDataSource else { return }
+        
+        incrementalDataSource.photoGallery(self, itemsAfter: self.items?.last) { [weak self] (items, error) in
+            guard let strongSelf = self else { return }
+            
+            if let _ = error {
+                resultHandler(0)
+            } else {
+                if let items = items, items.count > 0 {
+                    strongSelf.items = (strongSelf.items ?? []) + items
+                } else {
+                    strongSelf.hasMoreForRight = false
+                }
+                resultHandler(items?.count ?? 0)
+            }
+        }
+    }
+    
+    // MARK: - DKPhotoGalleryContentDelegate
+    
+    internal func contentVCCanScrollToPreviousOrNext(_ contentVC: DKPhotoGalleryContentVC) -> Bool {
+        if let isInteracting = self.transitionController?.interactiveController?.isInteracting, isInteracting {
+            return !isInteracting
+        } else {
+            return true
+        }
     }
     
     // MARK: - UINavigationController
@@ -333,7 +436,7 @@ open class DKPhotoGallery: UINavigationController, UIViewControllerTransitioning
 
 public extension UIViewController {
     
-    public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
+    @objc public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
         gallery.modalPresentationStyle = .custom
         
         gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery,

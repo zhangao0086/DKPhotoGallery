@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name          = 'DKPhotoGallery'
-    s.version       = '0.0.4'
+    s.version       = '0.0.6'
     s.summary       = 'A Photo Gallery / Browser / Viewer for iOS written in Swift'
     s.homepage      = 'https://github.com/zhangao0086/DKPhotoGallery'
     s.license       = { :type => 'MIT', :file => 'LICENSE' }
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary', 'MobileCoreServices'
     s.requires_arc  = true
 
-    s.dependency 'SDWebImage/GIF', '~> 4.0'
+    s.dependency 'SDWebImage/GIF'
 
     s.subspec 'Core' do |core|
         core.dependency 'DKPhotoGallery/Model'
@@ -22,6 +22,7 @@ Pod::Spec.new do |s|
                                 'DKPhotoGallery/DKPhotoGalleryContentVC.swift', 
                                 'DKPhotoGallery/DKPhotoGalleryScrollView.swift',
                                 'DKPhotoGallery/DKPhotoPreviewFactory.swift',
+                                'DKPhotoGallery/DKPhotoIncrementalIndicator.swift',
                                 'DKPhotoGallery/Transition/*.swift'
     end
 

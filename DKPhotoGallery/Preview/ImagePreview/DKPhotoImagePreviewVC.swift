@@ -7,121 +7,8 @@
 //
 
 import UIKit
-import SDWebImage
 import Photos
-import MobileCoreServices
-
-protocol DKPhotoImageDownloader {
-    
-    static func downloader() -> DKPhotoImageDownloader
-    
-    func downloadImage(with identifier: Any, progressBlock: ((_ progress: Float) -> Void)?,
-                       completeBlock: @escaping ((_ image: UIImage?, _ data: Data?,  _ error: Error?) -> Void))
-    
-}
-
-class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
-    
-    private static let shared = DKPhotoImageWebDownloader()
-    
-    static func downloader() -> DKPhotoImageDownloader {
-        return shared
-    }
-    
-    var _downloader: SDWebImageDownloader = {
-        let downloader = SDWebImageDownloader()
-        downloader.executionOrder = .lifoExecutionOrder
-        
-        return downloader
-    }()
-    
-    func downloadImage(with identifier: Any, progressBlock: ((Float) -> Void)?,
-                       completeBlock: @escaping ((UIImage?, Data?, Error?) -> Void)) {
-        if let URL = identifier as? URL {
-            self._downloader.downloadImage(with: URL,
-                                           options: .highPriority,
-                                           progress: { (receivedSize, expectedSize, targetURL) in
-                                            if let progressBlock = progressBlock {
-                                                progressBlock(Float(receivedSize) / Float(expectedSize))
-                                            }
-            }, completed: { (image, data, error, finished) in
-                if (image != nil || data != nil) && finished {
-                    completeBlock(image, data, error)
-                } else {
-                    let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                        NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
-                        ])
-                    completeBlock(nil, nil, error)
-                }
-            })
-        } else {
-            assertionFailure()
-        }
-    }
-    
-}
-
-class DKPhotoImageAssetDownloader: DKPhotoImageDownloader {
-    
-    private static let shared = DKPhotoImageAssetDownloader()
-    
-    static func downloader() -> DKPhotoImageDownloader {
-        return shared
-    }
-    
-    func downloadImage(with identifier: Any, progressBlock: ((Float) -> Void)?,
-                       completeBlock: @escaping ((UIImage?, Data?, Error?) -> Void)) {
-        if let asset = identifier as? PHAsset {
-            let options = PHImageRequestOptions()
-            options.resizeMode = .exact
-            options.deliveryMode = .highQualityFormat
-            options.isNetworkAccessAllowed = true
-            if let progressBlock = progressBlock {
-                options.progressHandler = { (progress, error, stop, info) in
-                    if progress > 0 {
-                        progressBlock(Float(progress))
-                    }
-                }
-            }
-            
-            let isGif = (asset.value(forKey: "uniformTypeIdentifier") as? String) == (kUTTypeGIF as String)
-            if isGif {
-                PHImageManager.default().requestImageData(for: asset,
-                                                          options: options,
-                                                          resultHandler: { (data, _, _, info) in
-                                                            if let data = data {
-                                                                completeBlock(nil, data, nil)
-                                                            } else {
-                                                                let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                    NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
-                                                                    ])
-                                                                completeBlock(nil, nil, error)
-                                                            }
-                })
-            } else {
-                PHImageManager.default().requestImage(for: asset,
-                                                      targetSize: CGSize(width: UIScreen.main.bounds.width * UIScreen.main.scale, height:UIScreen.main.bounds.height * UIScreen.main.scale),
-                                                      contentMode: .default,
-                                                      options: options,
-                                                      resultHandler: { (image, info) in
-                                                        if let image = image {
-                                                            completeBlock(image, nil, nil)
-                                                        } else {
-                                                            let error = NSError(domain: Bundle.main.bundleIdentifier!, code: -1, userInfo: [
-                                                                NSLocalizedDescriptionKey : DKPhotoGalleryResource.localizedStringWithKey("preview.image.fetch.error")
-                                                                ])
-                                                            completeBlock(nil, nil, error)
-                                                        }
-                })
-            }
-        } else {
-            assertionFailure()
-        }
-    }
-    
-}
-
-////////////////////////////////////////////////////////////////////////
+import SDWebImage
 
 class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
 
@@ -245,7 +132,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                         
                         completeBlock(data, nil)
                     } else if let compressedImage = UIImage.sd_image(with: data) {
-                        image = self.decompressImage(with: compressedImage)
+                        image = compressedImage.decompress()
                         
                         SDImageCache.shared().store(image, forKey: key, toDisk: false, completion: nil)
                         
@@ -298,31 +185,6 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         }
     }
     
-    private func decompressImage(with image: UIImage) -> UIImage {
-        guard let imageRef = image.cgImage else { return image }
-
-        let width = imageRef.width
-        let height = imageRef.height
-        
-        if width == 0 || height == 0 { return image }
-        
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, image.scale)
-        
-        guard let context = UIGraphicsGetCurrentContext() else { return image }
-        
-        defer {
-            UIGraphicsEndImageContext()
-        }
-        
-        context.scaleBy(x: 1, y: -1)
-        context.translateBy(x: 0, y: CGFloat(-height))
-        context.draw(imageRef, in: CGRect(x: 0, y: 0, width: width, height: height))
-        
-        guard let decompressedImageRef = context.makeImage() else { return image }
-        
-        return UIImage(cgImage: decompressedImageRef, scale: image.scale, orientation: image.imageOrientation)
-    }
-    
     // MARK: - DKPhotoBasePreviewDataSource
     
     override func photoPreviewWillAppear() {
@@ -365,17 +227,19 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             }
         }
         
-        if let _ = self.downloadURL {
+        if let downloadURL = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
                 SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
                     
-                    self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                    if let downloadURL = self.downloadURL {
+                        self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                    }
                 })
             } else {
-                self.asyncFetchImage(with: self.downloadURL!, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
             }
         } else if let asset = self.asset {
             self.asyncFetchImage(with: asset, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
