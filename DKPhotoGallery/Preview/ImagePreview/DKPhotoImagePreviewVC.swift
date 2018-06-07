@@ -166,7 +166,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             assertionFailure()
         }
         
-        SDImageCache.shared().queryCacheOperation(forKey: key) { (image, data, cacheType) in
+        SDImageCache.shared().queryCacheOperation(forKey: key, options: .queryDataWhenInMemory) { (image, data, cacheType) in
             if image != nil || data != nil {
                 completeBlock(data ?? image, nil)
             } else {
@@ -229,7 +229,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let downloadURL = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { (image, data, _) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString) { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
@@ -237,7 +237,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                     if let downloadURL = self.downloadURL {
                         self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
                     }
-                })
+                }
             } else {
                 self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
             }
@@ -256,7 +256,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                 self.downloadOriginalImageButton.isHidden = true
             } else {
                 let reuseIdentifier = self.reuseIdentifier
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, done: { [weak self] (image, data, _) in
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString) { [weak self] (image, data, _) in
                     guard reuseIdentifier == self?.reuseIdentifier else { return }
                     
                     if image != nil || data != nil {
@@ -266,7 +266,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
                         self?.downloadOriginalImageButton.isEnabled = true
                         self?.downloadOriginalImageButton.isHidden = false
                     }
-                })
+                }
             }
         } else {
             self.downloadOriginalImageButton.isHidden = true
