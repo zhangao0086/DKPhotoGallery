@@ -234,7 +234,8 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let downloadURL = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
-                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString) { (image, data, _) in
+                // SDWebImage 4.4.0: SDImageCacheScaleDownLargeImages   1 << 2
+                SDImageCache.shared().queryCacheOperation(forKey: originalURL.absoluteString, options: SDImageCacheOptions(rawValue: 1 << 2)) { (image, data, _) in
                     if image != nil || data != nil {
                         self.downloadURL = originalURL
                     }
