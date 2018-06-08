@@ -166,9 +166,13 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             assertionFailure()
         }
         
-        SDImageCache.shared().queryCacheOperation(forKey: key, options: .queryDataWhenInMemory) { (image, data, cacheType) in
+        SDImageCache.shared().queryCacheOperation(forKey: key, options: [.queryDataWhenInMemory, .scaleDownLargeImages]) { (image, data, cacheType) in
             if image != nil || data != nil {
-                completeBlock(data ?? image, nil)
+                if NSData.sd_imageFormat(forImageData: data) == .GIF {
+                    completeBlock(data ?? image, nil)
+                } else {
+                    completeBlock(image ?? data, nil)
+                }
             } else {
                 downloader.downloadImage(with: identifier, progressBlock: { (progress) in
                     progressBlock(progress)
