@@ -20,8 +20,8 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     
     let items = [
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image1")),
-        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
-        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2"), title: "Second"),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3"), title: "Third"),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -78,6 +78,26 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 }
             }
         }
+        
+        let toastLabel = UILabel()
+        toastLabel.numberOfLines = 0
+        toastLabel.backgroundColor = UIColor.clear
+        toastLabel.textColor = UIColor.darkText
+        toastLabel.textAlignment = .center
+        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.text = "Test"
+        let margin = CGFloat(20)
+        let padding = CGFloat(10)
+
+        let size = toastLabel.sizeThatFits(CGSize(width: self.view.bounds.width - margin * 2 - padding * 2, height: 200))
+        let frame = CGRect(x: (self.view.bounds.width - size.width) / 2,
+                                 y: (self.view.bounds.height - size.height) / 2,
+                                 width: size.width + padding,
+                                 height: size.height + padding)
+        
+        toastLabel.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+
+        gallery.footerView = toastLabel
         
         return gallery
     }

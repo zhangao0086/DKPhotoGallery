@@ -37,7 +37,8 @@ open class DKPhotoGalleryItem: NSObject {
     @objc open var imageURL: URL?
     
     @objc open var videoURL: URL?
-    
+    @objc open var title: String?
+
     /**
      DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.
      
@@ -53,28 +54,32 @@ open class DKPhotoGalleryItem: NSObject {
      */
     @objc open var extraInfo: [String: Any]?
     
-    @objc convenience public init(image: UIImage) {
+    @objc convenience public init(image: UIImage, title: String? = nil) {
         self.init()
         
         self.image = image
+        self.title = title
     }
     
-    @objc convenience public init(imageURL: URL) {
+    @objc convenience public init(imageURL: URL, title: String? = nil) {
         self.init()
         
         self.imageURL = imageURL
+        self.title = title
     }
     
-    @objc convenience public init(videoURL: URL) {
+    @objc convenience public init(videoURL: URL, title: String? = nil) {
         self.init()
         
         self.videoURL = videoURL
+        self.title = title
     }
     
-    @objc convenience public init(asset: PHAsset) {
+    @objc convenience public init(asset: PHAsset, title: String? = nil) {
         self.init()
         
         self.asset = asset
+        self.title = title
     }
     
     @objc public class func items(withImageURLs URLs: [URL]) -> [DKPhotoGalleryItem] {
