@@ -37,6 +37,7 @@ open class DKPhotoGalleryItem: NSObject {
     @objc open var imageURL: URL?
     
     @objc open var videoURL: URL?
+    @objc open var pdfURL: URL?
     @objc open var title: String?
 
     /**
@@ -75,6 +76,13 @@ open class DKPhotoGalleryItem: NSObject {
         self.title = title
     }
     
+    @objc convenience public init(pdfURL: URL, title: String? = nil) {
+        self.init()
+        
+        self.pdfURL = pdfURL
+        self.title = title
+    }
+
     @objc convenience public init(asset: PHAsset, title: String? = nil) {
         self.init()
         
