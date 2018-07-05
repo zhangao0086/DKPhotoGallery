@@ -23,7 +23,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2"), title: "Second"),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3"), title: "Third"),
         DKPhotoGalleryItem(videoURL: URL(string: "http://192.168.0.2/screenview/7-13.mp4")!),
-        DKPhotoGalleryItem(pdfURL: URL(string: "http://104.131.3.97/storage/workshops/bids_images/5b38ff8999b362018-07-01-16-21-29.pdf")!),
+        DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!, title: "PDF sample"),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -80,30 +80,24 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 }
             }
         }
-        
-        let toastLabel = UILabel()
-        toastLabel.numberOfLines = 0
-        toastLabel.backgroundColor = UIColor.clear
-        toastLabel.textColor = UIColor.darkText
-        toastLabel.textAlignment = .center
-        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
-        toastLabel.text = "Test"
-        let margin = CGFloat(20)
-        let padding = CGFloat(10)
 
-        let size = toastLabel.sizeThatFits(CGSize(width: self.view.bounds.width - margin * 2 - padding * 2, height: 200))
-        let frame = CGRect(x: (self.view.bounds.width - size.width) / 2,
-                                 y: (self.view.bounds.height - size.height) / 2,
-                                 width: size.width + padding,
-                                 height: size.height + padding)
-        
-        toastLabel.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-
-        gallery.footerView = toastLabel
+        gallery.footerView = footerViewForGallery()
+        gallery.galleryDelegate = self
         
         return gallery
     }
     
+    func footerViewForGallery() -> UIView {
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = 0
+        titleLabel.backgroundColor = UIColor.clear
+        titleLabel.textColor = UIColor.darkText
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        titleLabel.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: 40)
+        return titleLabel
+    }
+
     // MARK: - UIViewControllerPreviewingDelegate
     
     @available(iOS 9.0, *)
@@ -142,6 +136,8 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 cell.contentLabel.text = imageURL.absoluteString
             } else if let videoURL = item.videoURL {
                 cell.contentLabel.text = videoURL.absoluteString
+            } else if let pdfURL = item.pdfURL {
+                cell.contentLabel.text = pdfURL.absoluteString
             }
         }
         
@@ -186,3 +182,14 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     }
 }
 
+extension DemoViewController: DKPhotoGalleryDelegate {
+    func photoGallery(_ gallery: DKPhotoGallery, didShow index: Int) {
+        if let titleLabel = gallery.footerView as? UILabel {
+            if let title = gallery.items?[index].title {
+                titleLabel.text = title
+            } else {
+                titleLabel.text = nil
+            }
+        }
+    }
+}
