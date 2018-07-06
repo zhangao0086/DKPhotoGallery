@@ -37,6 +37,7 @@ open class DKPhotoGalleryItem: NSObject {
     @objc open var imageURL: URL?
     
     @objc open var videoURL: URL?
+    
     @objc open var pdfURL: URL?
 
     /**
@@ -72,6 +73,7 @@ open class DKPhotoGalleryItem: NSObject {
         self.videoURL = videoURL
     }
     
+    @available(iOS 11.0, *)
     @objc convenience public init(pdfURL: URL) {
         self.init()
         
