@@ -20,10 +20,10 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     
     let items = [
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image1")),
-        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2"), title: "Second"),
-        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3"), title: "Third"),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
+        DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
         DKPhotoGalleryItem(videoURL: URL(string: "http://192.168.0.2/screenview/7-13.mp4")!),
-        DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!, title: "PDF sample"),
+        DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -80,22 +80,8 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 }
             }
         }
-
-        gallery.footerView = footerViewForGallery()
-        gallery.galleryDelegate = self
         
         return gallery
-    }
-    
-    func footerViewForGallery() -> UIView {
-        let titleLabel = UILabel()
-        titleLabel.numberOfLines = 0
-        titleLabel.backgroundColor = UIColor.clear
-        titleLabel.textColor = UIColor.darkText
-        titleLabel.textAlignment = .center
-        titleLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
-        titleLabel.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: 40)
-        return titleLabel
     }
 
     // MARK: - UIViewControllerPreviewingDelegate
@@ -177,18 +163,6 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 }
             } else {
                 resultHandler([], nil)
-            }
-        }
-    }
-}
-
-extension DemoViewController: DKPhotoGalleryDelegate {
-    func photoGallery(_ gallery: DKPhotoGallery, didShow index: Int) {
-        if let titleLabel = gallery.footerView as? UILabel {
-            if let title = gallery.items?[index].title {
-                titleLabel.text = title
-            } else {
-                titleLabel.text = nil
             }
         }
     }
