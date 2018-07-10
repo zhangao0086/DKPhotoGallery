@@ -22,6 +22,8 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image1")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
+        DKPhotoGalleryItem(videoURL: URL(string: "http://192.168.0.2/screenview/7-13.mp4")!),
+        DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -81,7 +83,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         
         return gallery
     }
-    
+
     // MARK: - UIViewControllerPreviewingDelegate
     
     @available(iOS 9.0, *)
@@ -120,6 +122,8 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
                 cell.contentLabel.text = imageURL.absoluteString
             } else if let videoURL = item.videoURL {
                 cell.contentLabel.text = videoURL.absoluteString
+            } else if let pdfURL = item.pdfURL {
+                cell.contentLabel.text = pdfURL.absoluteString
             }
         }
         
@@ -163,4 +167,3 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         }
     }
 }
-

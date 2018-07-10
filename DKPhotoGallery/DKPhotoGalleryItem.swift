@@ -38,6 +38,8 @@ open class DKPhotoGalleryItem: NSObject {
     
     @objc open var videoURL: URL?
     
+    @objc open var pdfURL: URL?
+
     /**
      DKPhotoGallery will automatically decide whether to create ImagePreview or PlayerPreview via the mediaType of the asset.
      
@@ -71,6 +73,13 @@ open class DKPhotoGalleryItem: NSObject {
         self.videoURL = videoURL
     }
     
+    @available(iOS 11.0, *)
+    @objc convenience public init(pdfURL: URL) {
+        self.init()
+        
+        self.pdfURL = pdfURL
+    }
+
     @objc convenience public init(asset: PHAsset) {
         self.init()
         
