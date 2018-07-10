@@ -38,6 +38,7 @@ open class DKPhotoGalleryItem: NSObject {
     
     @objc open var videoURL: URL?
     
+    /// iOS 11 or higher required.
     @objc open var pdfURL: URL?
 
     /**
