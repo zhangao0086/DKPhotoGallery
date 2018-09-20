@@ -21,7 +21,7 @@ DKPhotoGallery
 ## Requirements
 * iOS 8.0+
 * ARC
-* Swift 3.2 & 4
+* Swift 3.2 & 4.2
 
 ## Installation
 #### iOS 8 and newer
