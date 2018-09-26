@@ -6,7 +6,9 @@
 //  Copyright © 2017 ZhangAo. All rights reserved.
 //
 
+#if canImport(FLAnimatedImage)
 import FLAnimatedImage
+#endif
 
 open class DKPhotoImageView: FLAnimatedImageView {
     

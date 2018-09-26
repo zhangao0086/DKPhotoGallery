@@ -9,7 +9,10 @@
 import UIKit
 import Photos
 import AssetsLibrary
+
+#if canImport(FLAnimatedImage)
 import FLAnimatedImage
+#endif
 
 open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
 
