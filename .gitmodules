@@ -1,6 +1,0 @@
-[submodule "Vendors/SDWebImage"]
-	path = Vendors/SDWebImage
-	url = https://github.com/rs/SDWebImage
-[submodule "Vendors/FLAnimatedImage"]
-	path = Vendors/FLAnimatedImage
-	url = https://github.com/Flipboard/FLAnimatedImage

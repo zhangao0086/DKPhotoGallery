@@ -766,7 +766,7 @@
 					"@loader_path/Frameworks",
 				);
 				MODULEMAP_FILE = module.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.qier.DKPhotoGallery;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -800,7 +800,7 @@
 					"@loader_path/Frameworks",
 				);
 				MODULEMAP_FILE = module.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.qier.DKPhotoGallery;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
