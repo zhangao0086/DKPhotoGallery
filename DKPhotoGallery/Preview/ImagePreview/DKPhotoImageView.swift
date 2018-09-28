@@ -8,6 +8,8 @@
 
 #if canImport(FLAnimatedImage)
 import FLAnimatedImage
+#elseif canImport(SDWebImage)
+import SDWebImage
 #endif
 
 open class DKPhotoImageView: FLAnimatedImageView {
