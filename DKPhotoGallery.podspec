@@ -38,8 +38,9 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'Resource' do |resource|
+        resource.resource_bundle = { "DKPhotoGallery" => "DKPhotoGallery/Resource/Resources/*" }
+
         resource.source_files = 'DKPhotoGallery/Resource/*.swift'
-        resource.resource = 'DKPhotoGallery/Resource/DKPhotoGallery.bundle'
     end
 
 end

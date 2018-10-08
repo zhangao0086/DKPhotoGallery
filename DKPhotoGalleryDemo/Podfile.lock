@@ -1,21 +1,21 @@
 PODS:
-  - DKPhotoGallery (0.0.7):
-    - DKPhotoGallery/Core (= 0.0.7)
-    - DKPhotoGallery/Model (= 0.0.7)
-    - DKPhotoGallery/Preview (= 0.0.7)
-    - DKPhotoGallery/Resource (= 0.0.7)
+  - DKPhotoGallery (0.0.9):
+    - DKPhotoGallery/Core (= 0.0.9)
+    - DKPhotoGallery/Model (= 0.0.9)
+    - DKPhotoGallery/Preview (= 0.0.9)
+    - DKPhotoGallery/Resource (= 0.0.9)
     - SDWebImage/GIF
-  - DKPhotoGallery/Core (0.0.7):
+  - DKPhotoGallery/Core (0.0.9):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage/GIF
-  - DKPhotoGallery/Model (0.0.7):
+  - DKPhotoGallery/Model (0.0.9):
     - SDWebImage/GIF
-  - DKPhotoGallery/Preview (0.0.7):
+  - DKPhotoGallery/Preview (0.0.9):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage/GIF
-  - DKPhotoGallery/Resource (0.0.7):
+  - DKPhotoGallery/Resource (0.0.9):
     - SDWebImage/GIF
   - FLAnimatedImage (1.0.12)
   - SDWebImage/Core (4.4.2)
@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 9a07de530cfb5379a9982c59ad639b44b4d2c4d5
+  DKPhotoGallery: 04cb8048651a82b00fb12caceb6269d750a23681
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
