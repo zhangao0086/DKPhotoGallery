@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C565E32216B43DA00A16B22 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E2E216B43DA00A16B22 /* Base.lproj */; };
+		9C565E33216B43DA00A16B22 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E2F216B43DA00A16B22 /* Images.xcassets */; };
+		9C565E34216B43DA00A16B22 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E30216B43DA00A16B22 /* zh-Hans.lproj */; };
+		9C565E35216B43DA00A16B22 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E31216B43DA00A16B22 /* en.lproj */; };
+		9C565E39216B44F400A16B22 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */; };
 		9C8BA70A215B2BC0005267E7 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8BA709215B2BC0005267E7 /* ImageIO.framework */; };
 		9C90C060215E371300314C91 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90C05E215E371300314C91 /* SDWebImage.framework */; };
 		9CDF249B215A46F400DF2C79 /* DKPhotoGallery.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -35,7 +40,6 @@
 		9CDF24D7215A471600DF2C79 /* DKPhotoContentAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24BB215A471500DF2C79 /* DKPhotoContentAnimationView.swift */; };
 		9CDF24D8215A471600DF2C79 /* DKPhotoProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24BC215A471500DF2C79 /* DKPhotoProgressIndicator.swift */; };
 		9CDF24D9215A471600DF2C79 /* DKPhotoGalleryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24BD215A471500DF2C79 /* DKPhotoGalleryScrollView.swift */; };
-		9CDF24DA215A471600DF2C79 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CDF24BF215A471500DF2C79 /* DKPhotoGallery.bundle */; };
 		9CDF24DB215A471600DF2C79 /* DKPhotoGalleryResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24C0215A471500DF2C79 /* DKPhotoGalleryResource.swift */; };
 		9CF878D7215B2F6D003F2667 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878D6215B2F6D003F2667 /* AssetsLibrary.framework */; };
 		9CF878D9215B2F74003F2667 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878D8215B2F74003F2667 /* Photos.framework */; };
@@ -44,9 +48,25 @@
 		9CF878DF215B2F91003F2667 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878DE215B2F91003F2667 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9C565E3A216B450000A16B22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CDF2485215A46CE00DF2C79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C565E25216B42AE00A16B22;
+			remoteInfo = DKPhotoGalleryBundle;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		9C08E2A5215B6280003BA0DA /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		9C17CC0E215B39C1001A6BCA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DKPhotoGallery.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C565E28216B42AE00A16B22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C565E2E216B43DA00A16B22 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Base.lproj; path = DKPhotoGallery/Resource/Resources/Base.lproj; sourceTree = SOURCE_ROOT; };
+		9C565E2F216B43DA00A16B22 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DKPhotoGallery/Resource/Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		9C565E30216B43DA00A16B22 /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "DKPhotoGallery/Resource/Resources/zh-Hans.lproj"; sourceTree = SOURCE_ROOT; };
+		9C565E31216B43DA00A16B22 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = DKPhotoGallery/Resource/Resources/en.lproj; sourceTree = SOURCE_ROOT; };
 		9C8BA709215B2BC0005267E7 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		9C90C05E215E371300314C91 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		9CDF248E215A46CE00DF2C79 /* DKPhotoGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DKPhotoGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,7 +96,6 @@
 		9CDF24BB215A471500DF2C79 /* DKPhotoContentAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoContentAnimationView.swift; sourceTree = "<group>"; };
 		9CDF24BC215A471500DF2C79 /* DKPhotoProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoProgressIndicator.swift; sourceTree = "<group>"; };
 		9CDF24BD215A471500DF2C79 /* DKPhotoGalleryScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryScrollView.swift; sourceTree = "<group>"; };
-		9CDF24BF215A471500DF2C79 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKPhotoGallery.bundle; sourceTree = "<group>"; };
 		9CDF24C0215A471500DF2C79 /* DKPhotoGalleryResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryResource.swift; sourceTree = "<group>"; };
 		9CF878D6215B2F6D003F2667 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		9CF878D8215B2F74003F2667 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -86,6 +105,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9C565E23216B42AE00A16B22 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CDF248B215A46CE00DF2C79 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,10 +129,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9C565E27216B42AE00A16B22 /* DKPhotoGalleryBundle */ = {
+			isa = PBXGroup;
+			children = (
+				9C565E2E216B43DA00A16B22 /* Base.lproj */,
+				9C565E31216B43DA00A16B22 /* en.lproj */,
+				9C565E2F216B43DA00A16B22 /* Images.xcassets */,
+				9C565E30216B43DA00A16B22 /* zh-Hans.lproj */,
+				9C565E28216B42AE00A16B22 /* Info.plist */,
+			);
+			path = DKPhotoGalleryBundle;
+			sourceTree = "<group>";
+		};
 		9CDF2484215A46CE00DF2C79 = {
 			isa = PBXGroup;
 			children = (
 				9CDF249E215A471500DF2C79 /* DKPhotoGallery */,
+				9C565E27216B42AE00A16B22 /* DKPhotoGalleryBundle */,
 				9CDF249D215A46FD00DF2C79 /* Frameworks */,
 				9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */,
 				9C08E2A5215B6280003BA0DA /* module.modulemap */,
@@ -119,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				9CDF248E215A46CE00DF2C79 /* DKPhotoGallery.framework */,
+				9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,7 +261,6 @@
 		9CDF24BE215A471500DF2C79 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				9CDF24BF215A471500DF2C79 /* DKPhotoGallery.bundle */,
 				9CDF24C0215A471500DF2C79 /* DKPhotoGalleryResource.swift */,
 			);
 			path = Resource;
@@ -241,6 +280,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		9C565E25216B42AE00A16B22 /* DKPhotoGalleryBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C565E2B216B42AE00A16B22 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryBundle" */;
+			buildPhases = (
+				9C565E22216B42AE00A16B22 /* Sources */,
+				9C565E23216B42AE00A16B22 /* Frameworks */,
+				9C565E24216B42AE00A16B22 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DKPhotoGalleryBundle;
+			productName = DKPhotoGalleryBundle;
+			productReference = 9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		9CDF248D215A46CE00DF2C79 /* DKPhotoGallery */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CDF2496215A46CE00DF2C79 /* Build configuration list for PBXNativeTarget "DKPhotoGallery" */;
@@ -253,6 +309,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9C565E3B216B450000A16B22 /* PBXTargetDependency */,
 			);
 			name = DKPhotoGallery;
 			productName = DKPhotoGallery;
@@ -268,6 +325,9 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Ao Zhang";
 				TargetAttributes = {
+					9C565E25216B42AE00A16B22 = {
+						CreatedOnToolsVersion = 10.0;
+					};
 					9CDF248D215A46CE00DF2C79 = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -286,22 +346,41 @@
 			projectRoot = "";
 			targets = (
 				9CDF248D215A46CE00DF2C79 /* DKPhotoGallery */,
+				9C565E25216B42AE00A16B22 /* DKPhotoGalleryBundle */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9C565E24216B42AE00A16B22 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C565E35216B43DA00A16B22 /* en.lproj in Resources */,
+				9C565E32216B43DA00A16B22 /* Base.lproj in Resources */,
+				9C565E34216B43DA00A16B22 /* zh-Hans.lproj in Resources */,
+				9C565E33216B43DA00A16B22 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CDF248C215A46CE00DF2C79 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CDF24DA215A471600DF2C79 /* DKPhotoGallery.bundle in Resources */,
+				9C565E39216B44F400A16B22 /* DKPhotoGallery.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9C565E22216B42AE00A16B22 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CDF248A215A46CE00DF2C79 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,7 +416,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9C565E3B216B450000A16B22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C565E25216B42AE00A16B22 /* DKPhotoGalleryBundle */;
+			targetProxy = 9C565E3A216B450000A16B22 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9C565E29216B42AE00A16B22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3ZW883499S;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
+				PRODUCT_NAME = DKPhotoGallery;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		9C565E2A216B42AE00A16B22 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3ZW883499S;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
+				PRODUCT_NAME = DKPhotoGallery;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		9CDF2494215A46CE00DF2C79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -533,6 +660,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9C565E2B216B42AE00A16B22 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C565E29216B42AE00A16B22 /* Debug */,
+				9C565E2A216B42AE00A16B22 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9CDF2488215A46CE00DF2C79 /* Build configuration list for PBXProject "DKPhotoGallery" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

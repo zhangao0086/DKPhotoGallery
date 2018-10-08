@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name          = 'DKPhotoGallery'
-    s.version       = '0.0.9'
+    s.version       = '0.0.10'
     s.summary       = 'A Photo Gallery / Browser / Viewer for iOS written in Swift'
     s.homepage      = 'https://github.com/zhangao0086/DKPhotoGallery'
     s.license       = { :type => 'MIT', :file => 'LICENSE' }
@@ -38,8 +38,9 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'Resource' do |resource|
+        resource.resource_bundle = { "DKPhotoGallery" => "DKPhotoGallery/Resource/Resources/*" }
+
         resource.source_files = 'DKPhotoGallery/Resource/*.swift'
-        resource.resource = 'DKPhotoGallery/Resource/DKPhotoGallery.bundle'
     end
 
 end
