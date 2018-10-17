@@ -105,13 +105,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9C565E23216B42AE00A16B22 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9CDF248B215A46CE00DF2C79 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,8 +277,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9C565E2B216B42AE00A16B22 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryBundle" */;
 			buildPhases = (
-				9C565E22216B42AE00A16B22 /* Sources */,
-				9C565E23216B42AE00A16B22 /* Frameworks */,
 				9C565E24216B42AE00A16B22 /* Resources */,
 			);
 			buildRules = (
@@ -374,13 +365,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9C565E22216B42AE00A16B22 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9CDF248A215A46CE00DF2C79 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
