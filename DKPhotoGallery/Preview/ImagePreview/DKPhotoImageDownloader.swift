@@ -8,8 +8,11 @@
 
 import Foundation
 import Photos
-import SDWebImage
 import MobileCoreServices
+
+#if canImport(SDWebImage)
+import SDWebImage
+#endif
 
 protocol DKPhotoImageDownloader {
     
@@ -29,8 +32,9 @@ class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
     }
     
     var _downloader: SDWebImageDownloader = {
-        let downloader = SDWebImageDownloader()
-        downloader.executionOrder = .lifoExecutionOrder
+        let config = SDWebImageDownloaderConfig()
+        config.executionOrder = .lifoExecutionOrder
+        let downloader = SDWebImageDownloader.init(config: config)
         
         return downloader
     }()
