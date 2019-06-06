@@ -1,27 +1,34 @@
 PODS:
-  - DKPhotoGallery (0.0.9):
-    - DKPhotoGallery/Core (= 0.0.9)
-    - DKPhotoGallery/Model (= 0.0.9)
-    - DKPhotoGallery/Preview (= 0.0.9)
-    - DKPhotoGallery/Resource (= 0.0.9)
-    - SDWebImage/GIF
-  - DKPhotoGallery/Core (0.0.9):
+  - DKPhotoGallery (0.0.12):
+    - DKPhotoGallery/Core (= 0.0.12)
+    - DKPhotoGallery/Model (= 0.0.12)
+    - DKPhotoGallery/Preview (= 0.0.12)
+    - DKPhotoGallery/Resource (= 0.0.12)
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Core (0.0.12):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
-    - SDWebImage/GIF
-  - DKPhotoGallery/Model (0.0.9):
-    - SDWebImage/GIF
-  - DKPhotoGallery/Preview (0.0.9):
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Model (0.0.12):
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Preview (0.0.12):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
-    - SDWebImage/GIF
-  - DKPhotoGallery/Resource (0.0.9):
-    - SDWebImage/GIF
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Resource (0.0.12):
+    - SDWebImage
+    - SDWebImageFLPlugin
   - FLAnimatedImage (1.0.12)
-  - SDWebImage/Core (4.4.2)
-  - SDWebImage/GIF (4.4.2):
-    - FLAnimatedImage (~> 1.0)
-    - SDWebImage/Core
+  - SDWebImage (5.0.2):
+    - SDWebImage/Core (= 5.0.2)
+  - SDWebImage/Core (5.0.2)
+  - SDWebImageFLPlugin (0.3.0):
+    - FLAnimatedImage (>= 1.0.11)
+    - SDWebImage/Core (~> 5.0)
 
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
@@ -30,16 +37,18 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FLAnimatedImage
     - SDWebImage
+    - SDWebImageFLPlugin
 
 EXTERNAL SOURCES:
   DKPhotoGallery:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 04cb8048651a82b00fb12caceb6269d750a23681
+  DKPhotoGallery: 71f7af333109bb36455201beb0fc2da12ff75f70
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SDWebImage: 6764b5fa0f73c203728052955dbefa2bf1f33282
+  SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
 
 PODFILE CHECKSUM: 5d73f49af17d8def99de6a78b51da88d5397f19a
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.5.2
