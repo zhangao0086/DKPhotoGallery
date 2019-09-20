@@ -108,12 +108,6 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         contentVC.currentIndex = min(self.presentationIndex, self.numberOfItems() - 1)
         
         contentVC.footerView = self.footerView
-        
-        let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
-        let key = String(data: keyData, encoding: String.Encoding.ascii)!
-        if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
-            self.statusBar = statusBar
-        }
     }
     
     private lazy var doSetupOnce: () -> Void = {
