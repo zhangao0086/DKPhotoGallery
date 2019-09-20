@@ -210,6 +210,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -253,7 +254,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -268,7 +269,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		97FF4D14EC053D5708680A57 /* [CP] Check Pods Manifest.lock */ = {

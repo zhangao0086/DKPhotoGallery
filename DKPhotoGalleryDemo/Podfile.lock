@@ -1,31 +1,31 @@
 PODS:
-  - DKPhotoGallery (0.0.12):
-    - DKPhotoGallery/Core (= 0.0.12)
-    - DKPhotoGallery/Model (= 0.0.12)
-    - DKPhotoGallery/Preview (= 0.0.12)
-    - DKPhotoGallery/Resource (= 0.0.12)
+  - DKPhotoGallery (0.0.13):
+    - DKPhotoGallery/Core (= 0.0.13)
+    - DKPhotoGallery/Model (= 0.0.13)
+    - DKPhotoGallery/Preview (= 0.0.13)
+    - DKPhotoGallery/Resource (= 0.0.13)
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Core (0.0.12):
+  - DKPhotoGallery/Core (0.0.13):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Model (0.0.12):
+  - DKPhotoGallery/Model (0.0.13):
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Preview (0.0.12):
+  - DKPhotoGallery/Preview (0.0.13):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Resource (0.0.12):
+  - DKPhotoGallery/Resource (0.0.13):
     - SDWebImage
     - SDWebImageFLPlugin
   - FLAnimatedImage (1.0.12)
-  - SDWebImage (5.0.2):
-    - SDWebImage/Core (= 5.0.2)
-  - SDWebImage/Core (5.0.2)
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
   - SDWebImageFLPlugin (0.3.0):
     - FLAnimatedImage (>= 1.0.11)
     - SDWebImage/Core (~> 5.0)
@@ -44,11 +44,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 71f7af333109bb36455201beb0fc2da12ff75f70
+  DKPhotoGallery: e05e3054d26f1b6b99ae07402a2d4854cb9c45eb
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  SDWebImage: 6764b5fa0f73c203728052955dbefa2bf1f33282
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
 
 PODFILE CHECKSUM: 5d73f49af17d8def99de6a78b51da88d5397f19a
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.7.2
