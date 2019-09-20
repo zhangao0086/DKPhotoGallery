@@ -64,7 +64,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         
         let gallery = DKPhotoGallery()
         gallery.singleTapMode = .dismiss
-        gallery.presentationIndex = self.items.index(of: item)!
+        gallery.presentationIndex = self.items.firstIndex(of: item)!
         
         if self.enableIncrementalSwitch.isOn {
             gallery.items = [item]
@@ -146,7 +146,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     func photoGallery(_ gallery: DKPhotoGallery, itemsBefore item: DKPhotoGalleryItem?, resultHandler: @escaping (([DKPhotoGalleryItem]?, Error?) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let item = item {
-                if let index = self.items.index(of: item), index > 0 {
+                if let index = self.items.firstIndex(of: item), index > 0 {
                     resultHandler(Array(self.items[max(0, index - 2)...index - 1]), nil)
                 } else {
                     resultHandler([], nil)
@@ -160,7 +160,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     func photoGallery(_ gallery: DKPhotoGallery, itemsAfter item: DKPhotoGalleryItem?, resultHandler: @escaping (([DKPhotoGalleryItem]?, Error?) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let item = item {
-                if let index = self.items.index(of: item), index < self.items.count - 1 {
+                if let index = self.items.firstIndex(of: item), index < self.items.count - 1 {
                     resultHandler(Array(self.items[index + 1...min(self.items.count - 1, index + 2)]), nil)
                 } else {
                     resultHandler([], nil)
