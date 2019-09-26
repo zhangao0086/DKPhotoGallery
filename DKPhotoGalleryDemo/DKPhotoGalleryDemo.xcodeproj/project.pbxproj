@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8EA2AAC94029CCFF60BC4BC2 /* Pods_DKPhotoGalleryDemoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FD73EBD56D4428810C692E /* Pods_DKPhotoGalleryDemoUITests.framework */; };
 		9C38FABE1F933E7B008FE96E /* movie.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 9C38FABD1F933D59008FE96E /* movie.mp4 */; };
 		9C7A71231FB449AE00736547 /* empire-state-building-picture-ext-day.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */; };
-		9CA897FC1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA897FB1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift */; };
 		9CC954281F63F51200B32CA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954271F63F51200B32CA9 /* AppDelegate.swift */; };
 		9CC9542A1F63F51200B32CA9 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC954291F63F51200B32CA9 /* DemoViewController.swift */; };
 		9CC9542D1F63F51200B32CA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9542B1F63F51200B32CA9 /* Main.storyboard */; };
@@ -19,16 +17,6 @@
 		CEACCD10881A529AFD8963CF /* Pods_DKPhotoGalleryDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6970844F8FF0A60303F425B /* Pods_DKPhotoGalleryDemo.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9CA897FE1FE77311007E7C25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9CC9541C1F63F51200B32CA9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9CC954231F63F51200B32CA9;
-			remoteInfo = DKPhotoGalleryDemo;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		0D821ADA290EA94C3F54F90C /* Pods-DKPhotoGalleryDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemoTests/Pods-DKPhotoGalleryDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2CD20709011A5B5CE41858F0 /* Pods-DKPhotoGalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -36,9 +24,6 @@
 		975AFD0F21ACB6E1228DEA4C /* Pods-DKPhotoGalleryDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DKPhotoGalleryDemoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DKPhotoGalleryDemoUITests/Pods-DKPhotoGalleryDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9C38FABD1F933D59008FE96E /* movie.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = movie.mp4; sourceTree = "<group>"; };
 		9C7A71221FB449AE00736547 /* empire-state-building-picture-ext-day.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "empire-state-building-picture-ext-day.jpg"; sourceTree = "<group>"; };
-		9CA897F91FE77311007E7C25 /* DKPhotoGalleryDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DKPhotoGalleryDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CA897FB1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryDemoUITests.swift; sourceTree = "<group>"; };
-		9CA897FD1FE77311007E7C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CC954241F63F51200B32CA9 /* DKPhotoGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DKPhotoGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC954271F63F51200B32CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CC954291F63F51200B32CA9 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
@@ -54,14 +39,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9CA897F61FE77311007E7C25 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8EA2AAC94029CCFF60BC4BC2 /* Pods_DKPhotoGalleryDemoUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9CC954211F63F51200B32CA9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,20 +63,10 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		9CA897FA1FE77311007E7C25 /* DKPhotoGalleryDemoUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9CA897FB1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift */,
-				9CA897FD1FE77311007E7C25 /* Info.plist */,
-			);
-			path = DKPhotoGalleryDemoUITests;
-			sourceTree = "<group>";
-		};
 		9CC9541B1F63F51200B32CA9 = {
 			isa = PBXGroup;
 			children = (
 				9CC954261F63F51200B32CA9 /* DKPhotoGalleryDemo */,
-				9CA897FA1FE77311007E7C25 /* DKPhotoGalleryDemoUITests */,
 				9CC954251F63F51200B32CA9 /* Products */,
 				59151C6F04FC61B9DB0A047A /* Pods */,
 				D36E5F1CBA29D71E29B115B6 /* Frameworks */,
@@ -110,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				9CC954241F63F51200B32CA9 /* DKPhotoGalleryDemo.app */,
-				9CA897F91FE77311007E7C25 /* DKPhotoGalleryDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,25 +109,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9CA897F81FE77311007E7C25 /* DKPhotoGalleryDemoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9CA898001FE77311007E7C25 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryDemoUITests" */;
-			buildPhases = (
-				E8F3CF9E23C6DC5FF2FE1E1F /* [CP] Check Pods Manifest.lock */,
-				9CA897F51FE77311007E7C25 /* Sources */,
-				9CA897F61FE77311007E7C25 /* Frameworks */,
-				9CA897F71FE77311007E7C25 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9CA897FF1FE77311007E7C25 /* PBXTargetDependency */,
-			);
-			name = DKPhotoGalleryDemoUITests;
-			productName = DKPhotoGalleryDemoUITests;
-			productReference = 9CA897F91FE77311007E7C25 /* DKPhotoGalleryDemoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		9CC954231F63F51200B32CA9 /* DKPhotoGalleryDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CC954361F63F51200B32CA9 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryDemo" */;
@@ -191,13 +138,6 @@
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = ZhangAo;
 				TargetAttributes = {
-					9CA897F81FE77311007E7C25 = {
-						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = 85M74MVK78;
-						LastSwiftMigration = 1030;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 9CC954231F63F51200B32CA9;
-					};
 					9CC954231F63F51200B32CA9 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 85M74MVK78;
@@ -221,19 +161,11 @@
 			projectRoot = "";
 			targets = (
 				9CC954231F63F51200B32CA9 /* DKPhotoGalleryDemo */,
-				9CA897F81FE77311007E7C25 /* DKPhotoGalleryDemoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9CA897F71FE77311007E7C25 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9CC954221F63F51200B32CA9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,35 +223,9 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E8F3CF9E23C6DC5FF2FE1E1F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DKPhotoGalleryDemoUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9CA897F51FE77311007E7C25 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9CA897FC1FE77311007E7C25 /* DKPhotoGalleryDemoUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9CC954201F63F51200B32CA9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -330,14 +236,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9CA897FF1FE77311007E7C25 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9CC954231F63F51200B32CA9 /* DKPhotoGalleryDemo */;
-			targetProxy = 9CA897FE1FE77311007E7C25 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9CC9542B1F63F51200B32CA9 /* Main.storyboard */ = {
@@ -359,48 +257,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		9CA898011FE77311007E7C25 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52278C9EC6C42B316D289ABA /* Pods-DKPhotoGalleryDemoUITests.debug.xcconfig */;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 85M74MVK78;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = DKPhotoGalleryDemoUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGalleryDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DKPhotoGalleryDemo;
-			};
-			name = Debug;
-		};
-		9CA898021FE77311007E7C25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 975AFD0F21ACB6E1228DEA4C /* Pods-DKPhotoGalleryDemoUITests.release.xcconfig */;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 85M74MVK78;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = DKPhotoGalleryDemoUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGalleryDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DKPhotoGalleryDemo;
-			};
-			name = Release;
-		};
 		9CC954341F63F51200B32CA9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -547,15 +403,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9CA898001FE77311007E7C25 /* Build configuration list for PBXNativeTarget "DKPhotoGalleryDemoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9CA898011FE77311007E7C25 /* Debug */,
-				9CA898021FE77311007E7C25 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		9CC9541F1F63F51200B32CA9 /* Build configuration list for PBXProject "DKPhotoGalleryDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

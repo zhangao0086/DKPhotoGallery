@@ -18,4 +18,4 @@ before_install:
   - pod repo update
 
 script:
-- xcodebuild clean build test -workspace DKPhotoGalleryDemo/DKPhotoGalleryDemo.xcworkspace -scheme DKPhotoGalleryDemo -destination "$DESTINATION"
+- xcodebuild clean build -workspace DKPhotoGalleryDemo/DKPhotoGalleryDemo.xcworkspace -scheme DKPhotoGalleryDemo -destination "$DESTINATION"
