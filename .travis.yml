@@ -1,9 +1,6 @@
 language: swift
 podfile: DKPhotoGalleryDemo/Podfile
 
-osx_image: xcode10.2
-xcode_sdk: iphonesimulator12.2
-
 matrix:
 include:
   - osx_image: xcode10.2
