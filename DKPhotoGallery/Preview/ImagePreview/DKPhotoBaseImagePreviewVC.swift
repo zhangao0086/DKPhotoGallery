@@ -8,7 +8,6 @@
 
 import UIKit
 import Photos
-import AssetsLibrary
 
 #if canImport(FLAnimatedImage)
 import FLAnimatedImage
@@ -71,15 +70,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
             DispatchQueue.main.async(execute: {
                 switch status {
                 case .authorized:
-                    if let animatedImage = contentView.animatedImage {
-                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                            self.showImageSaveResult(with: error)
-                        })
-                    } else if let imageURL = self.item.imageURL, imageURL.isFileURL, let data = try? Data(contentsOf: imageURL) {
-                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: data, metadata: [:], completionBlock: { (newURL, error) in
-                            self.showImageSaveResult(with: error)
-                        })
-                    } else if let image = contentView.image {
+                    if let image = contentView.image {
                         UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                     }
                 case .restricted:

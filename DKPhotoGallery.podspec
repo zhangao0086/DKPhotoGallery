@@ -5,11 +5,11 @@ Pod::Spec.new do |s|
     s.homepage      = 'https://github.com/zhangao0086/DKPhotoGallery'
     s.license       = { :type => 'MIT', :file => 'LICENSE' }
     s.author        = { 'Bannings' => 'zhangao0086@gmail.com' }
-    s.platform      = :ios, '8.0'
+    s.platform      = :ios, '9.0'
     s.source        = { :git => 'https://github.com/zhangao0086/DKPhotoGallery.git', 
                        :tag => s.version.to_s }
 
-    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'AssetsLibrary', 'MobileCoreServices'
+    s.frameworks    = 'Foundation', 'UIKit', 'Photos', 'WebKit', 'AVFoundation', 'AVKit', 'MobileCoreServices'
     s.requires_arc  = true
     s.swift_version = '4.2'
     s.dependency 'SDWebImage'
