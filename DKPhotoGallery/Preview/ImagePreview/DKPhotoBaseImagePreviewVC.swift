@@ -8,7 +8,6 @@
 
 import UIKit
 import Photos
-import AssetsLibrary
 
 #if canImport(FLAnimatedImage)
 import FLAnimatedImage
@@ -67,18 +66,25 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     private func saveImageToAlbum() {
         guard let contentView = self.contentView as? DKPhotoImageView else { return }
         
+        func saveImage(with imageData: Data) {
+            PHPhotoLibrary.shared().performChanges({
+                let assetRequest = PHAssetCreationRequest.forAsset()
+                assetRequest.addResource(with: .photo, data: imageData, options: nil)
+            }) { (success, error) in
+                DispatchQueue.main.async(execute: {
+                    self.showImageSaveResult(with: error)
+                })
+            }
+        }
+        
         PHPhotoLibrary.requestAuthorization { (status) in
             DispatchQueue.main.async(execute: {
                 switch status {
                 case .authorized:
                     if let animatedImage = contentView.animatedImage {
-                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: animatedImage.data, metadata: nil, completionBlock: { (newURL, error) in
-                            self.showImageSaveResult(with: error)
-                        })
+                        saveImage(with: animatedImage.data)
                     } else if let imageURL = self.item.imageURL, imageURL.isFileURL, let data = try? Data(contentsOf: imageURL) {
-                        ALAssetsLibrary().writeImageData(toSavedPhotosAlbum: data, metadata: [:], completionBlock: { (newURL, error) in
-                            self.showImageSaveResult(with: error)
-                        })
+                        saveImage(with: data)
                     } else if let image = contentView.image {
                         UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
                     }
@@ -168,7 +174,6 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         }
     }
     
-    @available(iOS 9.0, *)
     public override func defaultPreviewActions() -> [UIPreviewActionItem] {
         let saveActionItem = UIPreviewAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.3DTouch.saveImage.title"),
                                              style: .default) { (action, previewViewController) in

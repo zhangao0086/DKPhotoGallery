@@ -23,6 +23,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
         DKPhotoGalleryItem(videoURL: URL(string: "http://192.168.0.2/screenview/7-13.mp4")!),
+        DKPhotoGalleryItem(imageURL: URL(string: "https://raw.githubusercontent.com/kaishin/Gifu/master/gifu-figure.gif")!),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -49,9 +50,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 9.0, *) {
-            self.registerForPreviewing(with: self, sourceView: self.tableView)
-        }
+        self.registerForPreviewing(with: self, sourceView: self.tableView)
         
         if #available(iOS 11.0, *) {
             let pdfItem = DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!)
@@ -90,7 +89,6 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
 
     // MARK: - UIViewControllerPreviewingDelegate
     
-    @available(iOS 9.0, *)
     public func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         if let indexPath = self.tableView.indexPathForRow(at: location),
             let cell = tableView.cellForRow(at: indexPath) as? PreviewCell {

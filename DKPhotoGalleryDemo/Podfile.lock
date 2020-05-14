@@ -1,40 +1,40 @@
 PODS:
-  - DKPhotoGallery (0.0.13):
-    - DKPhotoGallery/Core (= 0.0.13)
-    - DKPhotoGallery/Model (= 0.0.13)
-    - DKPhotoGallery/Preview (= 0.0.13)
-    - DKPhotoGallery/Resource (= 0.0.13)
+  - DKPhotoGallery (0.0.14):
+    - DKPhotoGallery/Core (= 0.0.14)
+    - DKPhotoGallery/Model (= 0.0.14)
+    - DKPhotoGallery/Preview (= 0.0.14)
+    - DKPhotoGallery/Resource (= 0.0.14)
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Core (0.0.13):
+  - DKPhotoGallery/Core (0.0.14):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Model (0.0.13):
+  - DKPhotoGallery/Model (0.0.14):
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Preview (0.0.13):
+  - DKPhotoGallery/Preview (0.0.14):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage
     - SDWebImageFLPlugin
-  - DKPhotoGallery/Resource (0.0.13):
+  - DKPhotoGallery/Resource (0.0.14):
     - SDWebImage
     - SDWebImageFLPlugin
   - FLAnimatedImage (1.0.12)
-  - SDWebImage (5.0.6):
-    - SDWebImage/Core (= 5.0.6)
-  - SDWebImage/Core (5.0.6)
-  - SDWebImageFLPlugin (0.3.0):
+  - SDWebImage (5.7.3):
+    - SDWebImage/Core (= 5.7.3)
+  - SDWebImage/Core (5.7.3)
+  - SDWebImageFLPlugin (0.4.0):
     - FLAnimatedImage (>= 1.0.11)
-    - SDWebImage/Core (~> 5.0)
+    - SDWebImage/Core (~> 5.6)
 
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - FLAnimatedImage
     - SDWebImage
     - SDWebImageFLPlugin
@@ -44,11 +44,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: e05e3054d26f1b6b99ae07402a2d4854cb9c45eb
+  DKPhotoGallery: 8863f835c1257a0fd3c79dfa4ca245fe3dfa349e
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
-  SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
+  SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
+  SDWebImageFLPlugin: 6c2295fb1242d44467c6c87dc5db6b0a13228fd8
 
-PODFILE CHECKSUM: 5d73f49af17d8def99de6a78b51da88d5397f19a
+PODFILE CHECKSUM: a473ad59ee5f797d3db4f4e5c10e3addc401c09b
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.4
