@@ -43,7 +43,6 @@
 		9CDF24D8215A471600DF2C79 /* DKPhotoProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24BC215A471500DF2C79 /* DKPhotoProgressIndicator.swift */; };
 		9CDF24D9215A471600DF2C79 /* DKPhotoGalleryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24BD215A471500DF2C79 /* DKPhotoGalleryScrollView.swift */; };
 		9CDF24DB215A471600DF2C79 /* DKPhotoGalleryResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24C0215A471500DF2C79 /* DKPhotoGalleryResource.swift */; };
-		9CF878D7215B2F6D003F2667 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878D6215B2F6D003F2667 /* AssetsLibrary.framework */; };
 		9CF878D9215B2F74003F2667 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878D8215B2F74003F2667 /* Photos.framework */; };
 		9CF878DB215B2F7C003F2667 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878DA215B2F7C003F2667 /* AVKit.framework */; };
 		9CF878DD215B2F85003F2667 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF878DC215B2F85003F2667 /* WebKit.framework */; };
@@ -120,7 +119,6 @@
 				9CF878DD215B2F85003F2667 /* WebKit.framework in Frameworks */,
 				9CF878DB215B2F7C003F2667 /* AVKit.framework in Frameworks */,
 				9CF878D9215B2F74003F2667 /* Photos.framework in Frameworks */,
-				9CF878D7215B2F6D003F2667 /* AssetsLibrary.framework in Frameworks */,
 				9C8BA70A215B2BC0005267E7 /* ImageIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,7 +425,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
 				PRODUCT_NAME = DKPhotoGallery;
@@ -447,7 +445,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
 				PRODUCT_NAME = DKPhotoGallery;
@@ -597,7 +595,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,7 +630,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
