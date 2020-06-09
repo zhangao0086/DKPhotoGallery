@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
     s.requires_arc  = true
     s.swift_version = ['4.2', '5']
     s.dependency 'SDWebImage'
-    s.dependency 'SDWebImageFLPlugin'
+    s.dependency 'SwiftyGif'
 
     s.subspec 'Core' do |core|
         core.dependency 'DKPhotoGallery/Model'

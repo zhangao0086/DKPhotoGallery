@@ -140,7 +140,7 @@
 				TargetAttributes = {
 					9CC954231F63F51200B32CA9 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 85M74MVK78;
+						DevelopmentTeam = 7MLVDVH5PU;
 						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
@@ -189,16 +189,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DKPhotoGalleryDemo/Pods-DKPhotoGalleryDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageFLPlugin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -375,7 +373,7 @@
 			baseConfigurationReference = F64EB454C6A4CFEC60F3E347 /* Pods-DKPhotoGalleryDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 85M74MVK78;
+				DEVELOPMENT_TEAM = 7MLVDVH5PU;
 				INFOPLIST_FILE = DKPhotoGalleryDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -390,7 +388,7 @@
 			baseConfigurationReference = 2CD20709011A5B5CE41858F0 /* Pods-DKPhotoGalleryDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 85M74MVK78;
+				DEVELOPMENT_TEAM = 7MLVDVH5PU;
 				INFOPLIST_FILE = DKPhotoGalleryDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

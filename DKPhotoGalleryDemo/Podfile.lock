@@ -1,53 +1,48 @@
 PODS:
-  - DKPhotoGallery (0.0.15):
-    - DKPhotoGallery/Core (= 0.0.15)
-    - DKPhotoGallery/Model (= 0.0.15)
-    - DKPhotoGallery/Preview (= 0.0.15)
-    - DKPhotoGallery/Resource (= 0.0.15)
+  - DKPhotoGallery (0.0.16):
+    - DKPhotoGallery/Core (= 0.0.16)
+    - DKPhotoGallery/Model (= 0.0.16)
+    - DKPhotoGallery/Preview (= 0.0.16)
+    - DKPhotoGallery/Resource (= 0.0.16)
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Core (0.0.15):
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.16):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Model (0.0.15):
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.16):
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Preview (0.0.15):
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.16):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Resource (0.0.15):
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.16):
     - SDWebImage
-    - SDWebImageFLPlugin
-  - FLAnimatedImage (1.0.12)
+    - SwiftyGif
   - SDWebImage (5.8.0):
     - SDWebImage/Core (= 5.8.0)
   - SDWebImage/Core (5.8.0)
-  - SDWebImageFLPlugin (0.4.0):
-    - FLAnimatedImage (>= 1.0.11)
-    - SDWebImage/Core (~> 5.6)
+  - SwiftyGif (5.3.0)
 
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
 
 SPEC REPOS:
   trunk:
-    - FLAnimatedImage
     - SDWebImage
-    - SDWebImageFLPlugin
+    - SwiftyGif
 
 EXTERNAL SOURCES:
   DKPhotoGallery:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: e880aef16c108333240e1e7327896f2ea380f4f0
-  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  DKPhotoGallery: 1a594b53aca51f5def7ba70666632a4276b7e770
   SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
-  SDWebImageFLPlugin: 6c2295fb1242d44467c6c87dc5db6b0a13228fd8
+  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
 
 PODFILE CHECKSUM: a473ad59ee5f797d3db4f4e5c10e3addc401c09b
 

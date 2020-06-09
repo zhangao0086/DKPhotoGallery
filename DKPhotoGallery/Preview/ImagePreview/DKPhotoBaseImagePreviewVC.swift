@@ -8,12 +8,7 @@
 
 import UIKit
 import Photos
-
-#if canImport(FLAnimatedImage)
-import FLAnimatedImage
-#elseif canImport(SDWebImage)
-import SDWebImage
-#endif
+import SwiftyGif
 
 open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
 
@@ -22,7 +17,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
     private func detectStringFromImage() -> String? {
         guard let contentView = self.contentView as? DKPhotoImageView else { return nil }
         
-        guard let targetImage = contentView.image ?? contentView.animatedImage?.posterImage else {
+        guard let targetImage = contentView.image  else {
             return nil
         }
         
@@ -81,8 +76,8 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
             DispatchQueue.main.async(execute: {
                 switch status {
                 case .authorized:
-                    if let animatedImage = contentView.animatedImage {
-                        saveImage(with: animatedImage.data)
+                    if let imageData = contentView.gifImage?.imageData {
+                        saveImage(with: imageData)
                     } else if let imageURL = self.item.imageURL, imageURL.isFileURL, let data = try? Data(contentsOf: imageURL) {
                         saveImage(with: data)
                     } else if let image = contentView.image {
@@ -123,8 +118,8 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         
         if let data = content as? Data {
             let imageFormat = NSData.sd_imageFormat(forImageData: data)
-            if imageFormat == .GIF {
-                contentView.animatedImage = FLAnimatedImage(gifData: data)
+            if imageFormat == .GIF, let gifImage = try? UIImage(gifData: data) {
+                contentView.setGifImage(gifImage)
             } else {
                 contentView.image = UIImage(data: data)
             }
@@ -139,8 +134,6 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         if let contentView = self.contentView as? DKPhotoImageView {
             if let image = contentView.image {
                 return image
-            } else if contentView.animatedImage != nil {
-                return contentView.currentFrame
             } else {
                 return self.item.thumbnail
             }
@@ -167,7 +160,7 @@ open class DKPhotoBaseImagePreviewVC: DKPhotoBasePreviewVC {
         
         if let image = contentView.image {
             return image.size
-        } else if let animatedImage = contentView.animatedImage {
+        } else if let animatedImage = contentView.currentImage {
             return animatedImage.size
         } else {
             return CGSize.zero

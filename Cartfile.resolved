@@ -1,3 +1,1 @@
-github "Flipboard/FLAnimatedImage" "1.0.14"
-github "SDWebImage/SDWebImage" "5.0.2"
-github "SDWebImage/SDWebImageFLPlugin" "0.3.0"
+github "kirualex/SwiftyGif" "5.3.0"
