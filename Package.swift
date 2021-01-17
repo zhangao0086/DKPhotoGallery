@@ -16,7 +16,10 @@ let package = Package(
     targets: [
         .target(
             name: "DKPhotoGallery",
-            dependencies: [],
-            path: "DKPhotoGallery"),
+            dependencies: ["SwiftyGif"],
+            path: "DKPhotoGallery",
+            cSettings: [
+                .headerSearchPath(".")
+            ]),
     ]
 )
