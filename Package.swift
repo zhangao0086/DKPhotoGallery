@@ -18,8 +18,6 @@ let package = Package(
             name: "DKPhotoGallery",
             dependencies: ["SwiftyGif"],
             path: "DKPhotoGallery",
-            cSettings: [
-                .headerSearchPath(".")
-            ]),
+        ),
     ]
 )
