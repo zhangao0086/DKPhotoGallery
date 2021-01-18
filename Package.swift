@@ -13,11 +13,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kirualex/SwiftyGif.git", from: "5.3.0"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.10.0"),
     ],
     targets: [
         .target(
             name: "DKPhotoGallery",
-            dependencies: ["SwiftyGif"],
+            dependencies: ["SwiftyGif", "SDWebImage"],
             path: "DKPhotoGallery"),
     ]
 )
