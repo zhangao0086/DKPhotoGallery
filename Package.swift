@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "DKPhotoGallery",
+    defaultLocalization: "en",
     products: [
         .library(
             name: "DKPhotoGallery",
