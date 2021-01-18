@@ -17,7 +17,6 @@ let package = Package(
         .target(
             name: "DKPhotoGallery",
             dependencies: ["SwiftyGif"],
-            path: "DKPhotoGallery",
-        ),
+            path: "DKPhotoGallery"),
     ]
 )
