@@ -50,6 +50,7 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
     
     @objc open var presentingFromImageView: UIImageView?
     @objc open var presentationIndex = 0
+    @objc open var leftBarButtonItemColor : UIColor = UIColor.white
     
     @objc open var singleTapMode = DKPhotoGallerySingleTapMode.toggleControlView
     
@@ -102,6 +103,7 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
         #endif
+        contentVC.navigationItem.leftBarButtonItem?.tintColor = self.leftBarButtonItemColor
         
         contentVC.dataSource = self
         contentVC.delegate = self
