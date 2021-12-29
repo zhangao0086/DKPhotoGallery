@@ -28,10 +28,9 @@ open class DKPhotoGalleryTransitionPresent: NSObject, UIViewControllerAnimatedTr
         let toView = transitionContext.view(forKey: .to)!
         let toViewFinalFrame = transitionContext.finalFrame(for: toViewController)
         
-        if let fromImageView = self.gallery.presentingFromImageView, let fromImage = fromImageView.image {
-            let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil)
+        if let fromImageView = self.gallery.presentingFromImageView, let fromImage = fromImageView.image, let fromImageViewFrameInScreen = fromImageView.superview?.convert(fromImageView.frame, to: nil) {
             let snapshotImageView = DKPhotoContentAnimationView(image: fromImage)
-            snapshotImageView.frame = fromImageViewFrameInScreen!
+            snapshotImageView.frame = fromImageViewFrameInScreen
             snapshotImageView.contentMode = fromImageView.contentMode
             snapshotImageView.backgroundColor = fromImageView.backgroundColor
             snapshotImageView.clipsToBounds = fromImageView.clipsToBounds
