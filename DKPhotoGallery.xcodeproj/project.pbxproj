@@ -16,7 +16,6 @@
 		9C565E39216B44F400A16B22 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */; };
 		9C8BA70A215B2BC0005267E7 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8BA709215B2BC0005267E7 /* ImageIO.framework */; };
 		9C90C060215E371300314C91 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90C05E215E371300314C91 /* SDWebImage.framework */; };
-		9CDF249B215A46F400DF2C79 /* DKPhotoGallery.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CDF24C1215A471600DF2C79 /* DKPhotoPreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF249F215A471500DF2C79 /* DKPhotoPreviewFactory.swift */; };
 		9CDF24C2215A471600DF2C79 /* DKPhotoGalleryTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24A1215A471500DF2C79 /* DKPhotoGalleryTransitionController.swift */; };
 		9CDF24C3215A471600DF2C79 /* DKPhotoGalleryInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24A2215A471500DF2C79 /* DKPhotoGalleryInteractiveTransition.swift */; };
@@ -62,7 +61,6 @@
 /* Begin PBXFileReference section */
 		8B40015A2274F13200061553 /* SDWebImageFLPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImageFLPlugin.framework; path = Carthage/Build/iOS/SDWebImageFLPlugin.framework; sourceTree = "<group>"; };
 		8B40015B2274F13200061553 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FLAnimatedImage.framework; path = Carthage/Build/iOS/FLAnimatedImage.framework; sourceTree = "<group>"; };
-		9C08E2A5215B6280003BA0DA /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		9C17CC0E215B39C1001A6BCA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DKPhotoGallery.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C565E28216B42AE00A16B22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 		9C8BA709215B2BC0005267E7 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		9C90C05E215E371300314C91 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		9CDF248E215A46CE00DF2C79 /* DKPhotoGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DKPhotoGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKPhotoGallery.h; sourceTree = "<group>"; };
 		9CDF249F215A471500DF2C79 /* DKPhotoPreviewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPreviewFactory.swift; sourceTree = "<group>"; };
 		9CDF24A1215A471500DF2C79 /* DKPhotoGalleryTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryTransitionController.swift; sourceTree = "<group>"; };
 		9CDF24A2215A471500DF2C79 /* DKPhotoGalleryInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoGalleryInteractiveTransition.swift; sourceTree = "<group>"; };
@@ -144,8 +141,6 @@
 				9CDF249E215A471500DF2C79 /* DKPhotoGallery */,
 				9C565E27216B42AE00A16B22 /* DKPhotoGalleryBundle */,
 				9CDF249D215A46FD00DF2C79 /* Frameworks */,
-				9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */,
-				9C08E2A5215B6280003BA0DA /* module.modulemap */,
 				9C17CC0E215B39C1001A6BCA /* Info.plist */,
 				9CDF248F215A46CE00DF2C79 /* Products */,
 			);
@@ -272,7 +267,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CDF249B215A46F400DF2C79 /* DKPhotoGallery.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,7 +595,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = module.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -636,7 +629,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = module.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao.DKPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

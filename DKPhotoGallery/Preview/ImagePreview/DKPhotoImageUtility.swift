@@ -6,7 +6,7 @@
 //  Copyright © 2018 ZhangAo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension UIImage {
     

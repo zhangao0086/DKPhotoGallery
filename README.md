@@ -42,6 +42,12 @@ github "zhangao0086/DKPhotoGallery"
 
 If you use Carthage to build your dependencies, make sure you have added `DKPhotoGallery.framework` and `SDWebImage.framework` to the _"Linked Frameworks and Libraries"_ section of your target, and have included them in your Carthage framework copying build phase.
 
+#### Swift Package Manager
+
+```
+https://github.com/zhangao0086/DKPhotoGallery.git
+```
+
 ## Usage
 
 ```swift
