@@ -20,12 +20,13 @@ DKPhotoGallery
 - 3D Touch
 
 ## Requirements
-* iOS 8.0+
+* iOS 9.0+ (Drop support for iOS 8 in 0.0.15 or above)
 * ARC
-* Swift 3.2 & 4.2
+* Swift 4.2 & 5
 
 ## Installation
 #### CocoaPods
+
 DKPhotoGallery is available on CocoaPods. Simply add the following line to your podfile:
 
 ```
@@ -40,6 +41,12 @@ github "zhangao0086/DKPhotoGallery"
 ```
 
 If you use Carthage to build your dependencies, make sure you have added `DKPhotoGallery.framework` and `SDWebImage.framework` to the _"Linked Frameworks and Libraries"_ section of your target, and have included them in your Carthage framework copying build phase.
+
+#### Swift Package Manager
+
+```
+https://github.com/zhangao0086/DKPhotoGallery.git
+```
 
 ## Usage
 

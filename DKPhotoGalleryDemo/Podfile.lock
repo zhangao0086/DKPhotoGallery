@@ -1,54 +1,49 @@
 PODS:
-  - DKPhotoGallery (0.0.12):
-    - DKPhotoGallery/Core (= 0.0.12)
-    - DKPhotoGallery/Model (= 0.0.12)
-    - DKPhotoGallery/Preview (= 0.0.12)
-    - DKPhotoGallery/Resource (= 0.0.12)
+  - DKPhotoGallery (0.0.16):
+    - DKPhotoGallery/Core (= 0.0.16)
+    - DKPhotoGallery/Model (= 0.0.16)
+    - DKPhotoGallery/Preview (= 0.0.16)
+    - DKPhotoGallery/Resource (= 0.0.16)
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Core (0.0.12):
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.16):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Model (0.0.12):
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.16):
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Preview (0.0.12):
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.16):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage
-    - SDWebImageFLPlugin
-  - DKPhotoGallery/Resource (0.0.12):
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.16):
     - SDWebImage
-    - SDWebImageFLPlugin
-  - FLAnimatedImage (1.0.12)
-  - SDWebImage (5.0.2):
-    - SDWebImage/Core (= 5.0.2)
-  - SDWebImage/Core (5.0.2)
-  - SDWebImageFLPlugin (0.3.0):
-    - FLAnimatedImage (>= 1.0.11)
-    - SDWebImage/Core (~> 5.0)
+    - SwiftyGif
+  - SDWebImage (5.8.0):
+    - SDWebImage/Core (= 5.8.0)
+  - SDWebImage/Core (5.8.0)
+  - SwiftyGif (5.3.0)
 
 DEPENDENCIES:
   - DKPhotoGallery (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - FLAnimatedImage
+  trunk:
     - SDWebImage
-    - SDWebImageFLPlugin
+    - SwiftyGif
 
 EXTERNAL SOURCES:
   DKPhotoGallery:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DKPhotoGallery: 71f7af333109bb36455201beb0fc2da12ff75f70
-  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  SDWebImage: 6764b5fa0f73c203728052955dbefa2bf1f33282
-  SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
+  DKPhotoGallery: 1a594b53aca51f5def7ba70666632a4276b7e770
+  SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
+  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
 
-PODFILE CHECKSUM: 5d73f49af17d8def99de6a78b51da88d5397f19a
+PODFILE CHECKSUM: a473ad59ee5f797d3db4f4e5c10e3addc401c09b
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.8.4

@@ -23,6 +23,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image2")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image3")),
         DKPhotoGalleryItem(videoURL: URL(string: "http://192.168.0.2/screenview/7-13.mp4")!),
+        DKPhotoGalleryItem(imageURL: URL(string: "https://raw.githubusercontent.com/kaishin/Gifu/master/gifu-figure.gif")!),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Image4")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Website")),
         DKPhotoGalleryItem(image: #imageLiteral(resourceName: "Text")),
@@ -49,9 +50,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 9.0, *) {
-            self.registerForPreviewing(with: self, sourceView: self.tableView)
-        }
+        self.registerForPreviewing(with: self, sourceView: self.tableView)
         
         if #available(iOS 11.0, *) {
             let pdfItem = DKPhotoGalleryItem(pdfURL: URL(string: "http://www.pdf995.com/samples/pdf.pdf")!)
@@ -64,7 +63,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
         
         let gallery = DKPhotoGallery()
         gallery.singleTapMode = .dismiss
-        gallery.presentationIndex = self.items.index(of: item)!
+        gallery.presentationIndex = self.items.firstIndex(of: item)!
         
         if self.enableIncrementalSwitch.isOn {
             gallery.items = [item]
@@ -90,7 +89,6 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
 
     // MARK: - UIViewControllerPreviewingDelegate
     
-    @available(iOS 9.0, *)
     public func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         if let indexPath = self.tableView.indexPathForRow(at: location),
             let cell = tableView.cellForRow(at: indexPath) as? PreviewCell {
@@ -146,7 +144,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     func photoGallery(_ gallery: DKPhotoGallery, itemsBefore item: DKPhotoGalleryItem?, resultHandler: @escaping (([DKPhotoGalleryItem]?, Error?) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let item = item {
-                if let index = self.items.index(of: item), index > 0 {
+                if let index = self.items.firstIndex(of: item), index > 0 {
                     resultHandler(Array(self.items[max(0, index - 2)...index - 1]), nil)
                 } else {
                     resultHandler([], nil)
@@ -160,7 +158,7 @@ class DemoViewController: UIViewController, UIViewControllerPreviewingDelegate, 
     func photoGallery(_ gallery: DKPhotoGallery, itemsAfter item: DKPhotoGalleryItem?, resultHandler: @escaping (([DKPhotoGalleryItem]?, Error?) -> Void)) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let item = item {
-                if let index = self.items.index(of: item), index < self.items.count - 1 {
+                if let index = self.items.firstIndex(of: item), index < self.items.count - 1 {
                     resultHandler(Array(self.items[index + 1...min(self.items.count - 1, index + 2)]), nil)
                 } else {
                     resultHandler([], nil)
