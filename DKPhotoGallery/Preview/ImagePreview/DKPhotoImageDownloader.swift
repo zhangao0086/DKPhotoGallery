@@ -35,6 +35,7 @@ class DKPhotoImageWebDownloader: DKPhotoImageDownloader {
         let config = SDWebImageDownloaderConfig()
         config.executionOrder = .lifoExecutionOrder
         let downloader = SDWebImageDownloader.init(config: config)
+        downloader.requestModifier = SDWebImageDownloader.shared.requestModifier
         
         return downloader
     }()
